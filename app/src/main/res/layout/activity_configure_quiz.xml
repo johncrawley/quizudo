@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".configure.ConfigureQuizActivity">
+
+    <include layout="@layout/app_toolbar" android:id="@+id/included_toolbar"/>
+    <!-- NOT USELESS!!! Used only to grab focus from the textfield when the activity starts -->
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/included_toolbar">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_inside_horizontal_margin"
+            android:paddingStart="@dimen/activity_inside_horizontal_margin"
+            android:paddingRight="@dimen/activity_inside_vertical_margin"
+            android:paddingEnd="@dimen/activity_inside_vertical_margin"
+            android:padding = "10dp"            >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/configure_quiz_questions_found"
+            android:id="@+id/numberOfQuestionsAvailable"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp" />
+
+
+
+
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            android:id="@+id/numberOfQuestionsLayout"
+            android:layout_below="@+id/numberOfQuestionsAvailable">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/number_of_questions_label"
+                android:id="@+id/selectNumberOfQuestionsLabel"
+                android:textColor="@color/input_label_text"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/number_picker_label_start_margin"
+                android:layout_marginLeft="@dimen/number_picker_label_start_margin"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textAlignment="center" />
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/selectNumberOfQuestionsLabel"
+                android:layout_toRightOf="@+id/selectNumberOfQuestionsLabel"
+                android:layout_marginStart="@dimen/number_picker_start_margin"
+                android:layout_marginLeft="@dimen/number_picker_start_margin"
+                android:id="@+id/numberPicker" />
+        </RelativeLayout>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_answers_on_touch_checkbox"
+            android:id="@+id/submitAnswerOnTouch"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="7dp"
+            android:layout_below="@+id/numberOfQuestionsLayout"
+            android:layout_marginTop="7dp" />
+
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/instant_result_on_submit_checkbox"
+            android:id="@+id/instantResults"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/submitAnswerOnTouch"
+            android:maxLines="2" />
+
+    </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/configure_buttons_top_margin"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/configure_buttons_individual_margin"
+                    android:text="@string/begin_quiz_button_label"
+                    android:id="@+id/beginQuiz"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/configure_buttons_individual_margin"
+                    android:text="@string/resume_quiz_button_label"
+                    android:id="@+id/resumeQuiz"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+</ScrollView>
+</RelativeLayout>

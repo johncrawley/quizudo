@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/about_app_margin"
+    android:padding="@dimen/about_app_padding"
+    android:id="@+id/about_dialog"
+    tools:context="com.jacsstuff.quizudo.main.AboutAppActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/about_app_title"
+        android:textSize="@dimen/about_app_title_size"
+        android:layout_margin="@dimen/about_app_title_margin"
+        android:layout_marginTop="@dimen/about_app_title_margin_top"
+        android:id="@+id/title"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/about_app_version_margin"
+        android:layout_below="@+id/title"
+        android:text="@string/about_app_version" />
+
+    <TextView
+        android:id="@+id/createdBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/about_app_created_by"
+        android:layout_below="@+id/version"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="@dimen/about_app_created_by_size" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/about_app_year"
+        android:textSize="@dimen/about_app_year_size"
+        android:id="@+id/year"
+        android:layout_below="@+id/createdBy"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

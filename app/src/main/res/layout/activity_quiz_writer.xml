@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.jacsstuff.quizudo.creator.QuizWriterActivity">
+
+    <include layout="@layout/app_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/included_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:isScrollContainer="false"
+        android:id="@+id/scrollView1"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/included_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/question_pack_fields_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/questionPackNameTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/questionPackNameTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:nextFocusForward="@+id/questionPackDescriptionTextInput"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_question_pack_name_field"
+                        android:lines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <View
+                    android:id="@+id/divider9"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/questionPackNameTextInputLayout"/>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/questionPackDescriptionTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider9">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/questionPackDescriptionTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_question_pack_description_field"
+                        android:lines="3" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/divider10"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/questionPackDescriptionTextInputLayout"/>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/questionPackTopicsTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider10">
+
+                    <android.support.design.widget.TextInputEditText
+
+                        android:id="@+id/defaultTopicsTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_question_pack_default_topics_field"
+                        android:lines="1" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/divider11"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/questionPackTopicsTextInputLayout"/>
+
+                <TextView
+                    android:id="@+id/default_answer_pools_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/quiz_writer_default_answer_pool_field"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider11" />
+
+
+                <Spinner
+                    android:id="@+id/default_answer_pools_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/default_answer_pools_label" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/question_items_fields_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/questionTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/questionTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_question_text_field" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/questionTextLayout"/>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/correctAnswerTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider1">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/correctAnswerTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_correct_answer_field" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/correctAnswerTextLayout"/>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/answerPoolLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+                    <TextView
+                        android:id="@+id/answerPoolHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="12"
+                        android:text="@string/quiz_writer_answer_pool_label"
+                        android:textAlignment="textStart"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toTopOf="@id/usesDefaultAnswerPool"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/usesDefaultAnswerPool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:text="@string/quiz_writer_use_default_ap_label"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/questionAnswerPoolSpinner"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/questionAnswerPoolSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/answerPoolLayout"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/answerChoices1TextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider3">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/answerChoices1TextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_answer_choices_1_field" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/answerChoices1TextLayout"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/answerChoices2TextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider4">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/answerChoices2TextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_answer_choices_2_field" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/answerChoices2TextLayout"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/answerChoices3TextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider5">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/answerChoices3TextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_answer_choices_3_field" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <View
+                    android:id="@+id/divider6"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/answerChoices3TextLayout"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/answerChoices4TextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider6">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/answerChoices4TextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_answer_choices_4_field" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <View
+                    android:id="@+id/divider7"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/answerChoices4TextLayout"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/answerChoices5TextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider7">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/answerChoices5TextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_answer_choices_5_field" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/divider8"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/answerChoices5TextLayout"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/triviaTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider8">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/triviaTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_trivia_field" />
+                </android.support.design.widget.TextInputLayout>
+                <View
+                    android:id="@+id/divider12"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/triviaTextLayout"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/topicsTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider12">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/topicsTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
+                        android:layout_marginStart="@dimen/quiz_writer_fields_margin"
+                        android:hint="@string/quiz_writer_topics_field" />
+                </android.support.design.widget.TextInputLayout>
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/navigation_layout"
+        android:isScrollContainer="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/firstPageButton"
+            android:layout_width="@dimen/quizwriter_nav_button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/quiz_writer_first_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/previousPageButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/previousPageButton"
+            android:layout_width="@dimen/quizwriter_nav_button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/quiz_writer_previous_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/firstPageButton"
+            app:layout_constraintEnd_toStartOf="@+id/pageNumber"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pageNumber"
+            android:layout_width="67dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:text="@string/quiz_writer_page_number"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/nextPageButton"
+            app:layout_constraintStart_toEndOf="@+id/previousPageButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/nextPageButton"
+            android:layout_width="@dimen/quizwriter_nav_button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/quiz_writer_next_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/lastPageButton"
+            app:layout_constraintStart_toEndOf="@+id/pageNumber"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/lastPageButton"
+            android:layout_width="@dimen/quizwriter_nav_button_width"
+            android:layout_height="47dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/quiz_writer_last_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/nextPageButton"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="11dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

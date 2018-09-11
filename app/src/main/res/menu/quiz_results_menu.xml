@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".results.QuizResultsActivity">
+
+
+    <item android:id="@+id/retry_menu_item" android:name="test1"
+        android:orderInCategory="100" app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_replay_white_24dp"
+        android:title="@string/menu_item_title_retry"/>
+
+    <item android:id="@+id/home_menu_item" android:name="test2"
+        android:icon="@drawable/ic_home_white_24dp"
+        android:orderInCategory="100" app:showAsAction="ifRoom"
+        android:title="@string/menu_item_title_home"/>
+
+</menu>

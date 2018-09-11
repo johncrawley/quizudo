@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".main.MainActivity">
+
+
+    <item android:id="@+id/about_menu_item" android:name="test1"
+        android:orderInCategory="100" app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_info_white_24dp"
+        android:title="@string/menu_item_title_about"/>
+
+
+</menu>

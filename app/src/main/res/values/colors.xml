@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="selectedListItem">#90caf9</color>
+    <color name="selectedListItemHidden">#FFF</color>
+   <!-- <color name="menuItemBackgroundGradient1">#3980d7</color>
+    <color name="menuItemBackgroundGradient2">#b8d7fa</color> -->
+    <color name="menuItemBackgroundGradient1">#1565c0</color>
+    <color name="menuItemBackgroundGradient2">#64b5f6</color>
+    <color name="menuItemText">#FFF</color>
+    <color name="appBarBackground">#64b5f6</color>
+    <color name="resultOverlayBackground">#e8eaf6</color>
+    <color name="resultOverlayCorrectAnswerText">#388e3c</color>
+    <color name="resultRowCorrectAnswerText">#388e3c</color>
+    <color name="resultOverlayIncorrectAnswerText">#d50000</color>
+    <color name="error_text">#d50000</color>
+    <color name="resultOverlayTriviaText">#424242</color>
+    <color name="resultOverlayText">#424242</color>
+    <color name="resultOverlayActualAnswerText">#4b4b4b</color>
+    <color name="tap_to_continue_text">#9e9e9e</color>
+    <color name="resultBackgroundShadow">#212121</color>
+    <color name="input_label_text">#263238</color>
+    <color name="main_menu_button_text">#ffffff</color>
+
+    <color name="black">#FF000000</color>
+    <color name="whitegrey">#FFF2F2F2</color>
+</resources>

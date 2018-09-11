@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/result_row_layout_margin"
+    android:layout_marginStart="@dimen/result_row_layout_margin"
+    android:layout_marginEnd="@dimen/result_row_layout_margin_end"
+    android:layout_marginRight="@dimen/result_row_layout_margin_end"
+    android:minHeight="50dp">
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:contentDescription="@string/default_answer_icon_description"
+        android:id="@+id/resultAnsweredCorrectlyImage"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:src="@drawable/incorrect_icon"
+        android:layout_margin="5dp"
+        android:layout_gravity="center_vertical" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/default_result_row_question_text"
+            android:layout_marginEnd="@dimen/result_row_text_margin_end"
+            android:layout_marginRight="@dimen/result_row_text_margin_end"
+            android:id="@+id/resultQuestionText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/default_result_row_question_answer"
+            android:id="@+id/resultCorrectAnswerText"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/resultRowCorrectAnswerText"
+            android:layout_marginEnd="@dimen/result_row_text_margin_end"
+            android:layout_marginRight="@dimen/result_row_text_margin_end"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capital_cities_qp">{"author":"geography","questions":[{"questionText":"What now?","answerChoiceViews":["Test not over.","test never over.","Needs more test."],"correctAnswers":["Test over."],"trivia":"","topics":["test_over","crappola","history"]}],"name":"history","description":"blashb lah","topics":{},"date":1484402314736,"numberOfQuestions":1,"version":1}</string>
+</resources>

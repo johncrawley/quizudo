@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".options.RemoveQuestionPacksActivity">
+
+
+    <include layout="@layout/app_toolbar" android:id="@+id/included_toolbar"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:focusable="false"
+        android:layout_below="@+id/included_toolbar"
+        android:layout_above="@+id/delete_question_packs_button"/>
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_question_packs_button"
+        android:enabled="false"
+        android:text="@string/delete_question_packs_button"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/bottom_button_bottom_margin"/>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/no_question_packs_found"
+            android:id="@+id/no_question_packs_found_text"
+            android:layout_margin="@dimen/none_available_message_margin"
+            android:textColor="@android:color/secondary_text_dark"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</RelativeLayout>

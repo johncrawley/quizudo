@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference android:title="@string/create_question_pack_preference_title"
+        android:key="QuestionPackCreator"
+        android:summary="@string/create_question_pack_preference_summary"/>
+    <Preference android:title="@string/answer_pools_preferences_title"
+        android:key="AnswerPoolSettings"
+        android:summary="@string/answer_pools_preference_summary"/>
+    <Preference android:title="@string/download_question_packs_preference_title"
+        android:key="DownloadQuestionPacks"
+        android:summary="@string/download_question_packs_preference_summary"/>
+    <Preference android:title="@string/title_remove_question_packs_activity"
+        android:key="RemoveQuestionPacks"
+        android:summary="@string/remove_question_packs_preference_summary"/>
+   <!--
+    <Preference android:title="Configure Download Site"
+        android:key="ConfigureDownloadSite"
+        android:summary="Specify where to download question packs from"/>
+        -->
+
+</PreferenceScreen>
