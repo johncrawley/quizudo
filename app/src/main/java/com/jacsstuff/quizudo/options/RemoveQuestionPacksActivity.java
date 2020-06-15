@@ -77,7 +77,7 @@ public class RemoveQuestionPacksActivity extends AppCompatActivity{
     }
 
     private void initializeList(){
-        questionPackList.initializeList(dbWriter.getQuestionPackDetails());
+        questionPackList.initializeList(dbWriter.getQuestionPackOverviews());
     }
 
     private class QuizFileDeleter extends AsyncTask<String, String, Integer> {

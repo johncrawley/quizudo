@@ -13,7 +13,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper instance;
-    private final Context context;
+
 
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 3;
@@ -74,9 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private DBHelper(Context context) {
-
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     public static DBHelper getInstance(Context context){

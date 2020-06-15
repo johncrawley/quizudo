@@ -36,13 +36,14 @@ import java.util.Set;
  */
 public class QuestionPackList {
 
-    protected ListView listView; //the list that contains  the question pack items
+    ListView listView; //the list that contains  the question pack items
     Button buttonView; // the button that initiates the action to be performed on the selected list items
     protected Context context;
     private Map <Integer, Boolean> isIdSelectedMap;
     private Map <String, Boolean> isNameSelectedMap; // for use with downloading question packs based on name
     protected Activity activity;
     private ArrayAdapter <QuestionPackOverview> arrayAdapter;
+
 
     public QuestionPackList(Context context, Activity activity, ListView listView, Button buttonView, TextView noItemsTextView){
         this.context = context;
@@ -65,7 +66,6 @@ public class QuestionPackList {
     }
 
     public void initializeList(final List<QuestionPackOverview> questionPackOverviews){
-        log("Entered InitializeList()-v1");
         setupViews(questionPackOverviews.isEmpty());
         arrayAdapter = new QuestionPackListAdapter(context, android.R.layout.simple_list_item_checked, questionPackOverviews);
         setListViewOptions(arrayAdapter);
@@ -73,8 +73,9 @@ public class QuestionPackList {
         disableButton();
         arrayAdapter.notifyDataSetChanged();
     }
+
+
     public void initializeList(){
-        log("Entered InitializeList()-v1");
         List <QuestionPackOverview> questionPackOverviews = new ArrayList<>();
         setupViews(false);
         arrayAdapter = new QuestionPackListAdapter(context, android.R.layout.simple_list_item_checked, questionPackOverviews);

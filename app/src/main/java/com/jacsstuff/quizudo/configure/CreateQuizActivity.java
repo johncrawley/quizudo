@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,7 +21,9 @@ import com.jacsstuff.quizudo.model.QuestionsSingleton;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.db.QuestionPackManager;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Set;
 
 public class CreateQuizActivity extends AppCompatActivity {
 
@@ -73,10 +76,21 @@ public class CreateQuizActivity extends AppCompatActivity {
         questionPackList = new QuestionPackList(context, this, listView, configureQuizButton, noItemsTextView);
         questionPackList.setButtonOnClick(new View.OnClickListener(){
             public void onClick(View view){
-                new QuizDbLoader().execute("");
+               startQuizLoaderTask();
             }
         });
-        questionPackList.initializeList(questionPackManager.getQuestionPackDetails());
+        questionPackList.initializeList(questionPackManager.getQuestionPackOverviews());
+    }
+
+    private void startQuizLoaderTask(){
+        new QuizDbLoader(this, questionPackManager, questionPackList).execute("");
+    }
+
+
+    void onFinishedDbInit(){
+        loadingDialog.dismiss();
+        setupViews();
+        isDbInitFinished = true;
 
     }
 
@@ -84,41 +98,60 @@ public class CreateQuizActivity extends AppCompatActivity {
         if (isDbInitFinished) {
             isDbInitFinished = false;
             loadingDialog.show();
-            DBInitialiser initialiser = new DBInitialiser();
+            questionPackManager = new QuestionPackDBManager(context);
+            DBInitialiser initialiser = new DBInitialiser(this, context, questionPackManager);
             initialiser.execute(callerId);
         }
     }
 
 
-    private class DBInitialiser extends AsyncTask<String, String, Integer>{
+    private static class DBInitialiser extends AsyncTask<String, String, Integer>{
+
+        private WeakReference<CreateQuizActivity> createQuizActivityWeakReference;
+        private WeakReference<QuestionPackManager> questionPackManagerWeakReference;
+        private WeakReference<Context> contextWeakReference;
+
+        DBInitialiser(CreateQuizActivity createQuizActivity, Context context, QuestionPackManager questionPackManager){
+            createQuizActivityWeakReference = new WeakReference<>(createQuizActivity);
+            questionPackManagerWeakReference = new WeakReference<>(questionPackManager);
+            contextWeakReference = new WeakReference<>(context);
+        }
 
         public Integer doInBackground(String... params){
-            //String callerId = params[0];
-
-            DefaultQuestionLoader defaultQuestionLoader = new DefaultQuestionLoader(context);
+            Log.i("CreateQuizActivity", "DBInitializer - entered doInBackground()");
+            DefaultQuestionLoader defaultQuestionLoader = new DefaultQuestionLoader(contextWeakReference.get());
             defaultQuestionLoader.loadQuestions();
-            questionPackManager = new QuestionPackDBManager(context);
-
+            questionPackManagerWeakReference.get().init();
             return 1;
         }
 
         public void onPostExecute(Integer value){
-            loadingDialog.dismiss();
-            setupViews();
-            isDbInitFinished = true;
+           createQuizActivityWeakReference.get().onFinishedDbInit();
         }
 
     }
 
-    private class QuizDbLoader extends AsyncTask<String, String, Integer> {
+    private static class QuizDbLoader extends AsyncTask<String, String, Integer> {
 
 
-        QuestionsSingleton questionsSingleton = QuestionsSingleton.getInstance();
+        private QuestionsSingleton questionsSingleton = QuestionsSingleton.getInstance();
+        private WeakReference<QuestionPackManager> questionPackManagerWeakReference;
+        private WeakReference<QuestionPackList> questionPackListWeakReference;
+        private WeakReference<CreateQuizActivity> createQuizActivityWeakReference;
+
+
+        QuizDbLoader(CreateQuizActivity createQuizActivity, QuestionPackManager questionPackManager, QuestionPackList questionPackList){
+            createQuizActivityWeakReference = new WeakReference<>(createQuizActivity);
+            questionPackManagerWeakReference = new WeakReference<>(questionPackManager);
+            questionPackListWeakReference = new WeakReference<>(questionPackList);
+
+        }
+
         public Integer doInBackground(String... params){
 
             questionsSingleton.reset();
-
-            List<Integer> questionIds = questionPackManager.getQuestionIds(questionPackList.getSelectedIds());
+            Set<Integer> selectedIds = questionPackListWeakReference.get().getSelectedIds();
+            List<Integer> questionIds = questionPackManagerWeakReference.get().getQuestionIds(selectedIds);
             questionsSingleton.addNewQuestionIds(questionIds);
             QuizSingleton quizSingleton = QuizSingleton.getInstance();
             quizSingleton.killRunningQuiz(); // If we're starting a new quiz, we dont want to give the opportunity of resuming a previous quiz.
@@ -137,7 +170,7 @@ public class CreateQuizActivity extends AppCompatActivity {
         }
 
         public void onPostExecute(Integer value){
-            loadConfigureQuizActivity();
+            createQuizActivityWeakReference.get().loadConfigureQuizActivity();
         }
     }
 

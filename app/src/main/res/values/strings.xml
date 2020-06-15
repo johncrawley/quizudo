@@ -1,4 +1,6 @@
 <resources>
+    <item name="VIEW_TAG_NAME" type="id" />
+    <item name="VIEW_TAG_ID" type="id" />
     <string name="app_name">Quizudo</string>
     <string name="BUTTON_ACTION">0</string>
     <string name="title_quiz_activity">Quiz</string>
@@ -19,11 +21,11 @@
     <string name="search_for_author">Search For Author: </string>
     <string name="answer_dialog_trivia_title">Did you know&#8230;</string>
     <string name="download_qp_dialog_message">Downloading&#8230;</string>
-    <string name="tap_to_continue_text"> Tap to Continue</string>
-    <string name="answer_pools_spinner_none_option">[NONE]</string>
 
 
     <!-- quiz writer labels   -->
+    <string name="tap_to_continue_text"> Tap to Continue</string>
+    <string name="answer_pools_spinner_none_option">[NONE]</string>
     <string name="quiz_writer_correct_answer_field">Correct Answer</string>
     <string name="quiz_writer_question_text_field">Question Text</string>
     <string name="quiz_writer_answer_choices_field">Answer Choices (1 per line)</string>
@@ -39,20 +41,20 @@
     <string name="quiz_writer_answer_choices_1_field">Answer Choice 1</string>
     <string name="quiz_writer_answer_choices_2_field">Answer Choice 2</string>
     <string name="quiz_writer_answer_choices_3_field">Answer Choice 3</string>
+
     <string name="quiz_writer_answer_choices_4_field">Answer Choice 4</string>
     <string name="quiz_writer_answer_choices_5_field">Answer Choice 5</string>
-
     <string name="quiz_writer_first_button">&lt;&lt; </string>
     <string name="quiz_writer_previous_button">&lt;</string>
+
     <string name="quiz_writer_next_button">&gt;</string>
     <string name="quiz_writer_last_button">&gt;&gt;</string>
-
     <string name="quiz_writer_questions_title">Question %1$d </string>
     <string name="quiz_writer_save_question_pack_success">Question Pack saved with %1$s questions.</string>
+
+
     <string name="quiz_writer_save_question_pack_fail">Could not save the Question Pack</string>
     <string name="quiz_writer_save_question_pack_unable">No Questions to Save</string>
-
-
     <string name="begin_quiz_button_label">Begin Quiz</string>
     <string name="configure_quiz_questions_found_default">No questions were found from the selected Question Packs. Using default question set, maximum quiz length is %1$d questions.</string>
     <string name="configure_quiz_questions_found">No questions were found from the selected Question Packs. Using default question set.</string>
@@ -63,13 +65,13 @@
     <string name="next_question_button_finish">Finish</string>
     <string name="download_site_label">Download Site</string>
     <string name="test_connection_button">Test Connection</string>
+
     <string name="quiz_activity_title">Question %1$d of %2$d</string>
     <string name="about_menu_item">About app</string>
-
     <string name="single_correct_answer_result_message">The correct answer was: &#160;</string>
+
     <string name="multiple_correct_answer_result_message">The correct answers were: \n</string>
     <string name="no_correct_answer_result_message">There was no correct answer! </string>
-
     <string name="instant_result_on_submit_checkbox">Result displayed after answer submitted</string>
     <string name="submit_answers_on_touch_checkbox">Submit answers on touch</string>
     <string name="number_of_questions_label">Number of Questions\n(%1$d max.)</string>
@@ -81,22 +83,22 @@
     <string name="default_answer_icon_description">Icon displaying correct or incorrect answer</string>
     <string name="incorrect_answer_icon_description">Incorrect Answer</string>
     <string name="menu_item_title_home">Home</string>
-    <string name="menu_item_title_save">Save</string>
-    <string name="menu_item_title_retry">Retry</string>
 
     <!-- About Dialog -->
+    <string name="menu_item_title_save">Save</string>
+    <string name="menu_item_title_retry">Retry</string>
     <string name="menu_item_title_about">About App</string>
     <string name="about_app_title">Quizudo</string>
     <string name="about_app_version">Version 1.6</string>
     <string name="about_app_created_by">Created by %1$s</string>
+
     <string name="about_app_year">2017, 2018</string>
     <string name="no_items_found">No items found</string>
-
     <string name="default_result_row_question_text">Question Text not found</string>
     <string name="default_result_row_question_answer">Correct Answer not found</string>
+    <!-- Results Messages -->
     <string name="default_number_of_questions">10</string>
     <string name="number_must_be_specified">You must specify a valid number</string>
-    <!-- Results Messages -->
     <string name="results_message_less_than_twenty">Oh well, please try again.</string>
     <string name="results_message_less_than_forty">Nice try, you will do better next time!</string>
     <string name="results_message_less_than_fifty">You got nearly half of the questions correct!</string>
@@ -105,14 +107,14 @@
     <string name="results_message_less_than_eighty">Good result, well done!</string>
     <string name="results_message_less_than_ninty">Great result, you really know your stuff!</string>
     <string name="results_message_less_than_perfect">Congratulations, what an excellent result!</string>
+
     <string name="results_message_none_correct">Too bad, you didn\'t get any questions right this time around. Better luck next time.</string>
     <string name="results_message_perfect">Congratulations, a perfect score!! You beat the quiz!!</string>
-
     <string name="main_menu_button">Main Menu</string>
     <string name="title_activity_downoad_questions">DownoadQuestionsActivity</string>
+
     <string name="select_author_name_tag">Author Name</string>
     <string name="select_author_quick_list_tag">Quick List</string>
-
     <string name="add_question_packs_menu_item">Add Question Packs</string>
     <string name="delete_question_packs_menu_item">Delete Question Packs</string>
     <string name="configure_download_site_menu_item">Configure Download Site</string>
@@ -138,44 +140,44 @@
     <string name="title_activity_manage_questions_settings">Manage Questions</string>
     <string name="loading_questions">Loading Questions&#8230;</string>
     <string name="loading_dialogue">Loading&#8230;</string>
+    <!-- Answer Pool -->
     <string name="remove_author_dialog_text">Remove author %1$s from the quicklist?</string>
     <string name="remove_answer_dialog_text">Remove answer %1$s from the answer pool?</string>
-    <!-- Answer Pool -->
     <string name="remove_answer_pool_dialog_text">Delete answer pool %1$s?</string>
+
     <string name="answer_pool_deleted_pool_toast">Answer Pool Removed</string>
     <string name="answer_pool_deleted_item_toast">Item Removed</string>
-
     <string name="remove_author_yes_button">Yes</string>
     <string name="remove_author_no_button">No</string>
     <string name="loading_dialogue_checking_server">Contacting Server&#8230;</string>
     <string name="server_connection_error">Unable to connect to the server.</string>
     <string name="resume_quiz_button_label">Resume Quiz</string>
     <string name="answer_pool_input_hint">Create a new Answer Pool</string>
-    <string name="answer_item_input_hint">Add a new Answer</string>
-    <string name="answer_pools_activity_title">Answer Pools</string>
 
     <!-- Download Questions -->
-    <string name="download_questions_activity_title">Download Question Packs</string>
+    <string name="answer_item_input_hint">Add a new Answer</string>
 
 
     <!-- Preferences -->
 
+    <string name="answer_pools_activity_title">Answer Pools</string>
+    <string name="download_questions_activity_title">Download Question Packs</string>
     <string name="create_question_pack_preference_title">Create Question Packs</string>
     <string name="create_question_pack_preference_summary">Create your own questions and save them in a question pack</string>
     <string name="download_question_packs_preference_title">Download Question Packs</string>
     <string name="download_question_packs_preference_summary">Download question packs from a specified server</string>
     <string name="remove_question_packs_preference_title">Remove Questions</string>
     <string name="remove_question_packs_preference_summary">Permanently remove question packs from your device</string>
-    <string name="answer_pools_preferences_title">Answer Pools</string>
-    <string name="answer_pools_preference_summary">Create lists of answers that can be used in questions</string>
 
     <!-- Main Activity -->
 
+    <string name="answer_pools_preferences_title">Answer Pools</string>
+    <string name="answer_pools_preference_summary">Create lists of answers that can be used in questions</string>
     <string name="new_quiz_button_text">NEW QUIZ</string>
-    <string name="options_button_text">OPTIONS</string>
-    <string name="title_image_description">Quizudo</string>
 
     <!-- Download Questions -->
+    <string name="options_button_text">OPTIONS</string>
+    <string name="title_image_description">Quizudo</string>
     <string name="download_url_textfield_title">URL</string>
     <string name="download_questions_button">Download</string>
     <string name="download_server_not_found_message">Server Not Found</string>
@@ -184,26 +186,24 @@
     <string name="download_resource_not_found_message">Could not find the service on the server</string>
     <string name="downloaded_question_pack_message"> "Question Pack Downloaded</string>
     <string name="downloaded_question_packs_message"> "%1$d Question Packs Downloaded</string>
-    <string name="download_question_packs_loading_message">Downloading</string>
-    <string name="download_no_permissions_granted_message">"No App permissions granted to access resources"</string>
 
     <!-- Configure Quiz -->
-    <string name="no_questions_available_toast"> Cannot proceed; there were no valid questions found, please return to the previous page and make another selection</string>
+    <string name="download_question_packs_loading_message">Downloading</string>
 
     <!--  no translate strings below this line-->
+    <string name="download_no_permissions_granted_message">"No App permissions granted to access resources"</string>
+    <string name="no_questions_available_toast"> Cannot proceed; there were no valid questions found, please return to the previous page and make another selection</string>
     <string name="prefkey_authors"> authors</string>
     <string name="prefkey_download_site">download_site</string>
     <string name="author_title">"Author: "</string>
     <string name="main_title_content_description">Quizudo</string>
     <string name="default_download_site">quizudo.byethost7.com</string>
     <string name="ads_unit_id"></string>
-    <string name="ads_unit_interstitial_id"></string>
-    <string name="test_device1_id"></string>
 
     <!-- tag IDs for saving data in list view elements -->
-    <item type="id" name="VIEW_TAG_NAME" />
-    <item type="id" name="VIEW_TAG_ID" />
-    <string type="id" name="LIST_TAG_ID" />
+    <string name="ads_unit_interstitial_id"></string>
+    <string name="test_device1_id"></string>
+    <string name="LIST_TAG_ID" type="id" />
 
 
 </resources>

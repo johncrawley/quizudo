@@ -14,12 +14,9 @@ import java.util.Set;
  */
 public interface QuestionPackManager {
 
-    int saveQuestionPacks(Map<String, String> dataChunks, String authorName);
-    List<QuestionPackOverview> getQuestionPackDetails();
-    List <QuestionPack> getQuestionPacks(Set<Integer> ids);
-    List <Question> getQuestions(Set<Integer> ids);
+    List<QuestionPackOverview> getQuestionPackOverviews();
     List <Integer> getQuestionIds(Set<Integer> ids);
     void  closeConnections();
-    boolean isEmpty();
+    void init();
 }
 

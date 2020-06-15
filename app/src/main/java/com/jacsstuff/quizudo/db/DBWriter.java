@@ -62,6 +62,7 @@ public class DBWriter {
         return true; //transaction was successful.
     }
 
+
     public boolean addQuestionPack(String data){
         JSONParser parser = new JSONParser();
         List<QuestionPackDbEntity> questionPacks = parser.parseQuestionPacksFromJson(data);
@@ -70,6 +71,7 @@ public class DBWriter {
         }
         return true;
     }
+
 
     public int deleteQuestionPacks(Set<Integer> questionPackIds){
 
@@ -96,30 +98,6 @@ public class DBWriter {
         db.endTransaction();
         return true;
     }
-
-    /*
-    private void printQuestionPackDBEntries(){
-
-        String getIdQuery = SELECT + "*" + FROM + QuestionPackEntry.TABLE_NAME + ";";
-        Cursor cursor = db.rawQuery(getIdQuery, null);
-        String uniqueName;
-        while(cursor.moveToNext()){
-            uniqueName = getString(cursor, QuestionPackEntry.COLUMN_NAME_UNIQUE_NAME);
-            Log.i("DBWriter", "printQuestionPackDBEntries: " + uniqueName);
-        }
-        cursor.close();
-    }
-*/
-
-/*
-    private void printTotalNumberOfQuestions(){
-
-         long count = DatabaseUtils.queryNumEntries(db, QuestionsEntry.TABLE_NAME);
-
-         Log.i("DBWriter", "total questions count in db: " + count);
-    }
-
-*/
 
     private void deleteQuestionPackWithUniqueName(String uniqueName){
 
@@ -245,11 +223,10 @@ public class DBWriter {
     }
 
 
-    public List <QuestionPackOverview> getQuestionPackDetails(){
+    public List <QuestionPackOverview> getQuestionPackOverviews(){
 
         Cursor cursor =  db.rawQuery(SELECT + "*" + FROM  + DbContract.QuestionPackEntry.TABLE_NAME + ";", null);
-        List<QuestionPackOverview> qpDetails = new ArrayList<>();
-        int counter = 0;
+        List<QuestionPackOverview> overviews = new ArrayList<>();
         while(cursor.moveToNext()) {
             QuestionPackOverview qpDetail = new QuestionPackOverview();
             qpDetail.setName             (getString( cursor, DbContract.QuestionPackEntry.COLUMN_NAME_TITLE));
@@ -260,11 +237,10 @@ public class DBWriter {
             qpDetail.setVersion          (getInt(    cursor, DbContract.QuestionPackEntry.COLUMN_NAME_VERSION));
             qpDetail.setDateDownloaded   (getLong(   cursor, DbContract.QuestionPackEntry.COLUMN_NAME_DATE_DOWNLOADED));
             qpDetail.setId               (getLong(   cursor, DbContract.QuestionPackEntry._ID));
-            qpDetails.add(qpDetail);
-            counter++;
+            overviews.add(qpDetail);
         }
         cursor.close();
-        return qpDetails;
+        return overviews;
     }
 
     //might need this method if we want to display a list of questions to edit or remove, at some point
@@ -297,7 +273,7 @@ public class DBWriter {
     */
 
 
-    public List<Integer> getQuestionIdsFromQuestionPackIds(Set <Integer> questionPackIds){
+    List<Integer> getQuestionIdsFromQuestionPackIds(Set <Integer> questionPackIds){
 
         List<Integer> questionIds = new ArrayList<>();
         String ids = "";
@@ -349,21 +325,6 @@ public class DBWriter {
         mDbHelper.close();
     }
 
-
-    /*
-    private String deriveInCriteria(Set <Long> questionPackRowIds){
-
-        StringBuilder str = new StringBuilder();
-        str.append("( ");
-        for ( long qpRowId :questionPackRowIds ) {
-            str.append(qpRowId);
-            str.append(" ,");
-        }
-        str.deleteCharAt(str.lastIndexOf(","));
-        str.append(" )");
-        return str.toString();
-    }
-*/
 
 
     private String getString(Cursor cursor, String name){

@@ -97,7 +97,6 @@ public class QuizController {
 
 
     private void finishQuiz() {
-        Log.i("QuizCtrl", "Entered finishQuiz()");
         quiz.finish();
         Intent intent = new Intent(context, QuizResultsActivity.class);
         context.startActivity(intent);
@@ -105,21 +104,28 @@ public class QuizController {
 
 
     private String getCurrentCorrectAnswers() {
-
         List<String> currentCorrectAnswers = quiz.getCurrentCorrectAnswers();
         if (currentCorrectAnswers == null) {
             return "";
         }
-        StringBuilder strBuilder = new StringBuilder();
+        return createStringFrom(currentCorrectAnswers);
+    }
 
+
+    private String createStringFrom(List<String> currentCorrectAnswers){
+        StringBuilder str = new StringBuilder();
         for (String correctAnswer : currentCorrectAnswers) {
-            strBuilder.append(correctAnswer);
-            strBuilder.append(", ");
+            str.append(correctAnswer);
+            str.append(", ");
         }
-        if(strBuilder.length() > 1) {
-            strBuilder.deleteCharAt(strBuilder.length() - 2); //removing the last comma.
+        removeLastComma(str);
+        return str.toString();
+    }
+
+    private void removeLastComma(StringBuilder str){
+        if(str.length() > 1) {
+            str.deleteCharAt(str.length() - 2); //removing the last comma.
         }
-        return strBuilder.toString();
     }
 
 
@@ -206,18 +212,18 @@ public class QuizController {
     private void displayResultDialog(boolean isCorrect, String trivia, String correctAnswer){
 
         Intent intent = new Intent(context, AnswerDialogActivity.class);
-        if(trivia == null){
-            trivia = "";
-        }
-        if(correctAnswer == null){
-            correctAnswer = "";
-        }
+        trivia = getEmptyIfNull(trivia);
+        correctAnswer = getEmptyIfNull(correctAnswer);
+
         intent.putExtra(TRIVIA_INTENT_EXTRA, trivia);
         intent.putExtra(IS_ANSWER_CORRECT_INTENT_EXTRA, isCorrect);
         intent.putExtra(CORRECT_ANSWER_INTENT_EXTRA, correctAnswer);
         context.startActivity(intent);
     }
 
+    private String getEmptyIfNull(String str){
+        return str == null ? "" : str;
+    }
 
 
     public void answerItemClick(int position){
@@ -225,13 +231,17 @@ public class QuizController {
         if(isAnswerSubmittedOnTouch && !isAnswerSubmitted){
             submitAnswer();
             isAnswerSubmitted = true; //to stop the being displayed more than once on fast clicks, bool is resetted in loadNextQuestion()
-            if(isResultDisplayedAfterQuestion){
-                displayResult();
-            }
-            else{
-                loadNextQuestion();
-            }
+            displayResultOrLoadNextQuestion();
         }
+    }
+
+
+    private void displayResultOrLoadNextQuestion(){
+        if(isResultDisplayedAfterQuestion){
+            displayResult();
+            return;
+        }
+        loadNextQuestion();
     }
 
 

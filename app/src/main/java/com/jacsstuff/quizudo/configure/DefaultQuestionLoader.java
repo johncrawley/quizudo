@@ -2,7 +2,6 @@ package com.jacsstuff.quizudo.configure;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.utils.Consts;
@@ -12,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by John on 23/01/2017.
@@ -19,51 +20,48 @@ import java.io.InputStreamReader;
  * Finds all the default question packs that are saved as strings in the defaultQuestionPacks.xml and
  * loads them into the database. This should only be done once.
  */
-public class DefaultQuestionLoader {
+class DefaultQuestionLoader {
 
     private Context context;
 
-    public DefaultQuestionLoader(Context context){
+    DefaultQuestionLoader(Context context){
         this.context = context;
     }
 
-    private void log(String msg){
-        Log.i("DefaultQLoader", msg);
 
-    }
-
-    public void loadQuestions(){
+    void loadQuestions(){
         if(isFirstAttempt()){
             DBWriter dbWriter = new DBWriter(context);
-            int[] questionPackIds = {
+            List<Integer> ids = Arrays.asList(
                     R.raw.capital_cities,
                     R.raw.general_knowledge,
                     R.raw.the_periodic_table,
-                    R.raw.musical_intervals
-            };
-            for(int questionPackId : questionPackIds){
+                    R.raw.musical_intervals);
+
+            for(int questionPackId : ids){
                 addQuestionPackFromFile(dbWriter, questionPackId);
             }
-            Log.i("DefaultQuestionsLoader", "Questions loaded.");
+            saveAttemptMadePreference();
         }
-
     }
 
-    private void addQuestionPackFromFile(DBWriter dbWriter, int fileId){
 
+    private void addQuestionPackFromFile(DBWriter dbWriter, int fileId){
        dbWriter.addQuestionPack(getFileContents(fileId));
     }
 
 
-    private boolean isFirstAttempt(){
+    private boolean isFirstAttempt() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.QUIZ_SETTINGS_PREFERENCES, Context.MODE_PRIVATE);
-        if(sharedPreferences.getBoolean(Consts.WERE_DEFAULT_QPS_ADDED_PREFERENCE, false)){
-            return false;
-        }
+        return !sharedPreferences.getBoolean(Consts.WERE_DEFAULT_QPS_ADDED_PREFERENCE, false);
+    }
+
+
+    private void saveAttemptMadePreference(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.QUIZ_SETTINGS_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(Consts.WERE_DEFAULT_QPS_ADDED_PREFERENCE, true);
         editor.apply();
-        return true;
     }
 
 
