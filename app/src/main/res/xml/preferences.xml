@@ -4,6 +4,11 @@
     <Preference android:title="@string/create_question_pack_preference_title"
         android:key="QuestionPackCreator"
         android:summary="@string/create_question_pack_preference_summary"/>
+
+    <Preference android:title="@string/create_question_pack_express_preference_title"
+        android:key="QuestionPackCreatorExpress"
+        android:summary="@string/create_question_pack_preference_express_summary"/>
+
     <Preference android:title="@string/answer_pools_preferences_title"
         android:key="AnswerPoolSettings"
         android:summary="@string/answer_pools_preference_summary"/>

@@ -164,6 +164,8 @@
     <string name="download_questions_activity_title">Download Question Packs</string>
     <string name="create_question_pack_preference_title">Create Question Packs</string>
     <string name="create_question_pack_preference_summary">Create your own questions and save them in a question pack</string>
+    <string name="create_question_pack_express_preference_title">Create Question Packs Express Mode</string>
+    <string name="create_question_pack_preference_express_summary">A quicker way to generate questions</string>
     <string name="download_question_packs_preference_title">Download Question Packs</string>
     <string name="download_question_packs_preference_summary">Download question packs from a specified server</string>
     <string name="remove_question_packs_preference_title">Remove Questions</string>

@@ -36,6 +36,7 @@ public class Consts {
     public static final String WERE_DEFAULT_QPS_ADDED_PREFERENCE = "wereDefaultQPsAdded";
     public static final String ANSWER_POOL_PREFERENCE = "AnswerPoolSettings";
     public static final String QUESTION_CREATOR_PREFERENCE = "QuestionPackCreator";
+    public static final String QUESTION_CREATOR_EXPRESS_PREFERENCE = "QuestionPackCreatorExpress";
     public static final int DEFAULT_NUMBER_OF_QUESTIONS = 10;
 
     public static final String IS_ANSWER_CORRECT_INTENT_EXTRA = "isAnswerCorrect";

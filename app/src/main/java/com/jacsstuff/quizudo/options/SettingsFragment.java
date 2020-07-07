@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.creator.QuizWriterActivity;
 import com.jacsstuff.quizudo.answerPool.AnswerPoolActivity;
+import com.jacsstuff.quizudo.creator.express.GeneratorsActivity;
 import com.jacsstuff.quizudo.download.DownloadQuestionsActivity;
 
 import static com.jacsstuff.quizudo.utils.Consts.DOWNLOAD_QUESTION_PACKS_PREFERENCE;
+import static com.jacsstuff.quizudo.utils.Consts.QUESTION_CREATOR_EXPRESS_PREFERENCE;
 import static com.jacsstuff.quizudo.utils.Consts.QUESTION_CREATOR_PREFERENCE;
 import static com.jacsstuff.quizudo.utils.Consts.REMOVE_QUESTIONS_PREFERENCE;
 import static com.jacsstuff.quizudo.utils.Consts.ANSWER_POOL_PREFERENCE;
@@ -55,7 +57,12 @@ public class SettingsFragment extends PreferenceFragment {
 
     private void setupPreferences(){
 
-        for(String preferenceName : new String[]{DOWNLOAD_QUESTION_PACKS_PREFERENCE, REMOVE_QUESTIONS_PREFERENCE, ANSWER_POOL_PREFERENCE, QUESTION_CREATOR_PREFERENCE }){
+        for(String preferenceName : new String[]{
+                QUESTION_CREATOR_EXPRESS_PREFERENCE,
+                DOWNLOAD_QUESTION_PACKS_PREFERENCE,
+                REMOVE_QUESTIONS_PREFERENCE,
+                ANSWER_POOL_PREFERENCE,
+                QUESTION_CREATOR_PREFERENCE }){
             setupPreference(preferenceName);
         }
     }
@@ -83,6 +90,9 @@ public class SettingsFragment extends PreferenceFragment {
                         break;
                     case ANSWER_POOL_PREFERENCE:
                         launchActivity(AnswerPoolActivity.class);
+                        break;
+                    case QUESTION_CREATOR_EXPRESS_PREFERENCE:
+                        launchActivity(GeneratorsActivity.class);
                         break;
                     case QUESTION_CREATOR_PREFERENCE:
                         launchActivity(QuizWriterActivity.class);

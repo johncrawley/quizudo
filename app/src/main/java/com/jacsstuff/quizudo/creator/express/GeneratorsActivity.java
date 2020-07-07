@@ -1,4 +1,4 @@
-package com.jacsstuff.quizudo.creator.turbo;
+package com.jacsstuff.quizudo.creator.express;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
