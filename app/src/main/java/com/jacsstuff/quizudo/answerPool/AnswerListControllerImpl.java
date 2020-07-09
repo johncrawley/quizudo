@@ -23,13 +23,9 @@ public class AnswerListControllerImpl implements AnswerListController {
         this.answerPoolName = answerPoolName;
     }
 
-    private void log(String msg){
-        Log.i("AnswerListCtrlImpl", msg);
-    }
+
     public void refreshListFromDb(){
-        log("Entered refreshListFromDb()");
         items = db.getAnswerItems(answerPoolName);
-        log("Items retrieved from answer pool db manager");
         view.setupList(items);
     }
 
@@ -38,7 +34,6 @@ public class AnswerListControllerImpl implements AnswerListController {
         if(items.contains(text)){
             return;
         }
-       // items.add(text);
         db.addAnswerPoolItem(answerPoolName, text);
         view.updateList(text);
     }

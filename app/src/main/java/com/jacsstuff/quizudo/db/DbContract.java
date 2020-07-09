@@ -11,32 +11,32 @@ public final class DbContract {
 
     private DbContract(){}
 
-    public static class QuestionsEntry implements BaseColumns {
-        public static final String TABLE_NAME = "questions";
-        public static final String COLUMN_NAME_QUESTION_TEXT = "question";
-        public static final String COLUMN_NAME_CORRECT_ANSWER = "correct_answer";
-        public static final String COLUMN_NAME_ANSWER_CHOICES = "answer_choices";
-        public static final String COLUMN_NAME_TRIVIA = "trivia";
-        public static final String COLUMN_NAME_QUESTION_PACK_ID = "question_pack_id";
-        public static final String COLUMN_NAME_TOPICS = "topics";
-        public static final String COLUMN_NAME_FLAGS = "flags";
-        public static final String COLUMN_NAME_DIFFICULTY = "difficulty";
-        public static final String COLUMN_NAME_IMAGE = "image";
-        public static final String COLUMN_NAME_ANSWER_POOL_NAME = "answer_pool_name";
-        public static final String COLUMN_NAME_SOUND = "sound";
+     static class QuestionsEntry implements BaseColumns {
+         static final String TABLE_NAME = "questions";
+         static final String COLUMN_NAME_QUESTION_TEXT = "question";
+         static final String COLUMN_NAME_CORRECT_ANSWER = "correct_answer";
+         static final String COLUMN_NAME_ANSWER_CHOICES = "answer_choices";
+         static final String COLUMN_NAME_TRIVIA = "trivia";
+         static final String COLUMN_NAME_QUESTION_PACK_ID = "question_pack_id";
+         static final String COLUMN_NAME_TOPICS = "topics";
+         static final String COLUMN_NAME_FLAGS = "flags";
+         static final String COLUMN_NAME_DIFFICULTY = "difficulty";
+         static final String COLUMN_NAME_IMAGE = "image";
+         static final String COLUMN_NAME_ANSWER_POOL_NAME = "answer_pool_name";
+         static final String COLUMN_NAME_SOUND = "sound";
     }
 
-    public static class QuestionPackEntry implements BaseColumns {
-        public static final String TABLE_NAME = "question_packs";
-        public static final String COLUMN_NAME_UNIQUE_NAME = "unique_name";
-        public static final String COLUMN_NAME_DESCRIPTION = "description";
-        public static final String COLUMN_NAME_TITLE = "title";
-        public static final String COLUMN_NAME_AUTHOR = "author";
-        public static final String COLUMN_NAME_VERSION = "version";
-        public static final String COLUMN_NAME_DATE_CREATED = "date_created";
-        public static final String COLUMN_NAME_DATE_DOWNLOADED = "date_downloaded";
-        public static final String COLUMN_NAME_THUMBNAIL = "thumbnail";
-        public static final String COLUMN_NAME_DIFFICULTY = "difficulty"; //i.e. the average difficulty
+     static class QuestionPackEntry implements BaseColumns {
+         static final String TABLE_NAME = "question_packs";
+         static final String COLUMN_NAME_UNIQUE_NAME = "unique_name";
+         static final String COLUMN_NAME_DESCRIPTION = "description";
+         static final String COLUMN_NAME_TITLE = "title";
+         static final String COLUMN_NAME_AUTHOR = "author";
+         static final String COLUMN_NAME_VERSION = "version";
+         static final String COLUMN_NAME_DATE_CREATED = "date_created";
+         static final String COLUMN_NAME_DATE_DOWNLOADED = "date_downloaded";
+         static final String COLUMN_NAME_THUMBNAIL = "thumbnail";
+         static final String COLUMN_NAME_DIFFICULTY = "difficulty"; //i.e. the average difficulty
     }
 
 
@@ -51,6 +51,12 @@ public final class DbContract {
         public static final String TABLE_NAME = "answer_pool_items";
         public static final String COLUMN_NAME_ANSWER = "answer";
         public static final String COLUMN_NAME_APOOL_ID = "answer_pool_ID";
+    }
+
+
+    public static class QuestionGeneratorEntry implements BaseColumns {
+        public static final String TABLE_NAME = "question_generators";
+        public static final String COLUMN_NAME_GENERATOR_NAME = "name";
     }
 
 }

@@ -93,11 +93,11 @@ public class DBWriter {
                 db.endTransaction();
                 return false;
             }
-
         db.setTransactionSuccessful();
         db.endTransaction();
         return true;
     }
+
 
     private void deleteQuestionPackWithUniqueName(String uniqueName){
 

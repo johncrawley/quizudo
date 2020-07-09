@@ -57,9 +57,11 @@ public class ListAdapterHelper {
         list.setOnItemClickListener(clickListener);
     }
 
+
     public void addToList(String name){
         arrayAdapter.add(name);
     }
+
 
     public void setupKeyInput(final EditText editText) {
 

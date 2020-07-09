@@ -158,9 +158,16 @@
     <string name="answer_item_input_hint">Add a new Answer</string>
 
 
+    <!-- Question Generator -->
+    <string name="delete_generator_dialog_text">Delete Question Generator %1$s?</string>
+    <string name="add_generator_textfield_label">Create a new Question Generator</string>
+
+
+
     <!-- Preferences -->
 
     <string name="answer_pools_activity_title">Answer Pools</string>
+    <string name="question_generator_activity_title">Question Generator</string>
     <string name="download_questions_activity_title">Download Question Packs</string>
     <string name="create_question_pack_preference_title">Create Question Packs</string>
     <string name="create_question_pack_preference_summary">Create your own questions and save them in a question pack</string>

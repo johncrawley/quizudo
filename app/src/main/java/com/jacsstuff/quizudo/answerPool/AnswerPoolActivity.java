@@ -73,7 +73,6 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onClick(String item){
         Intent intent = new Intent(context,  AnswerListActivity.class);

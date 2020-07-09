@@ -17,7 +17,7 @@ public class DeleteAnswerPoolDialogActivity extends DialogActivity {
 
         AnswerPoolDBManager dbManager = new AnswerPoolDBManager(context);
         String answerPoolName = intent.getStringExtra(ANSWER.POOL_NAME.toString());
-        Log.i("DeleteAnswerPoolDialog", "Attempting to delete answer pool: " + answerPoolName);
+
         if(answerPoolName != null){
            if(dbManager.removeAnswerPool(answerPoolName)){
                Toast.makeText(context, R.string.answer_pool_deleted_pool_toast, Toast.LENGTH_SHORT).show();
