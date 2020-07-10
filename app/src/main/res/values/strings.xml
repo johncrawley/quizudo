@@ -161,7 +161,9 @@
     <!-- Question Generator -->
     <string name="delete_generator_dialog_text">Delete Question Generator %1$s?</string>
     <string name="add_generator_textfield_label">Create a new Question Generator</string>
+    <string name="add_question_set_textfield_label">Create a new Question Set</string>
 
+    <string name="question_generator_detail_activity_title">Generator:</string>
 
 
     <!-- Preferences -->

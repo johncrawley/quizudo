@@ -24,21 +24,23 @@ import com.jacsstuff.quizudo.utils.Utils;
 
 import java.util.List;
 
+public class GeneratorDetailActivity extends AppCompatActivity  implements ListActionExecutor, ConfirmDialog.OnFragmentInteractionListener{
 
-public class GeneratorsActivity extends AppCompatActivity implements ListActionExecutor, ConfirmDialog.OnFragmentInteractionListener {
 
     private Context context;
     private QuestionGeneratorDbManager dbManager;
     private ListAdapterHelper listAdapterHelper;
     private String selectedName;
-    final static String NAME_TAG = "1";
+    private String currentQuestionGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generators);
+        setContentView(R.layout.activity_generator_detail);
 
-        context = GeneratorsActivity.this;
+        Intent intent = getIntent();
+        currentQuestionGenerator = intent.getStringExtra(GeneratorsActivity.NAME_TAG);
+        context = GeneratorDetailActivity.this;
         dbManager = new QuestionGeneratorDbManager(this);
         listAdapterHelper = new ListAdapterHelper(context, this);
         EditText editText = findViewById(R.id.nameEditText);
@@ -48,12 +50,17 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
 
 
     private void setupToolbar(){
-
-        ToolbarBuilder.setupToolbarWithTitle(this, getResources().getString(R.string.question_generator_activity_title));
+        ToolbarBuilder.setupToolbarWithTitle(this, getActivityTitle());
         ActionBar actionBar = getActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+
+    private String getActivityTitle(){
+        String activityName = getResources().getString(R.string.question_generator_detail_activity_title);
+        return activityName + " " + currentQuestionGenerator;
     }
 
 
@@ -63,9 +70,9 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
         super.onDestroy();
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home_enabled_menu, menu);
         return true;
     }
@@ -88,8 +95,8 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
 
     @Override
     public void onClick(String item){
-        Intent intent = new Intent(context,  GeneratorDetailActivity.class);
-        intent.putExtra(NAME_TAG, item);
+        Intent intent = new Intent(context,  AnswerListActivity.class);
+        intent.putExtra(AnswerPoolActivity.props.SELECTED_ACTIVITY_POOL.toString(), item);
         startActivity(intent);
     }
 
@@ -116,9 +123,9 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
         if(text == null){
             return;
         }
-        String name = text.trim();
-        dbManager.addQuestionGenerator(name);
-        listAdapterHelper.addToList(name);
+        String questionSetName = text.trim();
+        dbManager.addQuestionSet(currentQuestionGenerator, questionSetName);
+        listAdapterHelper.addToList(questionSetName);
     }
 
 
@@ -132,16 +139,15 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
     public void refreshListFromDb(){
         View noResultsFoundView = findViewById(R.id.noResultsFoundText);
         ListView list = findViewById(R.id.list1);
-        List<String> questionGeneratorNames = dbManager.retrieveGeneratorNames();
+        List<String> questionGeneratorNames = dbManager.retrieveQuestionSetNames(currentQuestionGenerator);
         listAdapterHelper.setupList(list, questionGeneratorNames, noResultsFoundView);
     }
-
 
 
     @Override
     public void onFragmentInteraction(boolean confirmed) {
         if (confirmed) {
-            dbManager.removeQuestionGenerator(selectedName);
+            dbManager.removeQuestionSet(selectedName);
         }
     }
 }

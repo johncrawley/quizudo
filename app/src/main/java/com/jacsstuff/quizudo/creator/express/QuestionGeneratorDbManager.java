@@ -37,14 +37,27 @@ public class QuestionGeneratorDbManager {
 
     List<String> retrieveGeneratorNames(){
 
-        List<String> generatorNames = new ArrayList<>();
         String query = SELECT + "*" + FROM + DbContract.QuestionGeneratorEntry.TABLE_NAME;
+        return retrieveListFromDb(query);
+    }
+
+
+    List<String> retrieveQuestionSetNames(String generatorName){
+        String query = SELECT + "*" + FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
+                + WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_NAME + EQUALS + inQuotes(generatorName);
+
+        return retrieveListFromDb(query);
+    }
+
+
+    private List<String> retrieveListFromDb(String query){
         Cursor cursor = db.rawQuery(query, null);
+        List<String> list = new ArrayList<>();
         while(cursor.moveToNext()){
-          addNameToList(cursor, generatorNames);
+            addNameToList(cursor, list);
         }
         cursor.close();
-        return generatorNames;
+        return list;
     }
 
 
@@ -60,6 +73,20 @@ public class QuestionGeneratorDbManager {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME, name);
         addValuesToTable(DbContract.QuestionGeneratorEntry.TABLE_NAME, contentValues);
+    }
+
+    void addQuestionSet(String generatorName, String name){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
+        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_NAME, generatorName);
+        addValuesToTable(DbContract.QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
+    }
+
+    void removeQuestionSet(String name){
+        String query = DELETE + FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
+                + WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME
+                + EQUALS + inQuotes(name);
+        executeStatment(query);
     }
 
 
@@ -79,17 +106,31 @@ public class QuestionGeneratorDbManager {
         mDbHelper.close();
     }
 
-    private String quotes(String value){
+    private String inQuotes(String value){
         return "'" + value + "'";
     }
 
-    boolean removeQuestionGenerator(String name){
 
-
+    void removeQuestionGenerator(String name){
         String query = DELETE + FROM + DbContract.QuestionGeneratorEntry.TABLE_NAME
                 + WHERE + DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME
-                + EQUALS + "'" + name + "';";
+                + EQUALS + inQuotes(name);
 
+        if(executeStatment(query)){
+            deleteAllQuestionSetsBelongingTo(name);
+        };
+    }
+
+
+    private void deleteAllQuestionSetsBelongingTo(String name){
+        String query = DELETE + FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
+                + WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_NAME
+                + EQUALS + inQuotes(name);
+        executeStatment(query);
+    }
+
+
+    private boolean executeStatment(String query){
         db.beginTransaction();
         try {
             db.execSQL(query);
@@ -100,33 +141,10 @@ public class QuestionGeneratorDbManager {
             return false;
         }
         db.endTransaction();
-        return  true;
+        return true;
     }
 
-    public boolean removeAnswer(String answerPoolName, String answerValue){
 
-        db.beginTransaction();
-
-        String query = DELETE + FROM + DbContract.AnswerPoolItemsEntry.TABLE_NAME
-                + WHERE + DbContract.AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID + IN +
-                "(" +
-                SELECT + DbContract.AnswerPoolNamesEntry._ID +
-                FROM + DbContract.AnswerPoolNamesEntry.TABLE_NAME +
-                WHERE + DbContract.AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME +
-                EQUALS + "'" + answerPoolName + "'" + ")" +
-                AND + DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER +
-                EQUALS + quotes(answerValue) + ";";
-        try {
-            db.execSQL(query);
-            db.setTransactionSuccessful();
-        }catch(SQLException e){
-            e.printStackTrace();
-            db.endTransaction();
-            return false;
-        }
-        db.endTransaction();
-        return  true;
-    }
 
 
     public List<String> getAnswerItems(String answerPoolName){

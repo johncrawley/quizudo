@@ -3,7 +3,6 @@ package com.jacsstuff.quizudo.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by John on 31/12/2016.
@@ -70,11 +69,18 @@ public class DBHelper extends SQLiteOpenHelper {
                     DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER             + TEXT  + " unique "     + CLOSING_BRACKET;
 
 
-
     private static final String SQL_CREATE_QUESTION_GENERATOR_TABLE =
             CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorEntry.TABLE_NAME + OPENING_BRACKET +
                     DbContract.QuestionGeneratorEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
                     DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME + TEXT + " unique " + CLOSING_BRACKET;
+
+
+    private static final String SQL_CREATE_QUESTION_GENERATOR_SETS_TABLE =
+            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorSetEntry.TABLE_NAME + OPENING_BRACKET +
+                    DbContract.QuestionGeneratorSetEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
+                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_NAME + TEXT + COMMA +
+                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + TEXT + " unique " + CLOSING_BRACKET;
+
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DbContract.QuestionsEntry.TABLE_NAME;
@@ -93,12 +99,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public void onCreate(SQLiteDatabase db) {
-        Log.i("DBHelper", " Entering onCreate() ...creating the db tables.");
         db.execSQL(SQL_CREATE_QUESTION_TABLE);
         db.execSQL(SQL_CREATE_QUESTION_PACK_TABLE);
         db.execSQL(SQL_CREATE_ANSWER_POOL_NAMES_TABLE);
         db.execSQL(SQL_CREATE_ANSWER_POOL_ITEMS_TABLE);
         db.execSQL(SQL_CREATE_QUESTION_GENERATOR_TABLE);
+        db.execSQL(SQL_CREATE_QUESTION_GENERATOR_SETS_TABLE);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //db.execSQL(SQL_DELETE_ENTRIES);

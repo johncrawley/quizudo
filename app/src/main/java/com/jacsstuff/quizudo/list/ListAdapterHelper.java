@@ -59,7 +59,20 @@ public class ListAdapterHelper {
 
 
     public void addToList(String name){
+        if (listContains(name)) {
+            return;
+        }
         arrayAdapter.add(name);
+    }
+
+
+    private boolean listContains(String name) {
+        for (int i = 0; i < arrayAdapter.getCount(); i++) {
+            if (arrayAdapter.getItem(i).equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
