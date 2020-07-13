@@ -36,8 +36,8 @@ import java.util.Set;
  */
 public class QuestionPackList {
 
-    ListView listView; //the list that contains  the question pack items
-    Button buttonView; // the button that initiates the action to be performed on the selected list items
+    private ListView listView; //the list that contains  the question pack items
+    private Button buttonView; // the button that initiates the action to be performed on the selected list items
     protected Context context;
     private Map <Integer, Boolean> isIdSelectedMap;
     private Map <String, Boolean> isNameSelectedMap; // for use with downloading question packs based on name
@@ -65,6 +65,7 @@ public class QuestionPackList {
         buttonView.setOnClickListener(listener);
     }
 
+
     public void initializeList(final List<QuestionPackOverview> questionPackOverviews){
         setupViews(questionPackOverviews.isEmpty());
         arrayAdapter = new QuestionPackListAdapter(context, android.R.layout.simple_list_item_checked, questionPackOverviews);
@@ -85,14 +86,14 @@ public class QuestionPackList {
         arrayAdapter.notifyDataSetChanged();
     }
 
-    public void updateList(final List<QuestionPackOverview> questionPackOverviews){
 
+    public void updateList(final List<QuestionPackOverview> questionPackOverviews){
         arrayAdapter.clear();
         arrayAdapter.addAll(questionPackOverviews);
-       arrayAdapter.notifyDataSetChanged();
+        arrayAdapter.notifyDataSetChanged();
     }
 
-    void setupViews(boolean isListEmpty){
+    private void setupViews(boolean isListEmpty){
         if(isListEmpty){
             setupViewsForEmptyList(); }
     }
@@ -103,7 +104,7 @@ public class QuestionPackList {
         buttonView.setVisibility(View.GONE);
     }
 
-    void setListViewOptions(ArrayAdapter arrayAdapter){
+    private void setListViewOptions(ArrayAdapter arrayAdapter){
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(arrayAdapter);
         listView.setSelector(R.color.selectedListItemHidden);
@@ -126,24 +127,22 @@ public class QuestionPackList {
                 isNameSelectedMap.put(name, checkedTextItem.isChecked());
 
                 isIdSelectedMap.put(questionPackId, checkedTextItem.isChecked());
-                setButtonEnabledState();
+                updateButtonEnabledState();
             }
         });
     }
 
-    private void setButtonEnabledState(){
-        if(!isSomethingSelected(isIdSelectedMap)){
-            buttonView.setEnabled(false);
-        }
-        else{
+
+    private void updateButtonEnabledState(){
+        if(isSomethingSelected(isIdSelectedMap)){
             buttonView.setEnabled(true);
+            return;
         }
-
-
+        buttonView.setEnabled(false);
     }
 
-    private static boolean isSomethingSelected(Map<Integer, Boolean> itemsMap){
 
+    private static boolean isSomethingSelected(Map<Integer, Boolean> itemsMap){
         for(int key: itemsMap.keySet()){
             if(itemsMap.get(key)){
                 return true;
@@ -151,6 +150,7 @@ public class QuestionPackList {
         }
         return false;
     }
+
 
     public Set<Integer> getSelectedIds(){
         Set <Integer> selectedIds = new HashSet<>();
@@ -172,11 +172,4 @@ public class QuestionPackList {
         }
         return selectedNames;
     }
-
-
-    private void log(String msg){
-        Log.i("QuestionPackList", msg);
-    }
-
-
 }

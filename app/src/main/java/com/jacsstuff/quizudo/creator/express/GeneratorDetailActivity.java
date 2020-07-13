@@ -66,7 +66,6 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
 
     @Override
     protected  void onDestroy(){
-        dbManager.closeConnection();
         super.onDestroy();
     }
 
@@ -95,8 +94,8 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
 
     @Override
     public void onClick(String item){
-        Intent intent = new Intent(context,  AnswerListActivity.class);
-        intent.putExtra(AnswerPoolActivity.props.SELECTED_ACTIVITY_POOL.toString(), item);
+        Intent intent = new Intent(context,  GeneratorQuestionSetActivity.class);
+       //TODO: add intent extras intent.putExtra(AnswerPoolActivity.props.GeneratorQuestionSetActivity.toString(), item);
         startActivity(intent);
     }
 
@@ -148,6 +147,7 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     public void onFragmentInteraction(boolean confirmed) {
         if (confirmed) {
             dbManager.removeQuestionSet(selectedName);
+            refreshListFromDb();
         }
     }
 }

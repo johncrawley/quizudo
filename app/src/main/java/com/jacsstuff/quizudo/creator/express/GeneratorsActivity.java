@@ -137,11 +137,11 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
     }
 
 
-
     @Override
     public void onFragmentInteraction(boolean confirmed) {
         if (confirmed) {
             dbManager.removeQuestionGenerator(selectedName);
+            refreshListFromDb();
         }
     }
 }

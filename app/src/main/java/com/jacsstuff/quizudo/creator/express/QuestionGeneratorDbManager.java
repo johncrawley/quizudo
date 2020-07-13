@@ -146,45 +146,6 @@ public class QuestionGeneratorDbManager {
 
 
 
-
-    public List<String> getAnswerItems(String answerPoolName){
-
-        List<String> answerItems = new ArrayList<>();
-
-        Cursor cursor;
-
-        String query =
-                SELECT + DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER
-                        + FROM + DbContract.AnswerPoolItemsEntry.TABLE_NAME
-                        + INNER_JOIN + DbContract.AnswerPoolNamesEntry.TABLE_NAME
-                        + ON + DbContract.AnswerPoolItemsEntry.TABLE_NAME + "." + DbContract.AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID
-                        + EQUALS + DbContract.AnswerPoolNamesEntry.TABLE_NAME + "." + DbContract.AnswerPoolNamesEntry._ID
-                        + WHERE + DbContract.AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME
-                        + EQUALS + "'" + answerPoolName + "';";
-
-        try {
-            cursor = db.rawQuery(query, null);
-            while(cursor.moveToNext()){
-                answerItems.add(getString(cursor, DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER));
-            }
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-            return answerItems;
-        }
-        cursor.close();
-        return  answerItems;
-    }
-
-/*
-    private String getAnswersItemsByIdQuery(long id){
-        return SELECT + DISTINCT + AnswerPoolItemsEntry.COLUMN_NAME_ANSWER
-                +  FROM + AnswerPoolItemsEntry.TABLE_NAME
-                + WHERE + AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID
-                + EQUALS + "'" + id + "';";
-    }
-*/
-
     private String getString(Cursor cursor, String name){
         return cursor.getString(cursor.getColumnIndexOrThrow(name));
     }

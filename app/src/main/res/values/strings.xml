@@ -164,6 +164,8 @@
     <string name="add_question_set_textfield_label">Create a new Question Set</string>
 
     <string name="question_generator_detail_activity_title">Generator:</string>
+    <string name="add_question_template_textfield_label">Question Template, use ?? as a placeholder</string>
+    <string name="question_generator_set_answer_list_title">Question Subjects and Corresponding Answers, use ,, to separate</string>
 
 
     <!-- Preferences -->
