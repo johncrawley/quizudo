@@ -20,6 +20,7 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generator_question_set);
+        context = GeneratorQuestionSetActivity.this;
         getIntentData();
         setupList();
     }

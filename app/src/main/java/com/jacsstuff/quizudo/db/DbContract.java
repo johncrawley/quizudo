@@ -58,10 +58,20 @@ public final class DbContract {
         public static final String TABLE_NAME = "question_generators";
         public static final String COLUMN_NAME_GENERATOR_NAME = "name";
     }
+
     public static class QuestionGeneratorSetEntry implements BaseColumns {
         public static final String TABLE_NAME = "question_generator_sets";
         public static final String COLUMN_NAME_GENERATOR_NAME = "generator_name";
         public static final String COLUMN_NAME_SET_NAME = "name";
+        public static final String COLUMN_NAME_QUESTION_TEMPLATE= "question_template";
+    }
+
+    public static class QuestionGeneratorChunk implements BaseColumns {
+        public static final String TABLE_NAME = "question_generator_chunks";
+        public static final String COLUMN_NAME_QUESTION_SET_ID = "question_set_id";
+        public static final String COLUMN_NAME_SUBJECT = "subject";
+        public static final String COLUMN_NAME_ANSWER= "answer";
+        public static final String COLUMN_NAME_TRIVIA= "trivia";
     }
 
 }

@@ -82,6 +82,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + TEXT + " unique " + CLOSING_BRACKET;
 
 
+    private static final String SQL_CREATE_QUESTION_GENERATOR_CHUNKS_TABLE =
+            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorChunk.TABLE_NAME + OPENING_BRACKET +
+                    DbContract.QuestionGeneratorChunk._ID + INTEGER + PRIMARY_KEY + COMMA +
+                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_QUESTION_SET_ID + INTEGER +
+                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_SUBJECT + TEXT + COMMA +
+                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_ANSWER + TEXT + COMMA +
+                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_TRIVIA + TEXT + COMMA + CLOSING_BRACKET;
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DbContract.QuestionsEntry.TABLE_NAME;
 
@@ -105,6 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ANSWER_POOL_ITEMS_TABLE);
         db.execSQL(SQL_CREATE_QUESTION_GENERATOR_TABLE);
         db.execSQL(SQL_CREATE_QUESTION_GENERATOR_SETS_TABLE);
+        db.execSQL(SQL_CREATE_QUESTION_GENERATOR_CHUNKS_TABLE);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //db.execSQL(SQL_DELETE_ENTRIES);
