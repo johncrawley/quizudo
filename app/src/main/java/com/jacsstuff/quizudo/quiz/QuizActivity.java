@@ -22,7 +22,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView questionCounterText;
     private Button nextQuestionButton;
     private Context context;
-    private QuizController quizController;
+    private QuizModel quizController;
 
     protected void onResume(){
         super.onResume();
@@ -36,7 +36,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         context = QuizActivity.this;
         ToolbarBuilder.setupToolbar(this);
         setupViews();
-        quizController = new QuizController(this, context);
+        quizController = new QuizModel(this, context);
         setupListClickListener();
     }
 
@@ -56,7 +56,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         answerList =            findViewById(R.id.listView);
         nextQuestionButton =    findViewById(R.id.next_question_button);
         questionCounterText =   findViewById(R.id.question_counter);
-
         nextQuestionButton.setOnClickListener(this);
     }
 
@@ -67,8 +66,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void setToolbarTitle(String title){
 
+    public void setToolbarTitle(String title){
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setTitle(title);
@@ -77,7 +76,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void displayFinishButton() {
-
         this.nextQuestionButton.setText(getResources().getString(R.string.next_question_button_finish));
     }
 

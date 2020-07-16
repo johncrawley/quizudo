@@ -1,7 +1,5 @@
 package com.jacsstuff.quizudo.results;
 
-import com.jacsstuff.quizudo.model.QuestionResult;
-
 import java.util.ArrayList;
 import java.util.List;
 

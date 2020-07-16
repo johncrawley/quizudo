@@ -33,6 +33,8 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     private ListAdapterHelper listAdapterHelper;
     private String selectedName;
     private String currentQuestionGenerator;
+    public final String INTENT_KEY_QUESTION_SET_NAME = "questionSetName";
+    public final String INTENT_KEY_QUESTION_SET_ID = "questionSetId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,9 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     @Override
     public void onClick(String item){
         Intent intent = new Intent(context,  GeneratorQuestionSetActivity.class);
+        intent.putExtra(INTENT_KEY_QUESTION_SET_NAME, item);
+        intent.putExtra(INTENT_KEY_QUESTION_SET_NAME, item);
+
        //TODO: add intent extras intent.putExtra(AnswerPoolActivity.props.GeneratorQuestionSetActivity.toString(), item);
         startActivity(intent);
     }

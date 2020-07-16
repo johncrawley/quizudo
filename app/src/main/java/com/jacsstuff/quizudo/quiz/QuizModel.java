@@ -3,7 +3,6 @@ package com.jacsstuff.quizudo.quiz;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.results.QuizResultsActivity;
 import com.jacsstuff.quizudo.utils.Consts;
@@ -21,10 +20,10 @@ import static com.jacsstuff.quizudo.utils.Consts.TRIVIA_INTENT_EXTRA;
 /**
  * Created by John on 27/06/2016.
  *
- * Handles the bulk of the control logic for the Quiz Activity
+ * Handles the bulk of the logic for the Quiz Activity
  *
  */
-public class QuizController {
+public class QuizModel {
 
     private QuizView view;
     private Context context;
@@ -33,10 +32,10 @@ public class QuizController {
     private List<Integer> selectedItemPositions;
     private boolean isAnswerSubmitted = false;
     private DBWriter dbWriter;
-    private AnswerPoolManager answerPoolManager;
+    private AnswerChoiceBuilder answerChoiceBuilder;
 
 
-    QuizController(QuizView view, Context context){
+    QuizModel(QuizView view, Context context){
 
         QuizSingleton quizSingleton = QuizSingleton.getInstance();
         quiz = quizSingleton.getQuiz();
@@ -69,10 +68,10 @@ public class QuizController {
 
     private void configureAnswerPoolManager(){
         final int MAX_ANSWER_CHOICES = 6;
-        if(answerPoolManager == null){
-            answerPoolManager = new AnswerPoolManagerImpl(context, MAX_ANSWER_CHOICES);
+        if(answerChoiceBuilder == null){
+            answerChoiceBuilder = new AnswerChoiceBuilder(context, MAX_ANSWER_CHOICES);
         }
-        quiz.setAnswerPoolManager(answerPoolManager);
+        quiz.setAnswerChoiceBuilder(answerChoiceBuilder);
     }
 
     private void endActivityIfNoQuestions(){

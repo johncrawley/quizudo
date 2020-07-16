@@ -3,7 +3,7 @@ package com.jacsstuff.quizudo.quiz;
 import android.util.Log;
 import com.jacsstuff.quizudo.db.DBWriter;
 import com.jacsstuff.quizudo.model.Question;
-import com.jacsstuff.quizudo.model.QuestionResult;
+import com.jacsstuff.quizudo.results.QuestionResult;
 import com.jacsstuff.quizudo.results.QuestionResultsSingleton;
 import com.jacsstuff.quizudo.model.QuestionsSingleton;
 
@@ -29,14 +29,12 @@ public class Quiz {
     private boolean hasCurrentQuestionBeenAnswered;
     private List<Integer> questionIds;
     private DBWriter dbWriter;
-    private AnswerPoolManager answerPoolManager;
-
+    private AnswerChoiceBuilder answerChoiceBuilder;
     private boolean isCurrentAnswerCorrect;
 
     Quiz() {
         singletonResultsStore = QuestionResultsSingleton.getInstance();
     }
-
 
 
     // still need to set max Number of questions
@@ -59,9 +57,8 @@ public class Quiz {
         this.dbWriter = dbWriter;
     }
 
-    public void setAnswerPoolManager(AnswerPoolManager answerPoolManager){
-
-        this.answerPoolManager = answerPoolManager;
+    public void setAnswerChoiceBuilder(AnswerChoiceBuilder answerChoiceBuilder){
+        this.answerChoiceBuilder = answerChoiceBuilder;
     }
 
     public void retry() {
@@ -84,15 +81,12 @@ public class Quiz {
         if(questionIds != null){
             Collections.shuffle(questionIds, ThreadLocalRandom.current());
         }
-
     }
 
 
     private void assignCurrentQuestion(){
         if(questionIds !=null && !questionIds.isEmpty()){
             currentQuestion = dbWriter.getQuestion(questionIds.get(questionIndex));
-
-
         }
         else {
             Log.i("Quiz - createQuiz()", "questions list is null or empty");
@@ -136,20 +130,18 @@ public class Quiz {
         questionResult.setQuestionNumber(questionIndex);
         singletonResultsStore.addResult(questionResult);
         hasCurrentQuestionBeenAnswered = true;
-        //Log.i("Quiz", "#" + questionIndex + ".  answer given: " + asString(chosenAnswers) + "  actual answers: "+ asString(questionResult.getCorrectAnswers()));
     }
 
 
     public boolean isFinalQuestion(){
-        //Log.i("Quiz isFinalQuestion()", "maxNumberOfQuestions: "+ maxNumberOfQuestions + " questionIndex: " +  questionIndex);
         return questionIndex == (maxNumberOfQuestions - 1);
     }
 
 
     // We assume that all questions from the database will be properly formed,
     // mostly because we're loading the questions one by one, and we have to commit
-    // to a total number of questions selected, i.e. if we let a use select 10 questions
-    // from a pool of 10, and 5 of them aren't properly formed, the user will end of wondering
+    // to a total number of questions selected, i.e. if we let a user select 10 questions
+    // from a pool of 10, and 5 of them aren't properly formed, the user will end up wondering
     // where the other 5 questions went.
     public void nextQuestion(){
         currentQuestion = dbWriter.getQuestion(questionIds.get(++questionIndex));
@@ -172,25 +164,19 @@ public class Quiz {
         return "";
     }
 
-    // for display purposes, the first question will be of index 0 in the list,
-    // but we want to display it as "Question 1", for example, so adding 1 to the return value.
+    // Adding 1 to the return value so question at index 0 will be displayed as "Question 1",
+    // question at index 1 will be displayed as "Question 2", and so on
     public int getCurrentQuestionNumber(){
         return questionIndex + 1;
     }
 
-    private void log(String msg){
-        Log.i("Quiz", msg);
-    }
 
     public String[] getCurrentAnswerChoices(){
         if(!questionIds.isEmpty()) {
-            log("question answer pool : " + currentQuestion.getAnswerPoolName());
-            currentAnswerChoices = answerPoolManager.generateShuffledAnswerList(currentQuestion.getAnswerPoolName(),
+            currentAnswerChoices = answerChoiceBuilder.generateShuffledAnswerList(currentQuestion.getAnswerPoolName(),
                                                                                 currentQuestion.getAnswerChoices(),
                                                                                 currentQuestion.getCorrectAnswer());
-
-
-            return currentAnswerChoices.toArray(new String[currentAnswerChoices.size()]);
+            return currentAnswerChoices.toArray(new String[3]);
         }
         return new String[0];
     }
@@ -215,6 +201,5 @@ public class Quiz {
     public boolean isCurrentAnswerCorrect(){
         return isCurrentAnswerCorrect;
     }
-
 
 }

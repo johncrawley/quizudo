@@ -22,15 +22,15 @@ public class LoadingDialog {
 
     public void show(){
         mDialog.show();
-        timerDelayRemoveDialog(Consts.LOADING_DIALOG_TIMEOUT, mDialog);
+        timerDelayRemoveDialog(mDialog);
     }
 
-    private void timerDelayRemoveDialog(long time, final ProgressDialog d){
+    private void timerDelayRemoveDialog(final ProgressDialog d){
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 d.dismiss();
             }
-        }, time);
+        }, Consts.LOADING_DIALOG_TIMEOUT);
     }
 
    public void dismiss(){

@@ -1,5 +1,6 @@
 package com.jacsstuff.quizudo.results;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,50 +10,43 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacsstuff.quizudo.main.MainActivity;
+import com.jacsstuff.quizudo.quiz.QuizActivity;
+import com.jacsstuff.quizudo.quiz.QuizSingleton;
 import com.jacsstuff.quizudo.utils.ToolbarBuilder;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.utils.Utils;
+
+import java.util.List;
 
 public class QuizResultsActivity extends AppCompatActivity {
 
     private TextView quizResultsMessage;
     private TextView quizResultsStatistic;
     private ListView quizResultsList;
-    private QuizResultsController quizResultsController;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_results);
+        context = QuizResultsActivity.this;
         ToolbarBuilder.setupToolbarWithTitle(QuizResultsActivity.this, getResources().getString(R.string.quiz_completed_heading));
         quizResultsMessage      = findViewById(R.id.quiz_results_message);
         quizResultsStatistic    = findViewById(R.id.quiz_results_statistic);
         quizResultsList         = findViewById(R.id.quiz_results_list);
-
-        quizResultsController = new QuizResultsController(QuizResultsActivity.this, this);
-        quizResultsController.processResults();
+        processResults();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.quiz_results_menu, menu);
         return true;
-    }
-
-    public ListView getResultsListView(){
-        return this.quizResultsList;
-    }
-    public TextView getResultsTextView(){
-        return this.quizResultsMessage;
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if(id == R.id.home_menu_item) {
@@ -60,16 +54,45 @@ public class QuizResultsActivity extends AppCompatActivity {
             startActivity(intent);
             Utils.bringBackActivity(QuizResultsActivity.this, MainActivity.class);
         }
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.retry_menu_item) {
-            quizResultsController.retryQuiz();
+        else if (id == R.id.retry_menu_item) {
+            retryQuiz();
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    public void setStatistic(int correctlyAnswered, int totalQuestions){
-        quizResultsStatistic.setText(getResources().getString(R.string.quiz_results_statistic, correctlyAnswered, totalQuestions));
+    public void processResults(){
+        QuestionResultsSingleton resultsSingleton = QuestionResultsSingleton.getInstance();
+        List<QuestionResult> results = resultsSingleton.getResults();
+        int correctAnswers = resultsSingleton.getCorrectAnswerCount();
+        int numberOfQuestions = results.size();
+
+        if(results.isEmpty()){
+            finish();
+            return;
+        }
+        setResultStatisticText(correctAnswers, numberOfQuestions);
+        setResultsMessge(correctAnswers, numberOfQuestions);
+        quizResultsList.setAdapter(new ResultsListAdapter(context, R.layout.result_row, results));
+    }
+
+
+    public void setResultStatisticText(int correctAnswers, int numberOfQuestions){
+        quizResultsStatistic.setText(getResources().getString(R.string.quiz_results_statistic, correctAnswers, numberOfQuestions));
+    }
+
+
+    public void setResultsMessge(int correctAnswers, int numberOfQuestions){
+        String resultsMessage = new ResultsMessageHelper(context).getResultMessage(correctAnswers, numberOfQuestions);
+        quizResultsMessage.setText(resultsMessage);
+    }
+
+
+    public void retryQuiz(){
+        QuizSingleton quizSingleton = QuizSingleton.getInstance();
+        quizSingleton.retryQuiz();
+        Intent intent = new Intent(context, QuizActivity.class);
+        startActivity(intent);
     }
 
 }

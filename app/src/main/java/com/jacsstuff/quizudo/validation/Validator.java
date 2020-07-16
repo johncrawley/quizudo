@@ -1,6 +1,5 @@
 package com.jacsstuff.quizudo.validation;
 
-import android.util.Log;
 
 import com.jacsstuff.quizudo.model.QuestionPackDbEntity;
 import com.jacsstuff.quizudo.model.Question;
@@ -14,43 +13,40 @@ public class Validator {
 
 
     public void validate(QuestionPackDbEntity qp){
-
-        if(qp.getName() == null || qp.getName().isEmpty()){
+        if(isNullOrEmpty(qp.getName())){
             return;
         }
         List <Question> questions = qp.getQuestions();
-
-        Log.i("Validator", "QP Entity has quesitons: " + qp.hasQuestions());
         qp.setQuestions(getValidQuestions(questions));
-        Log.i("Validator", "QP Entity has quesitons after validate: " + qp.hasQuestions());
     }
 
+
     private List<Question> getValidQuestions(List<Question> questions){
-
-
         Map<String, Question> questionExistsMap = new HashMap<>();
 
         for(Question question : questions){
-            if(!isQuestionValid(question)){
-                continue;
-            }
-            String questionText = question.getQuestionText();
-            if(questionExistsMap.containsKey(questionText)){
-                continue;
-            }
-            questionExistsMap.put(questionText, question);
-
+           addValidQuestionTo(questionExistsMap, question);
         }
         List <Question> outputList = new ArrayList<>(questionExistsMap.values());
 
         for(Question question : outputList){
             verifyUniqueAnswerChoices(question);
         }
-
-
         return outputList;
-
     }
+
+
+    private void addValidQuestionTo(Map<String, Question> questionExistsMap, Question question){
+        if(!isQuestionValid(question)){
+            return;
+        }
+        String questionText = question.getQuestionText();
+        if(questionExistsMap.containsKey(questionText)){
+            return;
+        }
+        questionExistsMap.put(questionText, question);
+    }
+
 
     private void verifyUniqueAnswerChoices(Question question){
 
@@ -58,48 +54,53 @@ public class Validator {
         // the boolean being whether or not the key is the correct answer text
         // because we want to remove any incorrect answers that are identical to the correct answer.
         Map <String, Boolean> answerMap = new HashMap<>();
-        List<String> verifiedAnswerList = new ArrayList<>();
         answerMap.put(question.getCorrectAnswer(), true);
+        addAnswers(answerMap, answerChoices);
+        List<String> verifiedAnswerList = getVerifiedAnswerListFrom(answerMap);
+        question.setAnswerChoices(verifiedAnswerList);
+    }
 
+    private void addAnswers(Map<String, Boolean> answerMap, List<String> answerChoices){
         for(String answerChoice : answerChoices){
-
             if(answerMap.containsKey(answerChoice)){
                 continue;
             }
             answerMap.put(answerChoice, false);
         }
+    }
+
+
+    private List<String> getVerifiedAnswerListFrom(Map<String, Boolean> answerMap){
+        List<String> verifiedAnswerList = new ArrayList<>();
         for(String answer : answerMap.keySet()){
             if(answerMap.get(answer) ){
                 continue;
             }
             verifiedAnswerList.add(answer);
         }
-        question.setAnswerChoices(verifiedAnswerList);
+        return verifiedAnswerList;
     }
 
 
     private boolean isQuestionValid(Question q){
-
         return hasValidQuestionText(q) && hasValidCorrectAnswer(q) && hasValidAnswerChoices(q);
-
     }
 
-    // looking for at least 1 good answer choice, unless using an answer pool
+
     private boolean hasValidAnswerChoices(Question q){
+        return hasValidAnswerPool(q) || hasNonEmptyAnswerChoices(q.getAnswerChoices());
+    }
 
-        if(hasValidAnswerPool(q)){
-            return true;
-        }
-        for(String answerChoice : q.getAnswerChoices()){
 
-            if(answerChoice.trim().isEmpty()){
-                continue;
+    private boolean hasNonEmptyAnswerChoices(List<String> answerChoices){
+        for(String answerChoice : answerChoices){
+            if(!answerChoice.trim().isEmpty()){
+                return true;
             }
-            return true;
         }
-        Log.i("Validator", "no valid answer choices for question : " + q.getQuestionText());
         return false;
     }
+
 
     private boolean hasValidAnswerPool(Question q){
         return !q.getAnswerPoolName().trim().isEmpty();
@@ -114,7 +115,6 @@ public class Validator {
     }
 
     private boolean isNullOrEmpty(String str){
-
         return str == null || str.isEmpty();
     }
 

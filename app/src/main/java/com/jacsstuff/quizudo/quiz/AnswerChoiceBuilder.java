@@ -1,7 +1,6 @@
 package com.jacsstuff.quizudo.quiz;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 
@@ -14,63 +13,39 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AnswerPoolManagerImpl implements AnswerPoolManager {
+public class AnswerChoiceBuilder{
 
     private Map<String, List<String>> retrievedAnswerPools;
     private AnswerPoolDBManager db;
     private final int MAX_ANSWER_CHOICES;
 
-    AnswerPoolManagerImpl(Context context, int maxAnswerChoices){
-
+    AnswerChoiceBuilder(Context context, int maxAnswerChoices){
         db = new AnswerPoolDBManager(context);
         retrievedAnswerPools = new HashMap<>();
         this.MAX_ANSWER_CHOICES = maxAnswerChoices;
-
     }
 
-    @Override
+
     public List<String> generateShuffledAnswerList(String answerPoolName, List<String> existingAnswers, String correctAnswer) {
-
         Set<String> answerChoices = new HashSet<>(existingAnswers);
-
         answerChoices.add(correctAnswer);
-        if (answerChoices.size() >= MAX_ANSWER_CHOICES) {
-            removeEmpties(answerChoices);
-            return getShuffledList(answerChoices);
-        }
         addAnswerPoolItemsToSet(answerChoices, getAnswerPool(answerPoolName));
-        answerChoices = removeEmpties(answerChoices);
+        answerChoices = removeAllEmptyItemsFrom(answerChoices);
         return getShuffledList(answerChoices);
     }
+
 
     private void addAnswerPoolItemsToSet(Set<String> set, List<String> answerPool){
 
         if(answerPool == null || answerPool.isEmpty()){
             return;
         }
-
         while (set.size() < MAX_ANSWER_CHOICES && answerPool.size() > 0) {
             int index = ThreadLocalRandom.current().nextInt( answerPool.size());
             set.add(answerPool.remove(index));
-
         }
     }
 
-    private void log(String msg){
-
-        Log.i("AnswerPoolMngr", msg);
-    }
-
-    private void logList(List<String> answerPool){
-
-        StringBuilder str = new StringBuilder("retrievedAnswerPool contents:");
-        for(String answer: answerPool){
-            str.append(" ");
-            str.append(answer);
-        }
-        log( str.toString());
-
-    }
 
     private List<String> getAnswerPool(String answerPoolName){
         List<String> answerPool;
@@ -86,7 +61,8 @@ public class AnswerPoolManagerImpl implements AnswerPoolManager {
         return new ArrayList<>(answerPool); // because we'll be removing items from the return list, so need to make a new one.
     }
 
-    private Set<String> removeEmpties(Set<String> set){
+
+    private Set<String> removeAllEmptyItemsFrom(Set<String> set){
         Set<String> outputSet = new HashSet<>();
         for(String item: set){
             if(!item.trim().isEmpty()){

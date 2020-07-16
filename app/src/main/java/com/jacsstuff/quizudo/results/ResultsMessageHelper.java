@@ -53,17 +53,16 @@ public class ResultsMessageHelper {
             return "";
         }
 
-        int highestThresholdKey = 1000;
+        int currentHighest = 1000;
         // we're looking for the lowest threshold that is higher than the provided scorePercentage
-        System.out.println("ResultsMessageHelper.getResultMessage(), scorePercentage: " + scorePercentage);
         for(int key : resultMessageMap.keySet()){
             if(scorePercentage < key){
-                if(key < highestThresholdKey){
-                    highestThresholdKey = key;
+                if(key < currentHighest){
+                    currentHighest = key;
                 }
             }
         }
-        return resultMessageMap.get(highestThresholdKey);
+        return resultMessageMap.get(currentHighest);
 
     }
 }
