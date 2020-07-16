@@ -16,6 +16,7 @@ import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.answerPool.AnswerListActivity;
 import com.jacsstuff.quizudo.answerPool.AnswerPoolActivity;
 import com.jacsstuff.quizudo.dialog.ConfirmDialog;
+import com.jacsstuff.quizudo.dialog.DialogLoader;
 import com.jacsstuff.quizudo.list.ListActionExecutor;
 import com.jacsstuff.quizudo.list.ListAdapterHelper;
 import com.jacsstuff.quizudo.main.MainActivity;
@@ -37,17 +38,20 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generator_detail);
-
-        Intent intent = getIntent();
-        currentQuestionGenerator = intent.getStringExtra(GeneratorsActivity.NAME_TAG);
+        currentQuestionGenerator = getIntent().getStringExtra(GeneratorsActivity.NAME_TAG);
         context = GeneratorDetailActivity.this;
         dbManager = new QuestionGeneratorDbManager(this);
-        listAdapterHelper = new ListAdapterHelper(context, this);
-        EditText editText = findViewById(R.id.nameEditText);
-        listAdapterHelper.setupKeyInput( editText);
+        setupViews();
         setupToolbar();
     }
 
+
+    private void setupViews(){
+        ListView list = findViewById(R.id.list1);
+        listAdapterHelper = new ListAdapterHelper(context, list , this);
+        EditText editText = findViewById(R.id.nameEditText);
+        listAdapterHelper.setupKeyInput( editText);
+    }
 
     private void setupToolbar(){
         ToolbarBuilder.setupToolbarWithTitle(this, getActivityTitle());
@@ -103,19 +107,10 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     @Override
     public void onLongClick(String item){
         String message = context.getResources().getString(R.string.delete_generator_dialog_text, item);
-        showDialogWith(message);
+        DialogLoader.loadDialogWith(getFragmentManager(), message);
         selectedName = item;
     }
 
-
-    private void showDialogWith(String msg){
-
-        DialogFragment dialogFrag = new ConfirmDialog();
-        Bundle args = new Bundle();
-        args.putString(ConfirmDialog.TEXT_KEY,msg);
-        dialogFrag.setArguments(args);
-        dialogFrag.show(getFragmentManager(), "dialog");
-    }
 
     @Override
     public void onTextEntered(String text){
@@ -137,9 +132,8 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
 
     public void refreshListFromDb(){
         View noResultsFoundView = findViewById(R.id.noResultsFoundText);
-        ListView list = findViewById(R.id.list1);
         List<String> questionGeneratorNames = dbManager.retrieveQuestionSetNames(currentQuestionGenerator);
-        listAdapterHelper.setupList(list, questionGeneratorNames, noResultsFoundView);
+        listAdapterHelper.setupList(questionGeneratorNames, android.R.layout.simple_list_item_1, noResultsFoundView);
     }
 
 

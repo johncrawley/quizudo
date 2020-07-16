@@ -17,22 +17,31 @@ import java.util.List;
 
 public class ListAdapterHelper {
 
-
     private Context context;
     private ListActionExecutor actionExecutor;
     private ArrayAdapter<String> arrayAdapter;
+    private ListView list;
+    private boolean isKeyboardDismissedOnDone = true;
 
-    public ListAdapterHelper(Context context, ListActionExecutor actionExecutor){
+    public ListAdapterHelper(Context context, ListView list, ListActionExecutor actionExecutor){
         this.context = context;
+        this.list = list;
         this.actionExecutor = actionExecutor;
     }
 
+    public void setupList(final List<String> items, int layoutRes){
+        setupList(items, layoutRes, null);
+    }
 
-    public void setupList(ListView list, final List<String> items, View noResultsFoundView){
+    public void dismissKeyboardOnDone(boolean isDismissed){
+        this.isKeyboardDismissedOnDone = isDismissed;
+    }
+
+    public void setupList(final List<String> items, int layoutRes, View noResultsFoundView){
         if(list == null){
             return;
         }
-        arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, items);
+        arrayAdapter = new ArrayAdapter<>(context, layoutRes, items);
 
         AdapterView.OnItemLongClickListener longClickListener = new AdapterView.OnItemLongClickListener() {
 
@@ -52,9 +61,17 @@ public class ListAdapterHelper {
         list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         list.setAdapter(arrayAdapter);
         list.setSelector(R.color.selectedListItemHidden);
-        list.setEmptyView(noResultsFoundView);
+        setupEmptyView(noResultsFoundView);
         list.setOnItemLongClickListener(longClickListener);
         list.setOnItemClickListener(clickListener);
+    }
+
+
+    private void setupEmptyView(View noResultsFoundView){
+        if(noResultsFoundView == null){
+            return;
+        }
+        list.setEmptyView(noResultsFoundView);
     }
 
 
@@ -86,7 +103,9 @@ public class ListAdapterHelper {
                     if(imm == null){
                         return false;
                     }
-                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                    if(isKeyboardDismissedOnDone) {
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                    }
                     actionExecutor.onTextEntered(v.getText().toString());
                     editText.getText().clear();
                     return true;

@@ -9,23 +9,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.jacsstuff.quizudo.dialog.ConfirmDialog;
+import com.jacsstuff.quizudo.dialog.DialogLoader;
 import com.jacsstuff.quizudo.list.ListActionExecutor;
 import com.jacsstuff.quizudo.list.ListAdapterHelper;
 import com.jacsstuff.quizudo.main.MainActivity;
 import com.jacsstuff.quizudo.R;
-import com.jacsstuff.quizudo.options.DialogActivity;
 import com.jacsstuff.quizudo.utils.ToolbarBuilder;
 import com.jacsstuff.quizudo.utils.Utils;
 
 import java.util.List;
 
-public class AnswerPoolActivity extends AppCompatActivity implements ListActionExecutor {
+public class AnswerPoolActivity extends AppCompatActivity implements ListActionExecutor, ConfirmDialog.OnFragmentInteractionListener {
 
     private Context context;
     public enum props { SELECTED_ACTIVITY_POOL}
     private AnswerPoolDBManager dbManager;
     private ListAdapterHelper listAdapterHelper;
+    private String selectedAnswerPoolName;
 
 
     @Override
@@ -34,9 +37,15 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
         setContentView(R.layout.activity_answer_pool);
         context = AnswerPoolActivity.this;
         dbManager = new AnswerPoolDBManager(this);
-        listAdapterHelper = new ListAdapterHelper(context, this);
+        setupList();
         ToolbarBuilder.setupToolbarWithTitle(this, getResources().getString(R.string.answer_pools_activity_title));
-        EditText addAnswerPoolEditText = findViewById(R.id.authorPoolEditText);
+    }
+
+
+    private void setupList(){
+        ListView list = findViewById(R.id.list1);
+        listAdapterHelper = new ListAdapterHelper(context, list, this);
+        EditText addAnswerPoolEditText = findViewById(R.id.answerPoolEditText);
         listAdapterHelper.setupKeyInput( addAnswerPoolEditText);
     }
 
@@ -57,7 +66,6 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home_enabled_menu, menu);
         return true;
     }
@@ -66,7 +74,6 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if(id == R.id.home_menu_item) {
             Utils.bringBackActivity(this, MainActivity.class);
         }
@@ -84,7 +91,8 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
     @Override
     public void onLongClick(String item){
         String message = context.getResources().getString(R.string.remove_answer_pool_dialog_text, item);
-        showDialogWithText(message, item);
+        selectedAnswerPoolName = item;
+        DialogLoader.loadDialogWith(getFragmentManager(), message);
     }
 
 
@@ -106,18 +114,18 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
 
     public void refreshListFromDb(){
         View noResultsFoundView = findViewById(R.id.noResultsFoundText);
-        ListView list = findViewById(R.id.list1);
         List<String> answerPoolNames = dbManager.getAnswerPoolNames();
-        listAdapterHelper.setupList(list, answerPoolNames, noResultsFoundView);
+        listAdapterHelper.setupList(answerPoolNames, android.R.layout.simple_list_item_1, noResultsFoundView);
     }
 
 
-    public void showDialogWithText(String message, String answerPoolName){
-        Intent intent = new Intent(context, DeleteAnswerPoolDialogActivity.class);
-        intent.putExtra(DeleteAnswerPoolDialogActivity.ANSWER.POOL_NAME.toString(), answerPoolName);
-        intent.putExtra(DialogActivity.Dialog.MESSAGE.toString(), message);
-        context.startActivity(intent);
+    @Override
+    public void onFragmentInteraction(boolean confirmed) {
+        if (confirmed) {
+             if( dbManager.removeAnswerPool(selectedAnswerPoolName)){
+                Toast.makeText(context, R.string.answer_pool_deleted_pool_toast, Toast.LENGTH_SHORT).show();
+            }
+            refreshListFromDb();
+        }
     }
-
-
 }
