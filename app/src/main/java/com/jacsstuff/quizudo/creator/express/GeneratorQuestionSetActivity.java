@@ -8,11 +8,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacsstuff.quizudo.R;
+import com.jacsstuff.quizudo.dialog.ConfirmDialog;
 import com.jacsstuff.quizudo.dialog.DialogLoader;
 import com.jacsstuff.quizudo.list.ListActionExecutor;
 import com.jacsstuff.quizudo.list.ListAdapterHelper;
+import com.jacsstuff.quizudo.list.SimpleListItem;
 
-public class GeneratorQuestionSetActivity extends AppCompatActivity implements ListActionExecutor {
+public class GeneratorQuestionSetActivity extends AppCompatActivity   implements ListActionExecutor, ConfirmDialog.OnFragmentInteractionListener {
 
     private String questionSetName;
     private int questionSetId;
@@ -20,6 +22,7 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity implements L
     private Context context;
     private ListAdapterHelper listAdapterHelper;
     private QuestionGeneratorDbManager dbManager;
+    private int selectedChunkId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +40,8 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity implements L
         textView.setText(getString(R.string.question_generator_set_answer_list_title));
         list.addHeaderView(textView);
         ListAdapterHelper listAdapterHelper = new ListAdapterHelper(context, list, this);
-
-
     }
+
 
     private void getIntentData(){
         Intent intent = getIntent();
@@ -50,13 +52,13 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity implements L
 
 
     @Override
-    public void onClick(String item){
+    public void onClick(SimpleListItem item){
 
     }
 
 
     @Override
-    public void onLongClick(String item){
+    public void onLongClick(SimpleListItem item){
 
     }
 
@@ -67,8 +69,16 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity implements L
             return;
         }
         String name = text.trim();
-        dbManager.addQuestionGenerator(name);
-        listAdapterHelper.addToList(name);
+        long id = dbManager.addQuestionGenerator(name);
+        listAdapterHelper.addToList(new SimpleListItem(name, id));
+    }
+
+
+    @Override
+    public void onFragmentInteraction(boolean confirmed) {
+        if (confirmed) {
+           // refreshListFromDb();
+        }
     }
 
 }

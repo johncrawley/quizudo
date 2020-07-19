@@ -1,7 +1,6 @@
 package com.jacsstuff.quizudo.creator.express;
 
 import android.app.ActionBar;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +16,7 @@ import com.jacsstuff.quizudo.dialog.ConfirmDialog;
 import com.jacsstuff.quizudo.dialog.DialogLoader;
 import com.jacsstuff.quizudo.list.ListActionExecutor;
 import com.jacsstuff.quizudo.list.ListAdapterHelper;
+import com.jacsstuff.quizudo.list.SimpleListItem;
 import com.jacsstuff.quizudo.main.MainActivity;
 import com.jacsstuff.quizudo.utils.ToolbarBuilder;
 import com.jacsstuff.quizudo.utils.Utils;
@@ -29,8 +29,9 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
     private Context context;
     private QuestionGeneratorDbManager dbManager;
     private ListAdapterHelper listAdapterHelper;
-    private String selectedName;
+    private SimpleListItem selectedItem;
     final static String NAME_TAG = "1";
+    final static String ID_TAG = "2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,18 +87,19 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
 
 
     @Override
-    public void onClick(String item){
+    public void onClick(SimpleListItem item){
         Intent intent = new Intent(context,  GeneratorDetailActivity.class);
-        intent.putExtra(NAME_TAG, item);
+        intent.putExtra(NAME_TAG, item.getName());
+        intent.putExtra(ID_TAG, item.getId());
         startActivity(intent);
     }
 
 
     @Override
-    public void onLongClick(String item){
-        String message = context.getResources().getString(R.string.delete_generator_dialog_text, item);
+    public void onLongClick(SimpleListItem item){
+        selectedItem = item;
+        String message = context.getResources().getString(R.string.delete_generator_dialog_text, selectedItem.getName());
         DialogLoader.loadDialogWith(getFragmentManager(), message);
-        selectedName = item;
     }
 
 
@@ -107,8 +109,8 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
             return;
         }
         String name = text.trim();
-        dbManager.addQuestionGenerator(name);
-        listAdapterHelper.addToList(name);
+        long id = dbManager.addQuestionGenerator(name);
+        listAdapterHelper.addToList(new SimpleListItem(name,id));
     }
 
 
@@ -121,7 +123,7 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
 
     public void refreshListFromDb(){
         View noResultsFoundView = findViewById(R.id.noResultsFoundText);
-        List<String> questionGeneratorNames = dbManager.retrieveGeneratorNames();
+        List<SimpleListItem> questionGeneratorNames = dbManager.retrieveGeneratorNames();
         listAdapterHelper.setupList(questionGeneratorNames, android.R.layout.simple_list_item_1, noResultsFoundView);
     }
 
@@ -129,7 +131,7 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
     @Override
     public void onFragmentInteraction(boolean confirmed) {
         if (confirmed) {
-            dbManager.removeQuestionGenerator(selectedName);
+            dbManager.removeQuestionGenerator(selectedItem);
             refreshListFromDb();
         }
     }

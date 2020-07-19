@@ -1,11 +1,11 @@
 package com.jacsstuff.quizudo.creator.express;
 
-public class QuestionSubjectAndAnswer {
+public class ChunkEntity {
 
     private String questionSubject;
     private String answer;
 
-    public QuestionSubjectAndAnswer(String questionSubject, String answer){
+    public ChunkEntity(String questionSubject, String answer){
         this.questionSubject = questionSubject;
         this.answer = answer;
     }

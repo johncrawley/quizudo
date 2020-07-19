@@ -19,7 +19,7 @@ public class ListAdapterHelper {
 
     private Context context;
     private ListActionExecutor actionExecutor;
-    private ArrayAdapter<String> arrayAdapter;
+    private SimpleItemArrayAdapter arrayAdapter;
     private ListView list;
     private boolean isKeyboardDismissedOnDone = true;
 
@@ -29,7 +29,7 @@ public class ListAdapterHelper {
         this.actionExecutor = actionExecutor;
     }
 
-    public void setupList(final List<String> items, int layoutRes){
+    public void setupList(final List<SimpleListItem> items, int layoutRes){
         setupList(items, layoutRes, null);
     }
 
@@ -37,16 +37,16 @@ public class ListAdapterHelper {
         this.isKeyboardDismissedOnDone = isDismissed;
     }
 
-    public void setupList(final List<String> items, int layoutRes, View noResultsFoundView){
+    public void setupList(final List<SimpleListItem> items, int layoutRes, View noResultsFoundView){
         if(list == null){
             return;
         }
-        arrayAdapter = new ArrayAdapter<>(context, layoutRes, items);
+        arrayAdapter = new SimpleItemArrayAdapter(context, layoutRes, items);
 
         AdapterView.OnItemLongClickListener longClickListener = new AdapterView.OnItemLongClickListener() {
 
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = items.get(position);
+                SimpleListItem item = items.get(position);
                 actionExecutor.onLongClick(item);
                 return true;
             }
@@ -75,17 +75,22 @@ public class ListAdapterHelper {
     }
 
 
-    public void addToList(String name){
-        if (listContains(name)) {
+    public void addToList(SimpleListItem item){
+        if (listContains(item)) {
             return;
         }
-        arrayAdapter.add(name);
+        arrayAdapter.add(item);
     }
 
 
-    private boolean listContains(String name) {
+    private boolean listContains(SimpleListItem item) {
         for (int i = 0; i < arrayAdapter.getCount(); i++) {
-            if (arrayAdapter.getItem(i).equals(name)) {
+            SimpleListItem item1 = arrayAdapter.getItem(i);
+            if(item1 == null){
+                continue;
+            }
+            String name = item1.getName();
+            if (name.equals(item.getName())) {
                 return true;
             }
         }

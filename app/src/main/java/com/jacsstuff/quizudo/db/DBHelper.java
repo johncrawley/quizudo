@@ -66,7 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
             CREATE_TABLE_IF_NOT_EXISTS + DbContract.AnswerPoolItemsEntry.TABLE_NAME + OPENING_BRACKET +
                     DbContract.AnswerPoolItemsEntry._ID                            + INTEGER + PRIMARY_KEY  + COMMA +
                     DbContract.AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID           + INTEGER                + COMMA +
-                    DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER             + TEXT  + " unique "     + CLOSING_BRACKET;
+                    DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER             + TEXT       + CLOSING_BRACKET;
 
 
     private static final String SQL_CREATE_QUESTION_GENERATOR_TABLE =
@@ -78,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_QUESTION_GENERATOR_SETS_TABLE =
             CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorSetEntry.TABLE_NAME + OPENING_BRACKET +
                     DbContract.QuestionGeneratorSetEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
-                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_NAME + TEXT + COMMA +
+                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID + INTEGER + COMMA +
                     DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + TEXT + " unique " + CLOSING_BRACKET;
 
 
@@ -88,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     DbContract.QuestionGeneratorChunk.COLUMN_NAME_QUESTION_SET_ID + INTEGER +
                     DbContract.QuestionGeneratorChunk.COLUMN_NAME_SUBJECT + TEXT + COMMA +
                     DbContract.QuestionGeneratorChunk.COLUMN_NAME_ANSWER + TEXT + COMMA +
-                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_TRIVIA + TEXT + COMMA + CLOSING_BRACKET;
+                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_TRIVIA + TEXT  + CLOSING_BRACKET;
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DbContract.QuestionsEntry.TABLE_NAME;
 

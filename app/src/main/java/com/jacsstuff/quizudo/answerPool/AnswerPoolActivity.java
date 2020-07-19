@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.jacsstuff.quizudo.dialog.ConfirmDialog;
 import com.jacsstuff.quizudo.dialog.DialogLoader;
 import com.jacsstuff.quizudo.list.ListActionExecutor;
 import com.jacsstuff.quizudo.list.ListAdapterHelper;
+import com.jacsstuff.quizudo.list.SimpleListItem;
 import com.jacsstuff.quizudo.main.MainActivity;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.utils.ToolbarBuilder;
@@ -25,10 +27,11 @@ import java.util.List;
 public class AnswerPoolActivity extends AppCompatActivity implements ListActionExecutor, ConfirmDialog.OnFragmentInteractionListener {
 
     private Context context;
-    public enum props { SELECTED_ACTIVITY_POOL}
+    public static final String ANSWER_POOL_NAME = "answer_pool_name";
+    public static final String ANSWER_POOL_ID="answer_pool_id";
     private AnswerPoolDBManager dbManager;
     private ListAdapterHelper listAdapterHelper;
-    private String selectedAnswerPoolName;
+    private SimpleListItem selectedAnswerPoolItem;
 
 
     @Override
@@ -81,17 +84,19 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
     }
 
     @Override
-    public void onClick(String item){
+    public void onClick(SimpleListItem item){
         Intent intent = new Intent(context,  AnswerListActivity.class);
-        intent.putExtra(props.SELECTED_ACTIVITY_POOL.toString(), item);
+        intent.putExtra(ANSWER_POOL_NAME, item.getName());
+        Log.i("quizz AP Act", "onClick() apool item ID to pass to intent: " + item.getId());
+        intent.putExtra(ANSWER_POOL_ID, item.getId());
         startActivity(intent);
     }
 
 
     @Override
-    public void onLongClick(String item){
-        String message = context.getResources().getString(R.string.remove_answer_pool_dialog_text, item);
-        selectedAnswerPoolName = item;
+    public void onLongClick(SimpleListItem item){
+        selectedAnswerPoolItem = item;
+        String message = context.getResources().getString(R.string.remove_answer_pool_dialog_text, selectedAnswerPoolItem.getName());
         DialogLoader.loadDialogWith(getFragmentManager(), message);
     }
 
@@ -102,8 +107,8 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
             return;
         }
         String answerPoolName = text.trim();
-        dbManager.addAnswerPool(answerPoolName);
-        listAdapterHelper.addToList(answerPoolName);
+        long id = dbManager.addAnswerPool(answerPoolName);
+        listAdapterHelper.addToList(new SimpleListItem(answerPoolName, id));
     }
 
 
@@ -114,7 +119,7 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
 
     public void refreshListFromDb(){
         View noResultsFoundView = findViewById(R.id.noResultsFoundText);
-        List<String> answerPoolNames = dbManager.getAnswerPoolNames();
+        List<SimpleListItem> answerPoolNames = dbManager.getAnswerPools();
         listAdapterHelper.setupList(answerPoolNames, android.R.layout.simple_list_item_1, noResultsFoundView);
     }
 
@@ -122,7 +127,7 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
     @Override
     public void onFragmentInteraction(boolean confirmed) {
         if (confirmed) {
-             if( dbManager.removeAnswerPool(selectedAnswerPoolName)){
+             if( dbManager.removeAnswerPool(selectedAnswerPoolItem)){
                 Toast.makeText(context, R.string.answer_pool_deleted_pool_toast, Toast.LENGTH_SHORT).show();
             }
             refreshListFromDb();

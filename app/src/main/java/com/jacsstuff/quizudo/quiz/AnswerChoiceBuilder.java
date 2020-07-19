@@ -54,7 +54,7 @@ public class AnswerChoiceBuilder{
             answerPool = retrievedAnswerPools.get(answerPoolName);
         }
         else {
-            List<String> retrievedAnswerPool = db.getAnswerPoolItems(answerPoolName);
+            List<String> retrievedAnswerPool = db.getAnswerPools(answerPoolName);
             retrievedAnswerPools.put(answerPoolName, retrievedAnswerPool);
             answerPool = retrievedAnswerPool;
         }

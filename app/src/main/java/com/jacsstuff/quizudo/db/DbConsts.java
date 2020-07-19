@@ -11,6 +11,7 @@ public class DbConsts {
     public static final String EQUALS = " = ";
     public static final String INNER_JOIN = " INNER JOIN ";
     public static final String ON = " ON ";
+    public static final String ALL = " * ";
     public static final String INSERT = "INSERT ";
     public static final String INTO = " INTO ";
     public static final String NOT = " NOT";

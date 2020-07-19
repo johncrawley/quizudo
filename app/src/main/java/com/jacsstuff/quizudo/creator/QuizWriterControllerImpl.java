@@ -1,10 +1,10 @@
 package com.jacsstuff.quizudo.creator;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 import com.jacsstuff.quizudo.db.DBWriter;
+import com.jacsstuff.quizudo.list.SimpleListItem;
 import com.jacsstuff.quizudo.model.QuestionPackDbEntity;
 import com.jacsstuff.quizudo.validation.Validator;
 
@@ -34,13 +34,19 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         questionPackItem = new QuestionPackItem();
         this.view = view;
         validator = new Validator();
-        AnswerPoolDBManager answerPoolDBManager = new AnswerPoolDBManager(context);
-        Log.i("CreatorController","About to set answer pool choices");
-        view.setAnswerPoolChoices(answerPoolDBManager.getAnswerPoolNames());
-        Log.i("CreatorController"," Finished setting answer pool choices");
+        view.setAnswerPoolChoices(getAnswerPoolNames(context));
         NONE_OPTION = noneOption;
     }
 
+    private List<String> getAnswerPoolNames(Context context){
+        AnswerPoolDBManager answerPoolDBManager = new AnswerPoolDBManager(context);
+        List<SimpleListItem> items = answerPoolDBManager.getAnswerPools();
+        List<String> answers = new ArrayList<>();
+        for(SimpleListItem item: items){
+            answers.add(item.getName());
+        }
+        return answers;
+    }
 
     public void saveQuestionPack(){
         questionPackItem.setAuthor("User");
@@ -101,7 +107,6 @@ public class QuizWriterControllerImpl implements QuizWriterController {
     }
 
     public void loadNextPage(){
-        Log.i("QuizWriterControll", "Entered loadNextPage");
         if(currentPage == FIRST_PAGE){
             view.showQuestionScreen();
             view.enableFirstButton();

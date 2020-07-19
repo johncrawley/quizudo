@@ -1,6 +1,7 @@
 package com.jacsstuff.quizudo.answerPool;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import com.jacsstuff.quizudo.dialog.ConfirmDialog;
 import com.jacsstuff.quizudo.dialog.DialogLoader;
 import com.jacsstuff.quizudo.list.ListActionExecutor;
 import com.jacsstuff.quizudo.list.ListAdapterHelper;
+import com.jacsstuff.quizudo.list.SimpleListItem;
 import com.jacsstuff.quizudo.main.MainActivity;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.utils.ToolbarBuilder;
@@ -27,21 +29,29 @@ public class AnswerListActivity extends AppCompatActivity implements ListActionE
     private Context context;
     private ListAdapterHelper listAdapterHelper;
     private String answerPoolName;
+    private long answerPoolId;
     private EditText addAnswerPoolEditText;
     private AnswerPoolDBManager db;
     private View noResultsFoundView;
-    private String selectedAnswer;
+    private SimpleListItem selectedAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer_list);
-        answerPoolName = getIntent().getStringExtra(AnswerPoolActivity.props.SELECTED_ACTIVITY_POOL.toString());
+        setupIntentVars();
         context = AnswerListActivity.this;
         db = new AnswerPoolDBManager(context);
         setupList();
         ToolbarBuilder.setupToolbarWithTitle(this, answerPoolName);
         setupOtherViews();
+    }
+
+    private void setupIntentVars(){
+        Intent intent = getIntent();
+        answerPoolName = intent.getStringExtra(AnswerPoolActivity.ANSWER_POOL_NAME);
+        answerPoolId = intent.getLongExtra(AnswerPoolActivity.ANSWER_POOL_ID, -1);
+
     }
 
     private void setupList(){
@@ -88,15 +98,15 @@ public class AnswerListActivity extends AppCompatActivity implements ListActionE
 
 
     @Override
-    public void onClick(String item){
+    public void onClick(SimpleListItem item){
         // do nothing
     }
 
 
     @Override
-    public void onLongClick(String answer){
-        String message = context.getResources().getString(R.string.remove_answer_dialog_text, answer);
+    public void onLongClick(SimpleListItem answer){
         selectedAnswer = answer;
+        String message = context.getResources().getString(R.string.remove_answer_dialog_text, selectedAnswer.getName());
         DialogLoader.loadDialogWith(getFragmentManager(), message);
     }
 
@@ -107,14 +117,14 @@ public class AnswerListActivity extends AppCompatActivity implements ListActionE
             return;
         }
         addAnswerPoolEditText.getText().clear();
-        String item = text.trim();
-        db.addAnswerPoolItem(answerPoolName, item);
-        listAdapterHelper.addToList(item);
+        text = text.trim();
+        long id = db.addAnswerPoolItem(answerPoolId, text);
+        listAdapterHelper.addToList(new SimpleListItem(text, id));
     }
 
 
     public void refreshListFromDb(){
-        List<String> items = db.getAnswerItems(answerPoolName);
+        List<SimpleListItem> items = db.getAnswerItems(answerPoolId);
         listAdapterHelper.setupList(items, android.R.layout.simple_list_item_1, noResultsFoundView);
     }
 
@@ -122,7 +132,7 @@ public class AnswerListActivity extends AppCompatActivity implements ListActionE
     @Override
     public void onFragmentInteraction(boolean confirmed) {
         if (confirmed) {
-            if( db.removeAnswer(answerPoolName, selectedAnswer)){
+            if( db.removeAnswer(selectedAnswer)){
                 Toast.makeText(context, R.string.answer_pool_deleted_item_toast, Toast.LENGTH_SHORT).show();
                 refreshListFromDb();
             }

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.jacsstuff.quizudo.db.DBHelper;
+import com.jacsstuff.quizudo.list.SimpleListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,24 +24,20 @@ public class AnswerPoolDBManager {
     private SQLiteDatabase db;
 
     public AnswerPoolDBManager(Context context){
-
         mDbHelper = DBHelper.getInstance(context);
         db = mDbHelper.getWritableDatabase();
     }
 
-    public List<String> getAnswerPoolNames(){
 
-        List<String> answerPoolNames = new ArrayList<>();
-
-        String query =  SELECT + AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME
-                + FROM + AnswerPoolNamesEntry.TABLE_NAME;
-
+    public List<SimpleListItem> getAnswerPools(){
+        List<SimpleListItem> answerPoolNames = new ArrayList<>();
+        String query =  SELECT + "*" + FROM + AnswerPoolNamesEntry.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
-
         while(cursor.moveToNext()){
-            String answerPoolName = getString(cursor, AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME);
-            if(answerPoolName != null && !answerPoolName.isEmpty()){
-                answerPoolNames.add(answerPoolName);
+            String itemName = getString(cursor, AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME);
+            long id = getLong(cursor, AnswerPoolNamesEntry._ID);
+            if(itemName != null && !itemName.isEmpty()){
+                answerPoolNames.add(new SimpleListItem(itemName, id));
             }
         }
         cursor.close();
@@ -47,10 +45,14 @@ public class AnswerPoolDBManager {
     }
 
 
-    public List<String> getAnswerPoolItems(String answerPoolName){
+    public long addAnswerPool(String name){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME, name);
+        return addValuesToTable(AnswerPoolNamesEntry.TABLE_NAME, contentValues);
+    }
 
+    public List<String> getAnswerPools(String answerPoolName){
         List<String> answerPoolItems = new ArrayList<>();
-
         String query =    SELECT        + AnswerPoolItemsEntry.COLUMN_NAME_ANSWER
                 + FROM          + AnswerPoolItemsEntry.TABLE_NAME
                 + INNER_JOIN    + AnswerPoolNamesEntry.TABLE_NAME
@@ -71,67 +73,38 @@ public class AnswerPoolDBManager {
     }
 
 
-    public void addAnswerPool(String name){
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME, name);
-        addValuesToTable(AnswerPoolNamesEntry.TABLE_NAME, contentValues);
-    }
-
-    /*
-
-    public void addAnswerPool(String name){
-
-        db.beginTransaction();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME, name);
+    public List<SimpleListItem> getAnswerItems(long answerPoolId){
+        List<SimpleListItem> answerItems = new ArrayList<>();
+        Cursor cursor;
+        String query = SELECT + ALL
+                + FROM + AnswerPoolItemsEntry.TABLE_NAME
+                + WHERE + AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID
+                + EQUALS + answerPoolId + ";";
 
         try {
-            db.insertOrThrow(AnswerPoolNamesEntry.TABLE_NAME, null, contentValues);
-            db.setTransactionSuccessful();
-        }catch(SQLException e){
-            e.printStackTrace();
+            cursor = db.rawQuery(query, null);
+            while(cursor.moveToNext()){
+                String text = getString(cursor, AnswerPoolItemsEntry.COLUMN_NAME_ANSWER);
+                long id = getLong(cursor, AnswerPoolItemsEntry._ID);
+                answerItems.add(new SimpleListItem(text, id));
+            }
         }
-
-        db.endTransaction();
-    }
-
-
-
-     */
-
-    public void addAnswerPoolItem(String answerPoolName, String answerItem){
-
-        long answerPoolNameId = -1L;
-        String idQuery = SELECT + AnswerPoolNamesEntry._ID
-                        + FROM + AnswerPoolNamesEntry.TABLE_NAME
-                        + WHERE + AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME
-                        + EQUALS + quotes(answerPoolName) + ";";
-
-        Cursor cursor = db.rawQuery(idQuery, null);
-        if(cursor.getCount() > 0){
-            cursor.moveToFirst();
-            answerPoolNameId = getInt(cursor, AnswerPoolNamesEntry._ID);
+        catch(SQLException e){
+            e.printStackTrace();
+            return answerItems;
         }
         cursor.close();
+        return  answerItems;
+    }
 
+
+    public long addAnswerPoolItem(long answerPoolId, String answerItem){
         ContentValues contentValues = new ContentValues();
         contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_ANSWER, answerItem);
-        contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID, answerPoolNameId);
-
-        addValuesToTable(AnswerPoolItemsEntry.TABLE_NAME, contentValues);
+        contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID, answerPoolId);
+        return addValuesToTable(AnswerPoolItemsEntry.TABLE_NAME, contentValues);
     }
 
-    private void addValuesToTable(String tableName, ContentValues contentValues){
-        db.beginTransaction();
-        try {
-            db.insertOrThrow(tableName, null, contentValues);
-            db.setTransactionSuccessful();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        db.endTransaction();
-    }
 
 
     public void closeConnection(){
@@ -142,50 +115,38 @@ public class AnswerPoolDBManager {
         return "'" + value + "'";
     }
 
-    public boolean removeAnswerPool(String answerPoolName){
+    private String quotes(long value){
+        return "'" + value + "'";
+    }
 
+    public boolean removeAnswerPool(SimpleListItem answerPoolItem){
 
         String deleteAnswerPoolQuery = DELETE + FROM + AnswerPoolNamesEntry.TABLE_NAME
-                + WHERE + AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME
-                + EQUALS + "'" + answerPoolName + "';";
+                + WHERE + AnswerPoolNamesEntry._ID
+                + EQUALS + quotes(answerPoolItem.getId())+ ";";
 
         String deleteAllAssociatedAnswersQuery = DELETE + FROM + AnswerPoolItemsEntry.TABLE_NAME
-                + WHERE + AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID + IN +
-                "(" +
-                        SELECT + AnswerPoolNamesEntry._ID +
-                        FROM + AnswerPoolNamesEntry.TABLE_NAME +
-                        WHERE + AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME +
-                        EQUALS + quotes(answerPoolName) + ")";
+                + WHERE + AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID +
+                EQUALS +  quotes(answerPoolItem.getId())+ ";";
 
-        db.beginTransaction();
-        try {
-            db.execSQL(deleteAllAssociatedAnswersQuery);
-            db.execSQL(deleteAnswerPoolQuery);
-            db.setTransactionSuccessful();
-        }catch(SQLException e){
-            e.printStackTrace();
-            db.endTransaction();
-            return false;
-        }
-        db.endTransaction();
+        execute(deleteAnswerPoolQuery, deleteAllAssociatedAnswersQuery);
         return  true;
     }
 
-    public boolean removeAnswer(String answerPoolName, String answerValue){
-
-        db.beginTransaction();
+    public boolean removeAnswer(SimpleListItem answer){
 
         String query = DELETE + FROM + AnswerPoolItemsEntry.TABLE_NAME
-                     + WHERE + AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID + IN +
-                        "(" +
-                            SELECT + AnswerPoolNamesEntry._ID +
-                            FROM + AnswerPoolNamesEntry.TABLE_NAME +
-                            WHERE + AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME +
-                            EQUALS + "'" + answerPoolName + "'" + ")" +
-                            AND + AnswerPoolItemsEntry.COLUMN_NAME_ANSWER +
-                            EQUALS + quotes(answerValue) + ";";
+                + WHERE + AnswerPoolItemsEntry._ID + EQUALS + quotes(answer.getId()) + ";";
+        return execute(query);
+    }
+
+
+    private boolean execute(String ...queries){
+        db.beginTransaction();
         try {
-            db.execSQL(query);
+            for(String query: queries){
+                db.execSQL(query);
+            }
             db.setTransactionSuccessful();
         }catch(SQLException e){
             e.printStackTrace();
@@ -196,44 +157,19 @@ public class AnswerPoolDBManager {
         return  true;
     }
 
-
-    public List<String> getAnswerItems(String answerPoolName){
-
-        List<String> answerItems = new ArrayList<>();
-
-        Cursor cursor;
-
-        String query =
-                    SELECT + AnswerPoolItemsEntry.COLUMN_NAME_ANSWER
-                + FROM + AnswerPoolItemsEntry.TABLE_NAME
-                + INNER_JOIN + AnswerPoolNamesEntry.TABLE_NAME
-                + ON + AnswerPoolItemsEntry.TABLE_NAME + "." + AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID
-                + EQUALS + AnswerPoolNamesEntry.TABLE_NAME + "." + AnswerPoolNamesEntry._ID
-                + WHERE + AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME
-                + EQUALS + "'" + answerPoolName + "';";
-
+    private long addValuesToTable(String tableName, ContentValues contentValues){
+        long id = -1;
+        db.beginTransaction();
         try {
-            cursor = db.rawQuery(query, null);
-            while(cursor.moveToNext()){
-               answerItems.add(getString(cursor, AnswerPoolItemsEntry.COLUMN_NAME_ANSWER));
-           }
-        }
-        catch(SQLException e){
+            id = db.insertOrThrow(tableName, null, contentValues);
+            db.setTransactionSuccessful();
+        }catch(SQLException e){
             e.printStackTrace();
-            return answerItems;
         }
-        cursor.close();
-        return  answerItems;
+        db.endTransaction();
+        return id;
     }
 
-/*
-    private String getAnswersItemsByIdQuery(long id){
-        return SELECT + DISTINCT + AnswerPoolItemsEntry.COLUMN_NAME_ANSWER
-                +  FROM + AnswerPoolItemsEntry.TABLE_NAME
-                + WHERE + AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID
-                + EQUALS + "'" + id + "';";
-    }
-*/
 
     private String getString(Cursor cursor, String name){
         return cursor.getString(cursor.getColumnIndexOrThrow(name));
@@ -241,5 +177,8 @@ public class AnswerPoolDBManager {
 
     private int getInt(Cursor cursor, String name){
         return cursor.getInt(cursor.getColumnIndexOrThrow(name));
+    }
+    private long getLong(Cursor cursor, String name){
+        return cursor.getLong(cursor.getColumnIndexOrThrow(name));
     }
 }
