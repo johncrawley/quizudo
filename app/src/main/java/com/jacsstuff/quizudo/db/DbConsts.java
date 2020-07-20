@@ -4,6 +4,8 @@ public class DbConsts {
 
     public static final String SELECT = "SELECT ";
     public static final String DELETE = "DELETE ";
+    public static final String UPDATE = "UPDATE ";
+    public static final String DELETE_FROM = "DELETE FROM ";
     public static final String FROM = " FROM ";
     public static final String WHERE = " WHERE ";
     public static final String AND = " AND ";
@@ -12,6 +14,7 @@ public class DbConsts {
     public static final String INNER_JOIN = " INNER JOIN ";
     public static final String ON = " ON ";
     public static final String ALL = " * ";
+    public static final String SET = " SET ";
     public static final String INSERT = "INSERT ";
     public static final String INTO = " INTO ";
     public static final String NOT = " NOT";

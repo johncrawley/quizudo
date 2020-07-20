@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.creator.QuizWriterActivity;
 import com.jacsstuff.quizudo.answerPool.AnswerPoolActivity;
-import com.jacsstuff.quizudo.creator.express.GeneratorsActivity;
+import com.jacsstuff.quizudo.express.generators.GeneratorsActivity;
 import com.jacsstuff.quizudo.download.DownloadQuestionsActivity;
 
 import static com.jacsstuff.quizudo.utils.Consts.DOWNLOAD_QUESTION_PACKS_PREFERENCE;

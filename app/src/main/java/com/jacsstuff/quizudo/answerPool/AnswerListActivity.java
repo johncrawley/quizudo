@@ -112,7 +112,7 @@ public class AnswerListActivity extends AppCompatActivity implements ListActionE
 
 
     @Override
-    public void onTextEntered(String text){
+    public void onTextEntered(int ViewId, String text){
         if(text == null){
             return;
         }

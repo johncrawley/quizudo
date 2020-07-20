@@ -7,7 +7,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +36,19 @@ public class ListAdapterHelper {
         this.isKeyboardDismissedOnDone = isDismissed;
     }
 
+    public boolean contains(String str){
+        for(int i=0; i < arrayAdapter.getCount(); i++){
+            SimpleListItem item = arrayAdapter.getItem(i);
+            if(item == null){
+                continue;
+            }
+            if(item.getName().equals(str)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setupList(final List<SimpleListItem> items, int layoutRes, View noResultsFoundView){
         if(list == null){
             return;
@@ -46,6 +58,10 @@ public class ListAdapterHelper {
         AdapterView.OnItemLongClickListener longClickListener = new AdapterView.OnItemLongClickListener() {
 
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(position >= items.size()){
+                    return false;
+                }
                 SimpleListItem item = items.get(position);
                 actionExecutor.onLongClick(item);
                 return true;
@@ -54,9 +70,13 @@ public class ListAdapterHelper {
 
         AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position >= items.size()){
+                    return;
+                }
                 actionExecutor.onClick(items.get(position));
             }
         };
+
 
         list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         list.setAdapter(arrayAdapter);
@@ -98,12 +118,16 @@ public class ListAdapterHelper {
     }
 
 
-    public void setupKeyInput(final EditText editText) {
+    public void setupKeyInput(final EditText editText){
+        setupKeyInput(editText, true);
+    }
 
+
+    public void setupKeyInput(final EditText editText, final boolean isFieldCleared) {
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     if(imm == null){
                         return false;
@@ -111,8 +135,10 @@ public class ListAdapterHelper {
                     if(isKeyboardDismissedOnDone) {
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                     }
-                    actionExecutor.onTextEntered(v.getText().toString());
-                    editText.getText().clear();
+                    actionExecutor.onTextEntered(v.getId(), v.getText().toString());
+                    if(isFieldCleared){
+                          editText.getText().clear();
+                    }
                     return true;
                 }
                 return false;

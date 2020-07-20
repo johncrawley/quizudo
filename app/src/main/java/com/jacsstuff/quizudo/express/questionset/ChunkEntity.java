@@ -1,4 +1,4 @@
-package com.jacsstuff.quizudo.creator.express;
+package com.jacsstuff.quizudo.express.questionset;
 
 public class ChunkEntity {
 

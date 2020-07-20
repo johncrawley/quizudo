@@ -66,12 +66,12 @@ public final class DbContract {
         public static final String COLUMN_NAME_QUESTION_TEMPLATE= "question_template";
     }
 
-    public static class QuestionGeneratorChunk implements BaseColumns {
-        public static final String TABLE_NAME = "question_generator_chunks";
+    public static class QuestionGeneratorChunkEntry implements BaseColumns {
+        public static final String TABLE_NAME = "q_generator_chunks";
         public static final String COLUMN_NAME_QUESTION_SET_ID = "question_set_id";
-        public static final String COLUMN_NAME_SUBJECT = "subject";
-        public static final String COLUMN_NAME_ANSWER= "answer";
-        public static final String COLUMN_NAME_TRIVIA= "trivia";
+        public static final String COLUMN_NAME_SUBJECT = "q_subject";
+        public static final String COLUMN_NAME_ANSWER= "q_answer";
+        public static final String COLUMN_NAME_TRIVIA= "q_trivia";
     }
 
 }

@@ -76,19 +76,26 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private static final String SQL_CREATE_QUESTION_GENERATOR_SETS_TABLE =
-            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorSetEntry.TABLE_NAME + OPENING_BRACKET +
+            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorSetEntry.TABLE_NAME +
+                    OPENING_BRACKET +
                     DbContract.QuestionGeneratorSetEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
                     DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID + INTEGER + COMMA +
-                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + TEXT + " unique " + CLOSING_BRACKET;
+                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + TEXT + COMMA +
+                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_QUESTION_TEMPLATE + TEXT +
+                    CLOSING_BRACKET;
 
 
     private static final String SQL_CREATE_QUESTION_GENERATOR_CHUNKS_TABLE =
-            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorChunk.TABLE_NAME + OPENING_BRACKET +
-                    DbContract.QuestionGeneratorChunk._ID + INTEGER + PRIMARY_KEY + COMMA +
-                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_QUESTION_SET_ID + INTEGER +
-                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_SUBJECT + TEXT + COMMA +
-                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_ANSWER + TEXT + COMMA +
-                    DbContract.QuestionGeneratorChunk.COLUMN_NAME_TRIVIA + TEXT  + CLOSING_BRACKET;
+            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorChunkEntry.TABLE_NAME
+                    + OPENING_BRACKET +
+                    DbContract.QuestionGeneratorChunkEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
+                    DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID + INTEGER + COMMA +
+                    DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_SUBJECT + TEXT + COMMA +
+                    DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_ANSWER + TEXT + COMMA +
+                    DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_TRIVIA + TEXT
+                    + CLOSING_BRACKET;
+
+
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DbContract.QuestionsEntry.TABLE_NAME;
 

@@ -102,7 +102,7 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
 
 
     @Override
-    public void onTextEntered(String text){
+    public void onTextEntered(int viewId, String text){
         if(text == null){
             return;
         }

@@ -4,6 +4,6 @@ public interface ListActionExecutor {
 
     public void onClick(SimpleListItem item);
     public void onLongClick(SimpleListItem item);
-    public void onTextEntered(String text);
+    public void onTextEntered(int viewId, String text);
 
 }

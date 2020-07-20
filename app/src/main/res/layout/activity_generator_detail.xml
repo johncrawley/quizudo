@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".creator.express.GeneratorDetailActivity">
+        tools:context=".express.generatorsdetail.GeneratorDetailActivity">
 
         <include layout="@layout/app_toolbar" android:id="@+id/included_toolbar"/>
 
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:hint="@string/add_question_set_textfield_label"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>

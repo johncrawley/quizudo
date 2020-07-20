@@ -1,4 +1,4 @@
-package com.jacsstuff.quizudo.creator.express;
+package com.jacsstuff.quizudo.express.generators;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,23 +13,18 @@ import com.jacsstuff.quizudo.list.SimpleListItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jacsstuff.quizudo.db.DbConsts.AND;
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE;
 import static com.jacsstuff.quizudo.db.DbConsts.EQUALS;
 import static com.jacsstuff.quizudo.db.DbConsts.FROM;
-import static com.jacsstuff.quizudo.db.DbConsts.IN;
-import static com.jacsstuff.quizudo.db.DbConsts.INNER_JOIN;
-import static com.jacsstuff.quizudo.db.DbConsts.ON;
 import static com.jacsstuff.quizudo.db.DbConsts.SELECT;
 import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
-public class QuestionGeneratorDbManager {
-
+public class GeneratorsDbManager {
 
     private DBHelper mDbHelper;
     private SQLiteDatabase db;
 
-    QuestionGeneratorDbManager(Context context){
+    GeneratorsDbManager(Context context){
 
         mDbHelper = DBHelper.getInstance(context);
         db = mDbHelper.getWritableDatabase();
@@ -42,27 +37,20 @@ public class QuestionGeneratorDbManager {
     }
 
 
-    List<SimpleListItem> retrieveQuestionSets(long generatorId){
-        String query = SELECT + "*" + FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
-                + WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID + EQUALS + inQuotes(generatorId);
-        return retrieveListFromDb(query);
-    }
-
-
     private List<SimpleListItem> retrieveListFromDb(String query){
         Cursor cursor = db.rawQuery(query, null);
         List<SimpleListItem> list = new ArrayList<>();
         while(cursor.moveToNext()){
-            addNameToList(cursor, list);
+            addToList(cursor, list);
         }
         cursor.close();
         return list;
     }
 
 
-    private void addNameToList(Cursor cursor, List<SimpleListItem> list){
+    private void addToList(Cursor cursor, List<SimpleListItem> list){
         String name = getString(cursor, DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME);
-        long id = getLong(cursor, DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME);
+        long id = getLong(cursor, DbContract.QuestionGeneratorEntry._ID);
         if(name != null && !name.isEmpty()){
             list.add(new SimpleListItem(name, id));
         }
@@ -75,19 +63,6 @@ public class QuestionGeneratorDbManager {
         return addValuesToTable(DbContract.QuestionGeneratorEntry.TABLE_NAME, contentValues);
     }
 
-    long addQuestionSet(long generatorId, String name){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
-        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
-       return addValuesToTable(DbContract.QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
-    }
-
-    void removeQuestionSet(long id){
-        String query = DELETE + FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
-                + WHERE + DbContract.QuestionGeneratorSetEntry._ID
-                + EQUALS + inQuotes(id);
-        executeStatment(query);
-    }
 
 
     private long addValuesToTable(String tableName, ContentValues contentValues){
@@ -108,9 +83,7 @@ public class QuestionGeneratorDbManager {
         mDbHelper.close();
     }
 
-    private String inQuotes(String value){
-        return "'" + value + "'";
-    }
+
     private String inQuotes(long value){
         return "'" + value + "'";
     }
@@ -119,11 +92,11 @@ public class QuestionGeneratorDbManager {
     void removeQuestionGenerator(SimpleListItem item){
         String query = DELETE + FROM + DbContract.QuestionGeneratorEntry.TABLE_NAME
                 + WHERE + DbContract.QuestionGeneratorEntry._ID
-                + EQUALS + inQuotes(item.getId());
+                + EQUALS + item.getId() + ";";
 
         if(executeStatment(query)){
             deleteAllQuestionSetsBelongingTo(item);
-        };
+        }
     }
 
 

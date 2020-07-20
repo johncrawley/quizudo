@@ -168,6 +168,7 @@
     <string name="question_generator_set_answer_list_title">Question Subjects and Corresponding Answers, use ,, to separate</string>
     <string name="question_generator_chunk_delimiter">,,</string>
     <string name="question_generator_question_subject_placeholder">##</string>
+    <string name="remove_chunk_dialog_text">Remove subject and answer: %1$s from the question set?</string>
 
 
     <!-- Preferences -->

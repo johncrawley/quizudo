@@ -8,9 +8,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".creator.express.GeneratorQuestionSetActivity"></activity>
-        <activity android:name=".creator.express.GeneratorDetailActivity" />
-        <activity android:name=".creator.express.GeneratorsActivity" /> <!-- android:theme="@style/AppTheme"> -->
+        <activity android:name=".express.questionset.GeneratorQuestionSetActivity"/>
+        <activity android:name=".express.generatorsdetail.GeneratorDetailActivity" />
+        <activity android:name=".express.generators.GeneratorsActivity" /> <!-- android:theme="@style/AppTheme"> -->
         <activity
             android:name=".main.MainActivity"
             android:screenOrientation="portrait">
@@ -90,14 +90,8 @@
             android:name=".answerPool.AnswerListActivity"
             android:parentActivityName=".answerPool.AnswerPoolActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".answerPool.DeleteAnswerPoolDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/dialog_light" />
-        <activity
-            android:name=".answerPool.DeleteAnswerDialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/dialogTheme" />
+
+
         <activity
             android:name=".download.DownloadQuestionsActivity"
             android:parentActivityName=".options.PreferencesActivity" />
