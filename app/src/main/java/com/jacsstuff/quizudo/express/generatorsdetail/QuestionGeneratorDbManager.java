@@ -14,14 +14,9 @@ import com.jacsstuff.quizudo.list.SimpleListItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jacsstuff.quizudo.db.DbConsts.AND;
-import static com.jacsstuff.quizudo.db.DbConsts.DELETE;
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE_FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.EQUALS;
 import static com.jacsstuff.quizudo.db.DbConsts.FROM;
-import static com.jacsstuff.quizudo.db.DbConsts.IN;
-import static com.jacsstuff.quizudo.db.DbConsts.INNER_JOIN;
-import static com.jacsstuff.quizudo.db.DbConsts.ON;
 import static com.jacsstuff.quizudo.db.DbConsts.SELECT;
 import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
@@ -72,11 +67,11 @@ public class QuestionGeneratorDbManager {
        return addValuesToTable(DbContract.QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
     }
 
+
     void removeQuestionSet(SimpleListItem item){
         String query = DELETE_FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
                 + WHERE + DbContract.QuestionGeneratorSetEntry._ID
                 + EQUALS + item.getId();
-        Log.i("zzz", "removing question set from " + item.getName() + " : " + item.getId());
         executeStatment(query);
 
 
@@ -133,9 +128,6 @@ public class QuestionGeneratorDbManager {
         return cursor.getString(cursor.getColumnIndexOrThrow(name));
     }
 
-    private int getInt(Cursor cursor, String name){
-        return cursor.getInt(cursor.getColumnIndexOrThrow(name));
-    }
     private long getLong(Cursor cursor, String name){
         return cursor.getLong(cursor.getColumnIndexOrThrow(name));
     }

@@ -5,15 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.jacsstuff.quizudo.db.DBHelper;
 import com.jacsstuff.quizudo.db.DbContract;
 import com.jacsstuff.quizudo.list.SimpleListItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static com.jacsstuff.quizudo.db.DbConsts.DELETE;
+import static com.jacsstuff.quizudo.db.DbConsts.DELETE_FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.EQUALS;
 import static com.jacsstuff.quizudo.db.DbConsts.FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.SELECT;
@@ -90,25 +92,97 @@ public class GeneratorsDbManager {
 
 
     void removeQuestionGenerator(SimpleListItem item){
-        String query = DELETE + FROM + DbContract.QuestionGeneratorEntry.TABLE_NAME
+        String query = DELETE_FROM + DbContract.QuestionGeneratorEntry.TABLE_NAME
                 + WHERE + DbContract.QuestionGeneratorEntry._ID
                 + EQUALS + item.getId() + ";";
 
-        if(executeStatment(query)){
-            deleteAllQuestionSetsBelongingTo(item);
-        }
+        if(executeStatement(query)){
+            deleteAllQuestionSetsBelongingTo(item.getId());
+       }
     }
 
 
-    private void deleteAllQuestionSetsBelongingTo(SimpleListItem item){
-        String query = DELETE + FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
+    private void deleteAllQuestionSetsBelongingTo(long generatorId){
+        deleteAllChunksBelongingToQuestionSetsOf(generatorId);
+
+        String query = DELETE_FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
                 + WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID
-                + EQUALS + inQuotes(item.getId());
-        executeStatment(query);
+                + EQUALS + generatorId;
+        executeStatement(query);
+
+    }
+
+    private void deleteAllChunksBelongingToQuestionSetsOf(long generatorId){
+
+        String q3 = "DELETE FROM q_generator_chunks WHERE _id IN " +
+                    " ( SELECT a._id from q_generator_chunks a INNER JOIN  question_generator_sets b ON " +
+                " a.question_set_id = b._id " +
+                " WHERE b.generator_id = "  + generatorId + ");";
+
+       executeStatement(q3);
     }
 
 
-    private boolean executeStatment(String query){
+
+    // db.rawQuery(MY_QUERY, new String[]{String.valueOf(generatorId)});
+
+    //String q4 = "SELECT * from q_generator_chunks INNER JOIN question_generator_sets ON " +
+    //"q_generator_chunks.question_set_id = question_generator_sets._id;";// WHERE b.generator_id = "  + generatorId + ";";
+    //Log.i("quizz", " query4: " + q4);
+
+
+
+    private List<SimpleListItem> retrieve2(String query, String... params){
+        Cursor cursor = db.rawQuery(query, params);
+        List<SimpleListItem> list = new ArrayList<>();
+        while(cursor.moveToNext()){
+            addToList2(cursor, list);
+        }
+        cursor.close();
+        return list;
+    }
+
+
+    private void addToList2(Cursor cursor, List<SimpleListItem> list){
+        /*
+        String entry = " chunk_id "  + getLong(cursor, "chunk_id") +
+                " subject: " + getString(cursor, "q_subject") +
+                " q_set_id " + getString(cursor, "q_set_id") +
+                " gen_id : " + getString(cursor, "gen_id");
+
+         */
+        String entry = getString(cursor, "_id");
+        long id = getLong(cursor, "_id");
+        Log.i("quizz", "addToList2() entry: "+  entry);
+        list.add(new SimpleListItem(entry, id));
+    }
+
+
+
+    private List<SimpleListItem> retrieve3(String query){
+        Cursor cursor = db.rawQuery(query, null);
+        List<SimpleListItem> list = new ArrayList<>();
+        while(cursor.moveToNext()){
+            addToList3(cursor, list);
+        }
+        cursor.close();
+        return list;
+    }
+
+
+    private void addToList3(Cursor cursor, List<SimpleListItem> list){
+        String name = "subject: " + getString(cursor, DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_SUBJECT)
+        + "qSetId: " + getString(cursor, DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID);
+        long id = getLong(cursor, DbContract.QuestionGeneratorChunkEntry._ID);
+        Log.i("quizz", "addToList3() item: "+  name);
+        list.add(new SimpleListItem(name, id));
+    }
+
+
+
+
+
+    private boolean executeStatement(String query){
         db.beginTransaction();
         try {
             db.execSQL(query);

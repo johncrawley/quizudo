@@ -22,6 +22,8 @@ public class DbConsts {
     public static final String VALUES = " VALUES ";
     public static final String COUNT = " COUNT ";
     public static final String DISTINCT = "DISTINCT ";
+    public static final String OPENING_BRACKET = " (";
+    public static final String CLOSING_BRACKET = " );";
 
 
 }

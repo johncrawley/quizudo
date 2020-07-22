@@ -169,10 +169,10 @@
     <string name="question_generator_chunk_delimiter">,,</string>
     <string name="question_generator_question_subject_placeholder">##</string>
     <string name="remove_chunk_dialog_text">Remove subject and answer: %1$s from the question set?</string>
+    <string name="question_set_toolbar_title">Question Set:&#160;</string>
 
 
     <!-- Preferences -->
-
     <string name="answer_pools_activity_title">Answer Pools</string>
     <string name="question_generator_activity_title">Question Generator</string>
     <string name="download_questions_activity_title">Download Question Packs</string>

@@ -36,20 +36,7 @@
             android:label="@string/title_create_quiz_activity"
             android:parentActivityName=".main.MainActivity"
             android:screenOrientation="portrait" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"
-
-
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
-
-             />
-        -->
         <activity
             android:name=".configure.ConfigureQuizActivity"
             android:label="@string/title_configure_quiz_activity"

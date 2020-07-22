@@ -38,6 +38,7 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     public static final String INTENT_KEY_QUESTION_SET_NAME = "questionSetName";
     public static final String INTENT_KEY_QUESTION_SET_ID = "questionSetId";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +49,7 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
         setupViews();
         setupToolbar();
     }
+
 
     private void setupIntentVars(){
         Intent intent = getIntent();
@@ -62,6 +64,7 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
         EditText editText = findViewById(R.id.nameEditText);
         listAdapterHelper.setupKeyInput( editText);
     }
+
 
     private void setupToolbar(){
         ToolbarBuilder.setupToolbarWithTitle(this, getActivityTitle());
