@@ -51,6 +51,7 @@ public final class DbContract {
         public static final String TABLE_NAME = "answer_pool_items";
         public static final String COLUMN_NAME_ANSWER = "answer";
         public static final String COLUMN_NAME_APOOL_ID = "answer_pool_ID";
+        public static final String COLUMN_NAME_U_VAL = "u_val";
     }
 
 

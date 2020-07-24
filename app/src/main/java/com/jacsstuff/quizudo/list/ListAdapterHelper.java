@@ -96,14 +96,15 @@ public class ListAdapterHelper {
 
 
     public void addToList(SimpleListItem item){
-        if (listContains(item)) {
+        if (contains(item)) {
             return;
         }
         arrayAdapter.add(item);
     }
 
 
-    private boolean listContains(SimpleListItem item) {
+
+    public boolean contains(SimpleListItem item) {
         for (int i = 0; i < arrayAdapter.getCount(); i++) {
             SimpleListItem item1 = arrayAdapter.getItem(i);
             if(item1 == null){

@@ -32,7 +32,7 @@ public class GeneratorQuestionSetDBManager {
     private ChunkParser chunkParser;
 
 
-    GeneratorQuestionSetDBManager(Context context){
+    public GeneratorQuestionSetDBManager(Context context){
         mDbHelper = DBHelper.getInstance(context);
         db = mDbHelper.getWritableDatabase();
         chunkParser = new ChunkParser(context);
@@ -78,7 +78,6 @@ public class GeneratorQuestionSetDBManager {
 
 
     long addChunk(long questionSetId, String text){
-        Log.i("quizz", "genQSDbMan addChunk("  + questionSetId + ", " + text + ")");
         ChunkEntity chunkEntity = chunkParser.parse(text);
         ContentValues contentValues = new ContentValues();
         contentValues.put(DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID, questionSetId);
@@ -87,9 +86,8 @@ public class GeneratorQuestionSetDBManager {
         return addValuesToTable(DbContract.QuestionGeneratorChunkEntry.TABLE_NAME, contentValues);
     }
 
-    List<SimpleListItem> retrieveChunksFor(long id){
+    public List<SimpleListItem> retrieveChunksFor(long id){
 
-        Log.i("quizz", "genQSDbMan retrieveChunks("  + id + ")");
         String query = SELECT + ALL + FROM + DbContract.QuestionGeneratorChunkEntry.TABLE_NAME +
                 WHERE + DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID +
                 EQUALS + id + ";";
@@ -100,7 +98,6 @@ public class GeneratorQuestionSetDBManager {
     private List<SimpleListItem> retrieveListFromDb(String query){
         Cursor cursor = db.rawQuery(query, null);
         List<SimpleListItem> list = new ArrayList<>();
-        Log.i("quizz", " retrieveListFromDb() cursor size : " + cursor.getCount());
         while(cursor.moveToNext()){
             addToList(cursor, list);
         }

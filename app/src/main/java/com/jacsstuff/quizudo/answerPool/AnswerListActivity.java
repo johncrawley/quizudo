@@ -83,7 +83,6 @@ public class AnswerListActivity extends AppCompatActivity implements ListActionE
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if(id == R.id.home_menu_item) {
             Utils.bringBackActivity(this, MainActivity.class);
         }

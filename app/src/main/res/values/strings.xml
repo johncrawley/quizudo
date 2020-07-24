@@ -170,6 +170,8 @@
     <string name="question_generator_question_subject_placeholder">##</string>
     <string name="remove_chunk_dialog_text">Remove subject and answer: %1$s from the question set?</string>
     <string name="question_set_toolbar_title">Question Set:&#160;</string>
+    <string name="generate_questions_button_text">Generate Questions</string>
+    <string name="generator_question_pack_textfield_text">Question Pack Name</string>
 
 
     <!-- Preferences -->

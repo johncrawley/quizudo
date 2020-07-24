@@ -99,17 +99,35 @@ public class AnswerPoolDBManager {
 
 
     public long addAnswerPoolItem(long answerPoolId, String answerItem){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_ANSWER, answerItem);
-        contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID, answerPoolId);
+        ContentValues contentValues = createContentValuesFor(answerPoolId, answerItem);
         return addValuesToTable(AnswerPoolItemsEntry.TABLE_NAME, contentValues);
     }
 
+
+    public void addAnswerPoolItems(long answerPoolId, List<String> answerItems){
+        for(String item : answerItems) {
+            if(item.trim().isEmpty()){
+                continue;
+            }
+            addValuesToTable(AnswerPoolItemsEntry.TABLE_NAME, createContentValuesFor(answerPoolId, item));
+        }
+    }
+
+
+    private ContentValues createContentValuesFor(long answerPoolId, String answerItem){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_ANSWER, answerItem);
+        contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID, answerPoolId);
+        String uVal = answerItem + "_" + String.valueOf(answerPoolId);
+        contentValues.put(AnswerPoolItemsEntry.COLUMN_NAME_U_VAL, uVal);
+        return contentValues;
+    }
 
 
     public void closeConnection(){
         mDbHelper.close();
     }
+
 
     private String quotes(String value){
         return "'" + value + "'";

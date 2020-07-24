@@ -134,9 +134,7 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
                 dbManager.updateQuestionTemplate(questionSetId, text);
                 break;
             case R.id. chunkEditText:
-                Log.i("quizz", "GenQSet onTextEntered() , adding chunk for :" + text);
-               long chunkId = dbManager.addChunk(questionSetId, text);
-               listAdapterHelper.addToList(new SimpleListItem(text, chunkId));
+               addChunk(text);
         }
     }
 
@@ -147,6 +145,16 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
             dbManager.remove(currentItem);
            refreshListFromDb();
         }
+    }
+
+
+
+    private void addChunk(String text){
+        if (listAdapterHelper.contains(text)) {
+            return;
+        }
+        long chunkId = dbManager.addChunk(questionSetId, text);
+        listAdapterHelper.addToList(new SimpleListItem(text, chunkId));
     }
 
 }

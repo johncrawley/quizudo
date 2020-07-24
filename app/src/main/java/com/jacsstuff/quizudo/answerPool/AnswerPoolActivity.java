@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,7 +86,6 @@ public class AnswerPoolActivity extends AppCompatActivity implements ListActionE
     public void onClick(SimpleListItem item){
         Intent intent = new Intent(context,  AnswerListActivity.class);
         intent.putExtra(ANSWER_POOL_NAME, item.getName());
-        Log.i("quizz AP Act", "onClick() apool item ID to pass to intent: " + item.getId());
         intent.putExtra(ANSWER_POOL_ID, item.getId());
         startActivity(intent);
     }

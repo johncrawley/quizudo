@@ -22,7 +22,9 @@ public class ChunkParser {
         if(str.contains(delimiter)){
             String [] array = str.split(delimiter);
             questionSubject = array[0];
-            answer = array[1];
+            if(array.length > 1) {
+                answer = array[1];
+            }
         }
 
         return new ChunkEntity(questionSubject, answer);

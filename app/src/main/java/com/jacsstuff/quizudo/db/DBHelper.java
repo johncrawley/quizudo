@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import static com.jacsstuff.quizudo.db.DbConsts.DISTINCT;
+import static com.jacsstuff.quizudo.db.DbConsts.UNIQUE;
+
 /**
  * Created by John on 31/12/2016.
  *
@@ -60,19 +63,22 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ANSWER_POOL_NAMES_TABLE =
             CREATE_TABLE_IF_NOT_EXISTS + DbContract.AnswerPoolNamesEntry.TABLE_NAME + OPENING_BRACKET +
                     DbContract.AnswerPoolNamesEntry._ID                             + INTEGER + PRIMARY_KEY + COMMA +
-                    DbContract.AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME          + TEXT    + " unique "  + CLOSING_BRACKET;
+                    DbContract.AnswerPoolNamesEntry.COLUMN_NAME_APOOL_NAME          + TEXT    + UNIQUE  + CLOSING_BRACKET;
 
     private static final String SQL_CREATE_ANSWER_POOL_ITEMS_TABLE =
-            CREATE_TABLE_IF_NOT_EXISTS + DbContract.AnswerPoolItemsEntry.TABLE_NAME + OPENING_BRACKET +
+            CREATE_TABLE_IF_NOT_EXISTS + DbContract.AnswerPoolItemsEntry.TABLE_NAME
+                    + OPENING_BRACKET +
                     DbContract.AnswerPoolItemsEntry._ID                            + INTEGER + PRIMARY_KEY  + COMMA +
                     DbContract.AnswerPoolItemsEntry.COLUMN_NAME_APOOL_ID           + INTEGER                + COMMA +
-                    DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER             + TEXT       + CLOSING_BRACKET;
+                    DbContract.AnswerPoolItemsEntry.COLUMN_NAME_ANSWER             + TEXT                   + COMMA +
+                    DbContract.AnswerPoolItemsEntry.COLUMN_NAME_U_VAL              + TEXT    + UNIQUE
+                    + CLOSING_BRACKET;
 
 
     private static final String SQL_CREATE_QUESTION_GENERATOR_TABLE =
             CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorEntry.TABLE_NAME + OPENING_BRACKET +
                     DbContract.QuestionGeneratorEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
-                    DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME + TEXT + " unique " + CLOSING_BRACKET;
+                    DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME + TEXT +  UNIQUE + CLOSING_BRACKET;
 
 
     private static final String SQL_CREATE_QUESTION_GENERATOR_SETS_TABLE =

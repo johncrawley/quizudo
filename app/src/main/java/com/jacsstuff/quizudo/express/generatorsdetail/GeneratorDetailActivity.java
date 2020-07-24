@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -26,7 +27,10 @@ import com.jacsstuff.quizudo.utils.Utils;
 
 import java.util.List;
 
-public class GeneratorDetailActivity extends AppCompatActivity  implements ListActionExecutor, ConfirmDialog.OnFragmentInteractionListener{
+public class GeneratorDetailActivity extends AppCompatActivity
+        implements ListActionExecutor,
+                    ConfirmDialog.OnFragmentInteractionListener,
+                    View.OnClickListener{
 
 
     private Context context;
@@ -37,6 +41,10 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     private long currentGeneratorId;
     public static final String INTENT_KEY_QUESTION_SET_NAME = "questionSetName";
     public static final String INTENT_KEY_QUESTION_SET_ID = "questionSetId";
+    private Button generateButton;
+    private String questionPackName;
+    private QuestionGenerator questionGenerator;
+    private List<SimpleListItem> questionSets;
 
 
     @Override
@@ -45,9 +53,11 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
         setContentView(R.layout.activity_generator_detail);
         setupIntentVars();
         context = GeneratorDetailActivity.this;
-        dbManager = new QuestionGeneratorDbManager(this);
+        dbManager = new QuestionGeneratorDbManager(context);
+        questionGenerator = new QuestionGenerator(context);
         setupViews();
         setupToolbar();
+
     }
 
 
@@ -63,6 +73,9 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
         listAdapterHelper = new ListAdapterHelper(context, list , this);
         EditText editText = findViewById(R.id.nameEditText);
         listAdapterHelper.setupKeyInput( editText);
+        generateButton = findViewById(R.id.generateQuestionsButton);
+        generateButton.setOnClickListener(this);
+
     }
 
 
@@ -74,6 +87,12 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
         }
     }
 
+    public void onClick(View view){
+        if(view.getId() == R.id.generateQuestionsButton){
+            SimpleListItem currentGenerator = new SimpleListItem(currentGeneratorName, currentGeneratorId);
+            questionGenerator.addQuestionsTo(questionPackName, currentGenerator, questionSets);
+        }
+    }
 
     private String getActivityTitle(){
         String activityName = getResources().getString(R.string.question_generator_detail_activity_title);
@@ -122,7 +141,6 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
     @Override
     public void onLongClick(SimpleListItem item){
         selectedItem = item;
-        Log.i("quizz", "GenDetail onLongClick - item name: " + item.getName() + " id: " + item.getId());
         String message = context.getResources().getString(R.string.delete_generator_dialog_text, selectedItem.getName());
         DialogLoader.loadDialogWith(getFragmentManager(), message);
     }
@@ -133,12 +151,36 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
         if(text == null){
             return;
         }
-        String questionSetName = text.trim();
-        if(listAdapterHelper.contains(questionSetName)){
+        text = text.trim();
+        if(viewId == R.id.nameEditText) {
+            createQuestionSet(text);
+        }
+        else if(viewId == R.id.questionPackNameEditText){
+            setQuestionPackName(text);
+            setGenerateButtonState(text);
+        }
+    }
+
+
+    private void setQuestionPackName(String text){
+        this.questionPackName = text;
+    }
+
+    private void setGenerateButtonState(String text){
+        if(text.isEmpty()){
+            generateButton.setEnabled(false);
+            return;
+        }
+        generateButton.setEnabled(true);
+    }
+
+
+    private void createQuestionSet(String questionSetName){
+        questionSetName = questionSetName.trim();
+        if (listAdapterHelper.contains(questionSetName)) {
             return;
         }
         long questionSetId = dbManager.addQuestionSet(currentGeneratorId, questionSetName);
-        Log.i("quizz", "onTextEntered() added question set: " + questionSetName + ", "  + questionSetId + "  to generator with id: " + currentGeneratorId);
         listAdapterHelper.addToList(new SimpleListItem(questionSetName, questionSetId));
     }
 
@@ -152,7 +194,7 @@ public class GeneratorDetailActivity extends AppCompatActivity  implements ListA
 
     public void refreshListFromDb(){
         View noResultsFoundView = findViewById(R.id.noResultsFoundText);
-        List<SimpleListItem> questionSets = dbManager.retrieveQuestionSets(currentGeneratorId);
+        questionSets = dbManager.retrieveQuestionSets(currentGeneratorId);
         listAdapterHelper.setupList(questionSets, android.R.layout.simple_list_item_1, noResultsFoundView);
     }
 
