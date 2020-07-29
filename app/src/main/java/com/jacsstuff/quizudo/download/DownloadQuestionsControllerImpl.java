@@ -136,7 +136,7 @@ public class DownloadQuestionsControllerImpl implements DownloadQuestionsControl
             if(qp.hasNoQuestions()){
                 continue;
             }
-            if (dbWriter.saveQuestionPackRecord(qp)) {
+            if (dbWriter.saveQuestionPackRecord(qp) != -1) {
                 successCount++;
             }
         }

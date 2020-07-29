@@ -4,10 +4,12 @@ public class ChunkEntity {
 
     private String questionSubject;
     private String answer;
+    private long id;
 
-    public ChunkEntity(String questionSubject, String answer){
+    public ChunkEntity(String questionSubject, String answer, long id){
         this.questionSubject = questionSubject;
         this.answer = answer;
+        this.id = id;
     }
 
     public void setQuestionSubject(String questionSubject){
@@ -25,5 +27,7 @@ public class ChunkEntity {
     public String getAnswer(){
         return this.answer;
     }
+
+    public long getId(){ return this.id; }
 
 }

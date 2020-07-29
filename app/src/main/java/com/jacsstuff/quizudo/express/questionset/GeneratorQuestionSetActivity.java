@@ -102,7 +102,7 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
 
     public void refreshListFromDb(){
         View noResultsFoundView = findViewById(R.id.noResultsFoundText);
-        List<SimpleListItem> items = dbManager.retrieveChunksFor(questionSetId);
+        List<SimpleListItem> items = dbManager.retrieveChunkListItemsFor(questionSetId);
         listAdapterHelper.setupList(items, android.R.layout.simple_list_item_1, noResultsFoundView);
     }
 

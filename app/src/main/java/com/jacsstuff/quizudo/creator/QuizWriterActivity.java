@@ -101,7 +101,6 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_NEXT){
                     return true;
                 }
-
                 return false;
             }
         };
@@ -313,13 +312,7 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
         actionBar.setTitle(title);
     }
 
-    private void setTitleString(int resourceId){
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar == null){
-            return;
-        }
-        actionBar.setTitle(resourceId);
-    }
+
     @Override
     public void setPageNumber(int pageNumber){
         String pageNumberValue = "" + pageNumber;
@@ -424,12 +417,9 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
     }
     public void disablePreviousButton(){
         this.previousPageButton.setEnabled(false);
-
     }
-    public void disableNextButton(){
-        this.previousPageButton.setEnabled(false);
 
-    }
+
     public void disableFirstButton(){
         this.firstPageButton.setEnabled(false);
 
@@ -488,7 +478,8 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setFirstPageTitle(){
-        this.setTitleString(R.string.title_quiz_writer_activity);
+        String str = getString(R.string.title_quiz_writer_activity);
+        this.setTitleString(str);
     }
 
 

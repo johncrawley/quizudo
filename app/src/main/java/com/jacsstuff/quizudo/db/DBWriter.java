@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import static com.jacsstuff.quizudo.db.DbContract.QuestionPackEntry;
 import static com.jacsstuff.quizudo.db.DbContract.QuestionsEntry;
@@ -38,7 +37,7 @@ public class DBWriter {
     }
 
 
-    public boolean saveQuestionPackRecord(QuestionPackDbEntity questionPack){
+    public long saveQuestionPackRecord(QuestionPackDbEntity questionPack){
 
         db.beginTransaction();
         deleteQuestionPackWithUniqueName(questionPack.getUniqueName());
@@ -46,26 +45,29 @@ public class DBWriter {
         db.endTransaction();
 
         db.beginTransaction();
-        long qpRowId = addQuestionPackRecord(questionPack, db);
+        long qpId = addQuestionPackRecord(questionPack, db);
 
         if(questionPack.getQuestions() == null){
             db.endTransaction();
             closeConnection();
-            return false; // transaction was not successful.
+            return -1; // transaction was not successful.
         }
 
         for(Question question : questionPack.getQuestions()){
-            addQuestion(question, db, qpRowId);
+            addQuestion(question, qpId);
         }
         db.setTransactionSuccessful();
         db.endTransaction();
-        return true; //transaction was successful.
+        return qpId; //transaction was successful.
     }
 
 
-    public boolean addQuestionPack(String data){
+
+
+
+    public boolean addQuestionPack(String jsonData){
         JSONParser parser = new JSONParser();
-        List<QuestionPackDbEntity> questionPacks = parser.parseQuestionPacksFromJson(data);
+        List<QuestionPackDbEntity> questionPacks = parser.parseQuestionPacksFromJson(jsonData);
         for(QuestionPackDbEntity qp : questionPacks) {
             saveQuestionPackRecord(qp);
         }
@@ -74,10 +76,8 @@ public class DBWriter {
 
 
     public int deleteQuestionPacks(Set<Integer> questionPackIds){
-
         int deleteCount = 0;
         for( int questionPackId: questionPackIds){
-
             if(deleteQuestionPack(questionPackId)){
                 deleteCount++;
             }
@@ -96,6 +96,19 @@ public class DBWriter {
         db.setTransactionSuccessful();
         db.endTransaction();
         return true;
+    }
+
+    public long getQuestionPackIdForName(String qpName){
+
+        String query = SELECT_ALL_FROM + QuestionPackEntry.TABLE_NAME + WHERE + QuestionPackEntry.COLUMN_NAME_TITLE + EQUALS + Utils.inQuotes(qpName) + LIMIT_1;
+        long questionPackId = -1;
+
+        Cursor cursor = db.rawQuery(query, null);
+        while(cursor.moveToNext()){
+            questionPackId = getLong( cursor, DbContract.QuestionPackEntry._ID);
+        }
+        cursor.close();
+        return questionPackId;
     }
 
 
@@ -142,21 +155,6 @@ public class DBWriter {
         }
         return isSuccessful;
     }
-/*
-    private void printQPIds(){
-
-        String getUniqueQPNames = SELECT + DbContract.QuestionPackEntry.COLUMN_NAME_UNIQUE_NAME +
-                FROM + DbContract.QuestionPackEntry.TABLE_NAME;
-
-        Cursor cursor0 = db.rawQuery(getUniqueQPNames, null);
-        if(cursor0 != null){
-            while(cursor0.moveToNext()){
-                Log.i("DbWriter", "deleteQPWithUniqueNames, uniqueName : " + getString(cursor0, DbContract.QuestionPackEntry.COLUMN_NAME_UNIQUE_NAME));
-            }
-            cursor0.close();
-        }
-    }
-*/
 
 
     private void deleteQuestionPackRow(SQLiteDatabase db, long questionPackId){
@@ -167,13 +165,15 @@ public class DBWriter {
         runQuery(db, query);
     }
 
+
     private boolean deleteQuestions(SQLiteDatabase db, long questionPackId) {
 
         String query =  DELETE + FROM + DbContract.QuestionsEntry.TABLE_NAME +
                         WHERE      + DbContract.QuestionsEntry.COLUMN_NAME_QUESTION_PACK_ID +
-                        " = " + questionPackId + ";" ;
+                        EQUALS + questionPackId + ";" ;
         return runQuery(db, query);
     }
+
 
     private boolean runQuery(SQLiteDatabase db, String query){
         boolean isSuccessful = true;
@@ -186,30 +186,32 @@ public class DBWriter {
         return isSuccessful;
     }
 
-    private void addQuestion(Question q, SQLiteDatabase db , long questionPackRowId){
+
+    public boolean addQuestion(Question q, long questionPackId){
 
         ContentValues questionValues = new ContentValues();
         questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_QUESTION_TEXT,  q.getQuestionText());
         questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_CORRECT_ANSWER, q.getCorrectAnswer());
         questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_ANSWER_CHOICES, q.getAnswerChoicesAsString());
         questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_TRIVIA,         q.getTrivia());
-        questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_QUESTION_PACK_ID, questionPackRowId);
+        questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_QUESTION_PACK_ID, questionPackId);
         questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_TOPICS, q.getTopicsAsString());
         questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_DIFFICULTY, q.getDifficulty());
         questionValues.put(QuestionsEntry.COLUMN_NAME_ANSWER_POOL_NAME, q.getAnswerPoolName());
         questionValues.put(DbContract.QuestionsEntry.COLUMN_NAME_FLAGS, q.getFlags());
         try {
             db.insertOrThrow(DbContract.QuestionsEntry.TABLE_NAME, null, questionValues);
+            return true;
         }catch(SQLException e){
             e.printStackTrace();
             db.endTransaction();
         }
+        return false;
     }
 
 
     private long addQuestionPackRecord(QuestionPackDbEntity qp, SQLiteDatabase db ){
         ContentValues questionPackValues = new ContentValues();
-
         questionPackValues.put(DbContract.QuestionPackEntry.COLUMN_NAME_AUTHOR,             qp.getAuthor());
         questionPackValues.put(DbContract.QuestionPackEntry.COLUMN_NAME_TITLE,              qp.getName());
         questionPackValues.put(DbContract.QuestionPackEntry.COLUMN_NAME_VERSION,            qp.getVersion());
@@ -218,14 +220,13 @@ public class DBWriter {
         questionPackValues.put(DbContract.QuestionPackEntry.COLUMN_NAME_DATE_CREATED,       qp.getDateCreated());
         questionPackValues.put(DbContract.QuestionPackEntry.COLUMN_NAME_DESCRIPTION,        qp.getDescription());
         questionPackValues.put(DbContract.QuestionPackEntry.COLUMN_NAME_DIFFICULTY,          qp.getDifficulty());
-        // returns the ID for the question pack, which will be used by each related question
         return db.insert(DbContract.QuestionPackEntry.TABLE_NAME, null, questionPackValues);
     }
 
 
     public List <QuestionPackOverview> getQuestionPackOverviews(){
 
-        Cursor cursor =  db.rawQuery(SELECT + "*" + FROM  + DbContract.QuestionPackEntry.TABLE_NAME + ";", null);
+        Cursor cursor =  db.rawQuery(SELECT_ALL_FROM + DbContract.QuestionPackEntry.TABLE_NAME + ";", null);
         List<QuestionPackOverview> overviews = new ArrayList<>();
         while(cursor.moveToNext()) {
             QuestionPackOverview qpDetail = new QuestionPackOverview();
@@ -276,11 +277,7 @@ public class DBWriter {
     List<Integer> getQuestionIdsFromQuestionPackIds(Set <Integer> questionPackIds){
 
         List<Integer> questionIds = new ArrayList<>();
-        String ids = "";
-        ids += "(";
-        ids += android.text.TextUtils.join( ", ", questionPackIds);
-        ids += ")";
-
+        String ids = getIds(questionPackIds);
 
         String query = SELECT + DbContract.QuestionsEntry._ID +
                         FROM + DbContract.QuestionsEntry.TABLE_NAME +
@@ -296,9 +293,18 @@ public class DBWriter {
     }
 
 
+    private String getIds(Set<Integer> questionPackIds){
+        String ids = "";
+        ids += "(";
+        ids += android.text.TextUtils.join( ", ", questionPackIds);
+        ids += ")";
+        return ids;
+    }
+
+
     public Question getQuestion(int questionId){
         Question question = null;
-        String query = SELECT + "*" + FROM + DbContract.QuestionsEntry.TABLE_NAME +
+        String query = SELECT_ALL_FROM + DbContract.QuestionsEntry.TABLE_NAME +
                         WHERE + DbContract.QuestionsEntry._ID +
                         EQUALS + questionId;
 
@@ -312,7 +318,6 @@ public class DBWriter {
             String topics           = getString(cursor, DbContract.QuestionsEntry.COLUMN_NAME_TOPICS);
             //int difficulty          = getInt(cursor, DbContract.QuestionsEntry.COLUMN_NAME_DIFFICULTY);
             String answerPool       = getString(cursor, DbContract.QuestionsEntry.COLUMN_NAME_ANSWER_POOL_NAME);
-            Log.i("DBWriter", "answer pool for question "+ questionText  + " : " + answerPool);
             question = new Question(questionText, correctAnswer, answerChoices, trivia, topics, answerPool);
             cursor.close();
         }

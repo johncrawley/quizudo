@@ -61,7 +61,7 @@ public class QuizWriterControllerImpl implements QuizWriterController {
             view.displayNothingToSaveMessage();
             return;
         }
-        if(dbWriter.saveQuestionPackRecord(questionPackDbEntity)){
+        if(dbWriter.saveQuestionPackRecord(questionPackDbEntity) != -1){
             view.displaySaveSuccessMessage(questionPackDbEntity.getNumberOfQuestions());
             return;
         }

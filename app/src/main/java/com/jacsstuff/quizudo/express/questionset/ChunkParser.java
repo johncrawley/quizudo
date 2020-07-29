@@ -27,12 +27,16 @@ public class ChunkParser {
             }
         }
 
-        return new ChunkEntity(questionSubject, answer);
+        return new ChunkEntity(questionSubject, answer, -1);
     }
 
     public String getString(String subject, String answer){
 
         return subject + delimiter + answer;
+    }
+
+    public String getString(ChunkEntity entity){
+        return getString(entity.getQuestionSubject(), entity.getAnswer());
     }
 
 

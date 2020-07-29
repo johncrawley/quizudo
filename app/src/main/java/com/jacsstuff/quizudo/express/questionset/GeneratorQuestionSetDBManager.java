@@ -19,7 +19,9 @@ import static com.jacsstuff.quizudo.db.DbConsts.DELETE;
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE_FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.EQUALS;
 import static com.jacsstuff.quizudo.db.DbConsts.FROM;
+import static com.jacsstuff.quizudo.db.DbConsts.LIMIT_1;
 import static com.jacsstuff.quizudo.db.DbConsts.SELECT;
+import static com.jacsstuff.quizudo.db.DbConsts.SELECT_ALL_FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.SET;
 import static com.jacsstuff.quizudo.db.DbConsts.UPDATE;
 import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
@@ -86,13 +88,52 @@ public class GeneratorQuestionSetDBManager {
         return addValuesToTable(DbContract.QuestionGeneratorChunkEntry.TABLE_NAME, contentValues);
     }
 
-    public List<SimpleListItem> retrieveChunksFor(long id){
 
-        String query = SELECT + ALL + FROM + DbContract.QuestionGeneratorChunkEntry.TABLE_NAME +
+    public QuestionSetEntity findQuestionSetById(long id){
+        String query = SELECT_ALL_FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME +
+                WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + EQUALS + id + LIMIT_1;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.getCount() == 0){
+            return null;
+        }
+        cursor.moveToFirst();
+        String questionTemplate = getString(cursor, DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_QUESTION_TEMPLATE);
+        String name = getString(cursor, DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME);
+        cursor.close();
+        return new QuestionSetEntity(name, questionTemplate);
+    }
+
+
+    public List<SimpleListItem> retrieveChunkListItemsFor(long id){
+        String query = SELECT_ALL_FROM + DbContract.QuestionGeneratorChunkEntry.TABLE_NAME +
                 WHERE + DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID +
                 EQUALS + id + ";";
         return retrieveListFromDb(query);
     }
+
+
+    public List<ChunkEntity> retrieveChunksFor(long questionSetId){
+        String query = SELECT_ALL_FROM + DbContract.QuestionGeneratorChunkEntry.TABLE_NAME +
+                WHERE + DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID +
+                EQUALS + questionSetId + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+        List<ChunkEntity> list = new ArrayList<>();
+        while(cursor.moveToNext()){
+            String answer = getString(cursor, DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_ANSWER);
+            String subject = getString(cursor, DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_SUBJECT);
+            String trivia = getString(cursor, DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_TRIVIA);
+
+            long id = getLong(cursor, DbContract.QuestionGeneratorChunkEntry._ID);
+            ChunkEntity chunkEntity = new ChunkEntity(subject,answer, id);
+            list.add(chunkEntity);
+        }
+        cursor.close();
+        return list;
+    }
+
+
 
 
     private List<SimpleListItem> retrieveListFromDb(String query){

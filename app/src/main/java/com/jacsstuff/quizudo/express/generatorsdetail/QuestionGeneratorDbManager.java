@@ -100,12 +100,6 @@ public class QuestionGeneratorDbManager {
         mDbHelper.close();
     }
 
-    private String inQuotes(String value){
-        return "'" + value + "'";
-    }
-    private String inQuotes(long value){
-        return "'" + value + "'";
-    }
 
 
     private boolean executeStatment(String query){
