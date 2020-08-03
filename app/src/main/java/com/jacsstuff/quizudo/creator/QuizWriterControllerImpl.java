@@ -1,6 +1,7 @@
 package com.jacsstuff.quizudo.creator;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 import com.jacsstuff.quizudo.db.DBWriter;
@@ -61,6 +62,7 @@ public class QuizWriterControllerImpl implements QuizWriterController {
             view.displayNothingToSaveMessage();
             return;
         }
+        Log.i("QuizWriterCntrol", " questionPackDbEntityToSave : " + questionPackDbEntity.toString());
         if(dbWriter.saveQuestionPackRecord(questionPackDbEntity) != -1){
             view.displaySaveSuccessMessage(questionPackDbEntity.getNumberOfQuestions());
             return;
@@ -199,6 +201,7 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         questionItem.setUsesDefaultAnswerPool(view.isUsingDefaultAnswerPool());
     }
 
+
     private void copyDataFromCurrentQuestionItemToView() {
         if(currentQuestionIndex < 0){
             return;
@@ -207,12 +210,12 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         view.setQuestionText(questionItem.getQuestion());
         view.setAnswerChoices(questionItem.getAnswerChoices());
         view.setTriviaText(questionItem.getTrivia());
-
         view.setAnswerPool(deriveCurrentAnswerPoolChoice(questionItem));
         view.setTopics(questionItem.getTopics());
         view.setCorrectAnswerText(questionItem.getCorrectAnswer());
         view.setUsesDefaultAnswerPool(questionItem.isUsingDefaultAnswerPool());
     }
+
 
     private String deriveCurrentAnswerPoolChoice(QuestionItem questionItem){
         String answerPoolChoice = questionItem.getChosenAnswerPool();
@@ -228,7 +231,6 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         questionPackItem.setDefaultTopics(view.getDefaultTopics());
         questionPackItem.setQuestionPackName(view.getQuestionPackName());
         questionPackItem.setDescription(view.getDescription());
-
     }
 
 
@@ -238,17 +240,20 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         currentQuestionIndex++;
     }
 
+
     private void decrementPageVars(){
         currentPage--;
         currentQuestion--;
         currentQuestionIndex--;
     }
 
+
     private void resetPageVars(){
         currentPage = 1;
         currentQuestion = 0;
         currentQuestionIndex = -1;
     }
+
 
     private void setPageVarsToCurrentMax(){
 

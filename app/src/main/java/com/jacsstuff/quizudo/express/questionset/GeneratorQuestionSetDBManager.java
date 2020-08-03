@@ -91,10 +91,11 @@ public class GeneratorQuestionSetDBManager {
 
     public QuestionSetEntity findQuestionSetById(long id){
         String query = SELECT_ALL_FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME +
-                WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + EQUALS + id + LIMIT_1;
+                WHERE + DbContract.QuestionGeneratorSetEntry._ID + EQUALS + id + LIMIT_1;
 
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.getCount() == 0){
+            cursor.close();
             return null;
         }
         cursor.moveToFirst();

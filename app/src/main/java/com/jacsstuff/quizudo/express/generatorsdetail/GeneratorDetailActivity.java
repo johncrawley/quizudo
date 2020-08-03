@@ -71,8 +71,10 @@ public class GeneratorDetailActivity extends AppCompatActivity
     private void setupViews(){
         ListView list = findViewById(R.id.list1);
         listAdapterHelper = new ListAdapterHelper(context, list , this);
-        EditText editText = findViewById(R.id.nameEditText);
-        listAdapterHelper.setupKeyInput( editText);
+        EditText nameEditText = findViewById(R.id.questionSetNameEditText);
+        listAdapterHelper.setupKeyInput( nameEditText );
+        EditText questionPackNameEditText = findViewById(R.id.questionPackNameEditText);
+        listAdapterHelper.setupKeyInput( questionPackNameEditText );
         generateButton = findViewById(R.id.generateQuestionsButton);
         generateButton.setOnClickListener(this);
 
@@ -152,7 +154,7 @@ public class GeneratorDetailActivity extends AppCompatActivity
             return;
         }
         text = text.trim();
-        if(viewId == R.id.nameEditText) {
+        if(viewId == R.id.questionSetNameEditText) {
             createQuestionSet(text);
         }
         else if(viewId == R.id.questionPackNameEditText){

@@ -13,6 +13,12 @@ public class QuestionPackNameComparator implements Comparator<QuestionPackOvervi
     public int compare(QuestionPackOverview qp1, QuestionPackOverview qp2){
         String name1 = qp1.getName();
         String name2 = qp2.getName();
+        if(name1 == null){
+            return 0;
+        }
+        if(name2 == null){
+            return -1;
+        }
         return name1.compareToIgnoreCase(name2);
     }
 

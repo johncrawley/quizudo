@@ -1,6 +1,7 @@
 package com.jacsstuff.quizudo.express.generatorsdetail;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 import com.jacsstuff.quizudo.db.DBWriter;
@@ -29,7 +30,8 @@ public class QuestionGenerator {
     private long generatorId;
     private String generatorName;
     private List<SimpleListItem> existingAnswerPools;
-    ChunkParser chunkParser;
+    private ChunkParser chunkParser;
+    private QuestionTextMaker questionTextMaker;
 
     public QuestionGenerator(Context context){
         this.context = context;
@@ -38,6 +40,7 @@ public class QuestionGenerator {
         questionPackDBManager = new QuestionPackDBManager(context);
         dbWriter = new DBWriter(context);
         chunkParser = new ChunkParser(context);
+        questionTextMaker = new QuestionTextMaker(context);
     }
 
 
@@ -45,27 +48,43 @@ public class QuestionGenerator {
 
         generatorName = generator.getName();
         generatorId = generator.getId();
-        existingAnswerPools = answerPoolDBManager.getAnswerPools();
-
         long questionPackId = createQuestionPackIfDoesntExist(questionPackName);
-        Map <String, Long> answerPoolMap = new HashMap<>();
-
-        for(SimpleListItem item: existingAnswerPools){
-            answerPoolMap.put(item.getName(), item.getId());
-        }
-
+        Map<String, Long> answerPoolMap = getMapOfExistingAnswerPools();
 
         for(SimpleListItem questionSet : questionSets){
             long questionSetId = questionSet.getId();
 
             List<ChunkEntity> chunks = questionSetDBManager.retrieveChunksFor(questionSetId);
-            List<SimpleListItem> items = getListItemsFromChunks(chunks);
-            addAnswersToAnswerPool(items, questionSet.getName(), answerPoolMap);
-            addQuestionsBasedOn(chunks, questionSetId, questionPackId);
+            List<String> answers = getAnswersFrom(chunks);
+            String answerPoolName = AnswerPoolNameResolver.getName(generatorName, questionSet.getName());
+
+            addAnswersToAnswerPool(answers, answerPoolName , answerPoolMap);
+            addQuestionsBasedOn(chunks, questionSetId, questionPackId, answerPoolName);
         }
 
     }
 
+
+    private Map<String, Long> getMapOfExistingAnswerPools(){
+        Map <String, Long> answerPoolMap = new HashMap<>();
+        existingAnswerPools = answerPoolDBManager.getAnswerPools();
+
+        for(SimpleListItem item: existingAnswerPools){
+            answerPoolMap.put(item.getName(), item.getId());
+        }
+        return answerPoolMap;
+    }
+
+
+
+
+    private List<String> getAnswersFrom(List<ChunkEntity> chunks){
+        List<String> answers = new ArrayList<>(chunks.size());
+        for(ChunkEntity chunkEntity : chunks){
+            answers.add(chunkEntity.getAnswer());
+        }
+        return answers;
+    }
 
     private List<SimpleListItem> getListItemsFromChunks(List<ChunkEntity> chunks){
         List<SimpleListItem> items = new ArrayList<>(chunks.size());
@@ -77,43 +96,60 @@ public class QuestionGenerator {
     }
 
 
-    private void addQuestionsBasedOn(List<ChunkEntity> chunks, long questionSetId, long questionPackId){
-
+    private void addQuestionsBasedOn(List<ChunkEntity> chunks, long questionSetId, long questionPackId, String answerPoolName){
         QuestionSetEntity questionSetEntity = questionSetDBManager.findQuestionSetById(questionSetId);
-        for(ChunkEntity entity: chunks){
-            Question question = new Question();
-
-            question.setQuestionText("");
-            question.setAnswerPoolName("");
-
-            dbWriter.addQuestion(question, questionPackId);
+        if(questionSetEntity == null){
+            return;
         }
-
-
-
+        for(ChunkEntity chunkEntity: chunks){
+            Question question = new Question();
+            setQuestionText(question, questionSetEntity, chunkEntity);
+            question.setAnswerPoolName(answerPoolName);
+            question.setCorrectAnswer(chunkEntity.getAnswer());
+            if(!isValid(question)){
+                continue;
+            }
+            dbWriter.addOrOverwriteQuestion(question, questionPackId);
+        }
     }
 
+
+    private void setQuestionText(Question question, QuestionSetEntity questionSetEntity, ChunkEntity chunkEntity){
+        String questionText = questionTextMaker.getQuestionText(questionSetEntity.getQuestionTemplate(), chunkEntity.getQuestionSubject());
+        question.setQuestionText(questionText);
+        Log.i("QuestionGenerator", "setQuestionText() " + questionText);
+    }
+
+
+
+    private boolean isValid(Question q){
+        if(isNullOrEmpty(q.getAnswerPoolName())) return false;
+        if(isNullOrEmpty(q.getCorrectAnswer())) return false;
+        return !isNullOrEmpty(q.getQuestionText());
+    }
+
+
+
+    private boolean isNullOrEmpty(String str){
+        return str == null || str.isEmpty();
+    }
 
     private long createQuestionPackIfDoesntExist(String questionPackName){
         long questionPackId = dbWriter.getQuestionPackIdForName(questionPackName);
         if(questionPackId == -1){
             QuestionPackDbEntity qpEntity= new QuestionPackDbEntity();
             qpEntity.setDateCreated(DateProvider.getNow());
-            qpEntity.setAuthor("User");
-            qpEntity.setName(questionPackName);
-
-
-
+            qpEntity.setNameAndAuthor(questionPackName, "User");
+            Log.i("QGenerator", "createQPIfDoesntExist() qpDbEntry: " + qpEntity.toString());
             questionPackId = dbWriter.saveQuestionPackRecord(qpEntity);
         }
         return questionPackId;
     }
 
 
-    private void addAnswersToAnswerPool(List<SimpleListItem> items, String questionSetName, Map<String, Long> answerPoolMap){
-        String answerPoolName = AnswerPoolNameResolver.getName(generatorName, questionSetName);
+    private void addAnswersToAnswerPool(List<String> answers, String answerPoolName, Map<String, Long> answerPoolMap){
         long answerPoolId = createAnswerPoolIfDoesntExist(answerPoolName, answerPoolMap);
-        answerPoolDBManager.addAnswerPoolItems(answerPoolId, getAnswers(items));
+        answerPoolDBManager.addAnswerPoolItems(answerPoolId, answers);
     }
 
 
@@ -124,14 +160,5 @@ public class QuestionGenerator {
         return answerPoolMap.get(resolvedName);
     }
 
-
-    private List<String> getAnswers(List<SimpleListItem> items){
-        List<String> answers = new ArrayList<>();
-        for(SimpleListItem item : items){
-            ChunkEntity chunk = chunkParser.parse(item.getName());
-            answers.add(chunk.getAnswer());
-        }
-        return answers;
-    }
 
 }

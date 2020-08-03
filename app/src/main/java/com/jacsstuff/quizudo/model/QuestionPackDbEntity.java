@@ -149,8 +149,17 @@ public class QuestionPackDbEntity {
     }
 
 
+    public String toString(){
 
-
+        return "Name: " + name
+                + " author: " + author
+                + " description: " + description
+                + " dateCreated " +  dateCreated
+                + " number of questions: " +    questions.size()
+                + " dateDownloaded: " + dateDownloaded
+                + " unique name: " + uniqueName
+                + " version: " + version;
+    }
 
 
 
