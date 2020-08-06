@@ -3,6 +3,7 @@ package com.jacsstuff.quizudo.express.generatorsdetail;
 import android.content.Context;
 import android.util.Log;
 
+import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 import com.jacsstuff.quizudo.db.DBWriter;
 import com.jacsstuff.quizudo.db.QuestionPackDBManager;
@@ -40,7 +41,7 @@ public class QuestionGenerator {
         questionPackDBManager = new QuestionPackDBManager(context);
         dbWriter = new DBWriter(context);
         chunkParser = new ChunkParser(context);
-        questionTextMaker = new QuestionTextMaker(context);
+        questionTextMaker = new QuestionTextMaker(context.getString(R.string.question_generator_question_subject_placeholder));
     }
 
 
