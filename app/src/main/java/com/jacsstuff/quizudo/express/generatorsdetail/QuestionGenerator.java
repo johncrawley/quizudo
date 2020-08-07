@@ -6,9 +6,7 @@ import android.util.Log;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 import com.jacsstuff.quizudo.db.DBWriter;
-import com.jacsstuff.quizudo.db.QuestionPackDBManager;
 import com.jacsstuff.quizudo.express.questionset.ChunkEntity;
-import com.jacsstuff.quizudo.express.questionset.ChunkParser;
 import com.jacsstuff.quizudo.express.questionset.GeneratorQuestionSetDBManager;
 import com.jacsstuff.quizudo.express.questionset.QuestionSetEntity;
 import com.jacsstuff.quizudo.list.SimpleListItem;
@@ -23,32 +21,20 @@ import java.util.Map;
 
 public class QuestionGenerator {
 
-    private Context context;
     private GeneratorQuestionSetDBManager questionSetDBManager;
     private AnswerPoolDBManager answerPoolDBManager;
     private DBWriter dbWriter;
-    private QuestionPackDBManager questionPackDBManager;
-    private long generatorId;
-    private String generatorName;
-    private List<SimpleListItem> existingAnswerPools;
-    private ChunkParser chunkParser;
     private QuestionTextMaker questionTextMaker;
 
     public QuestionGenerator(Context context){
-        this.context = context;
         questionSetDBManager = new GeneratorQuestionSetDBManager(context);
         answerPoolDBManager = new AnswerPoolDBManager(context);
-        questionPackDBManager = new QuestionPackDBManager(context);
         dbWriter = new DBWriter(context);
-        chunkParser = new ChunkParser(context);
         questionTextMaker = new QuestionTextMaker(context.getString(R.string.question_generator_question_subject_placeholder));
     }
 
 
     public void addQuestionsTo(String questionPackName, SimpleListItem generator, List<SimpleListItem> questionSets){
-
-        generatorName = generator.getName();
-        generatorId = generator.getId();
         long questionPackId = createQuestionPackIfDoesntExist(questionPackName);
         Map<String, Long> answerPoolMap = getMapOfExistingAnswerPools();
 
@@ -57,26 +43,21 @@ public class QuestionGenerator {
 
             List<ChunkEntity> chunks = questionSetDBManager.retrieveChunksFor(questionSetId);
             List<String> answers = getAnswersFrom(chunks);
-            String answerPoolName = AnswerPoolNameResolver.getName(generatorName, questionSet.getName());
+            String answerPoolName = AnswerPoolNameResolver.getName(generator.getName(), questionSet.getName());
 
             addAnswersToAnswerPool(answers, answerPoolName , answerPoolMap);
             addQuestionsBasedOn(chunks, questionSetId, questionPackId, answerPoolName);
         }
-
     }
 
 
     private Map<String, Long> getMapOfExistingAnswerPools(){
         Map <String, Long> answerPoolMap = new HashMap<>();
-        existingAnswerPools = answerPoolDBManager.getAnswerPools();
-
-        for(SimpleListItem item: existingAnswerPools){
+        for(SimpleListItem item:  answerPoolDBManager.getAnswerPools()){
             answerPoolMap.put(item.getName(), item.getId());
         }
         return answerPoolMap;
     }
-
-
 
 
     private List<String> getAnswersFrom(List<ChunkEntity> chunks){
@@ -85,15 +66,6 @@ public class QuestionGenerator {
             answers.add(chunkEntity.getAnswer());
         }
         return answers;
-    }
-
-    private List<SimpleListItem> getListItemsFromChunks(List<ChunkEntity> chunks){
-        List<SimpleListItem> items = new ArrayList<>(chunks.size());
-        for(ChunkEntity chunk: chunks){
-            String displayStr = chunkParser.getString(chunk);
-            items.add(new SimpleListItem(displayStr, chunk.getId()));
-        }
-        return items;
     }
 
 
@@ -118,9 +90,7 @@ public class QuestionGenerator {
     private void setQuestionText(Question question, QuestionSetEntity questionSetEntity, ChunkEntity chunkEntity){
         String questionText = questionTextMaker.getQuestionText(questionSetEntity.getQuestionTemplate(), chunkEntity.getQuestionSubject());
         question.setQuestionText(questionText);
-        Log.i("QuestionGenerator", "setQuestionText() " + questionText);
     }
-
 
 
     private boolean isValid(Question q){
@@ -128,7 +98,6 @@ public class QuestionGenerator {
         if(isNullOrEmpty(q.getCorrectAnswer())) return false;
         return !isNullOrEmpty(q.getQuestionText());
     }
-
 
 
     private boolean isNullOrEmpty(String str){

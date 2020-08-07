@@ -74,10 +74,17 @@ public class GeneratorDetailActivity extends AppCompatActivity
         EditText nameEditText = findViewById(R.id.questionSetNameEditText);
         listAdapterHelper.setupKeyInput( nameEditText );
         EditText questionPackNameEditText = findViewById(R.id.questionPackNameEditText);
-        listAdapterHelper.setupKeyInput( questionPackNameEditText );
+        listAdapterHelper.setupKeyInput( questionPackNameEditText, false );
         generateButton = findViewById(R.id.generateQuestionsButton);
         generateButton.setOnClickListener(this);
+        setExistingQuestionPackName(questionPackNameEditText);
 
+    }
+
+    private void setExistingQuestionPackName(EditText editText){
+        String existingQuestionPackName = dbManager.getQuestionSetName(currentGeneratorId);
+        editText.setText(existingQuestionPackName);
+        questionPackName = existingQuestionPackName;
     }
 
 
@@ -158,14 +165,16 @@ public class GeneratorDetailActivity extends AppCompatActivity
             createQuestionSet(text);
         }
         else if(viewId == R.id.questionPackNameEditText){
-            setQuestionPackName(text);
+            setAndSaveQuestionPackName(text);
             setGenerateButtonState(text);
         }
     }
 
 
-    private void setQuestionPackName(String text){
+    private void setAndSaveQuestionPackName(String text){
+
         this.questionPackName = text;
+        dbManager.updateQuestionPackName(currentGeneratorId, text);
     }
 
     private void setGenerateButtonState(String text){

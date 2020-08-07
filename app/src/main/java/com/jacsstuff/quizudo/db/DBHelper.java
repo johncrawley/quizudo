@@ -76,9 +76,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private static final String SQL_CREATE_QUESTION_GENERATOR_TABLE =
-            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorEntry.TABLE_NAME + OPENING_BRACKET +
+            CREATE_TABLE_IF_NOT_EXISTS + DbContract.QuestionGeneratorEntry.TABLE_NAME +
+                    OPENING_BRACKET +
                     DbContract.QuestionGeneratorEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
-                    DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME + TEXT +  UNIQUE + CLOSING_BRACKET;
+                    DbContract.QuestionGeneratorEntry.COLUMN_NAME_GENERATOR_NAME + TEXT +  UNIQUE + COMMA +
+                    DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME + TEXT +
+                    CLOSING_BRACKET;
 
 
     private static final String SQL_CREATE_QUESTION_GENERATOR_SETS_TABLE =

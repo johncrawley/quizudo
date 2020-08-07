@@ -135,11 +135,7 @@ public class ConfigureQuizActivity extends AppCompatActivity implements View.OnC
             setupElementsForNoQuestionsFound();
             return;
         }
-        Log.i("ConfigureQuizActivity", "questionSingleton - number of questions = " + maxValue);
-        String [] valuesArray = new String[maxValue];
-        for(int i = 0; i < maxValue; i++){
-            valuesArray[i]  = "" + (i + 1);
-        }
+        String [] valuesArray = createValuesArray(maxValue);
         numberPicker.setWrapSelectorWheel(false);
         numberPicker.setDisplayedValues(valuesArray);
 
@@ -147,12 +143,20 @@ public class ConfigureQuizActivity extends AppCompatActivity implements View.OnC
         numberPicker.setValue(getPreviousNumberOfQuestions());
     }
 
-    private void setupElementsForNoQuestionsFound(){
 
+    private String[] createValuesArray(int maxValue){
+        String [] valuesArray = new String[maxValue];
+        for(int i = 0; i < maxValue; i++){
+            valuesArray[i]  = "" + (i + 1);
+        }
+        return valuesArray;
+    }
+
+
+    private void setupElementsForNoQuestionsFound(){
         Toast.makeText(ConfigureQuizActivity.this,R.string.no_questions_available_toast , Toast.LENGTH_SHORT).show();
         numberPicker.setVisibility(View.GONE);
         beginQuizButton.setVisibility(View.GONE);
-
     }
 
 
@@ -186,6 +190,7 @@ public class ConfigureQuizActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+
     private void saveCurrentConfig(){
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(PREVIOUS_NUMBER_OF_QUESTIONS_PREFERENCE, numberPicker.getValue());
@@ -194,8 +199,8 @@ public class ConfigureQuizActivity extends AppCompatActivity implements View.OnC
         editor.apply();
     }
 
-    private void startQuizActivity(){
 
+    private void startQuizActivity(){
         Log.i("startQuizActivity()", "Starting quiz activity.");
         Intent intent = new Intent(this, QuizActivity.class);
         intent.putExtra(NUMBER_OF_QUESTIONS_INTENT_EXTRA, numberPicker.getValue());

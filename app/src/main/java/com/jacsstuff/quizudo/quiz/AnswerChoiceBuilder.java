@@ -1,10 +1,12 @@
 package com.jacsstuff.quizudo.quiz;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +30,9 @@ public class AnswerChoiceBuilder{
 
     public List<String> generateShuffledAnswerList(String answerPoolName, List<String> existingAnswers, String correctAnswer) {
         Set<String> answerChoices = new HashSet<>(existingAnswers);
+        if(correctAnswer == null){
+            correctAnswer = "";
+        }
         answerChoices.add(correctAnswer);
         addAnswerPoolItemsToSet(answerChoices, getAnswerPool(answerPoolName));
         answerChoices = removeAllEmptyItemsFrom(answerChoices);
@@ -42,7 +47,11 @@ public class AnswerChoiceBuilder{
         }
         while (set.size() < MAX_ANSWER_CHOICES && answerPool.size() > 0) {
             int index = ThreadLocalRandom.current().nextInt( answerPool.size());
-            set.add(answerPool.remove(index));
+            String answer = answerPool.remove(index);
+            if(answer == null){
+                answer =  "__null__" + index;
+            }
+            set.add(answer);
         }
     }
 

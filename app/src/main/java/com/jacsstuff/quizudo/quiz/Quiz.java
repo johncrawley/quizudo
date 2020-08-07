@@ -37,17 +37,16 @@ public class Quiz {
     }
 
 
-    // still need to set max Number of questions
     public void createQuiz(DBWriter dbWriter, int maxQuestions) {
         isRunning = true;
-        questionIndex = 0; //init at -1, because first question is index 0, and
+        questionIndex = 0;
         singletonResultsStore = QuestionResultsSingleton.getInstance();
         singletonResultsStore.resetResults();
         hasCurrentQuestionBeenAnswered = false;
         maxNumberOfQuestions = maxQuestions;
-        logIfQuestionsAreNull();
         QuestionsSingleton questionsSingleton = QuestionsSingleton.getInstance();
         questionIds = questionsSingleton.getQuestionIds();
+        logIfQuestionsAreNull();
         this.dbWriter = dbWriter;
         shuffleQuestionOrder();
         assignCurrentQuestion();
@@ -176,7 +175,7 @@ public class Quiz {
             currentAnswerChoices = answerChoiceBuilder.generateShuffledAnswerList(currentQuestion.getAnswerPoolName(),
                                                                                 currentQuestion.getAnswerChoices(),
                                                                                 currentQuestion.getCorrectAnswer());
-            return currentAnswerChoices.toArray(new String[3]);
+            return currentAnswerChoices.toArray(new String[0]);
         }
         return new String[0];
     }

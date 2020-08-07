@@ -124,7 +124,7 @@ public class ListAdapterHelper {
     }
 
 
-    public void setupKeyInput(final EditText editText, final boolean isFieldCleared) {
+    public void setupKeyInput(final EditText editText, final boolean isFieldClearedOnTextInput) {
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -137,7 +137,7 @@ public class ListAdapterHelper {
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                     }
                     actionExecutor.onTextEntered(v.getId(), v.getText().toString());
-                    if(isFieldCleared){
+                    if(isFieldClearedOnTextInput){
                           editText.getText().clear();
                     }
                     return true;

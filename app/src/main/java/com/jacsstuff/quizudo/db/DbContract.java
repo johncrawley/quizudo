@@ -58,6 +58,7 @@ public final class DbContract {
     public static class QuestionGeneratorEntry implements BaseColumns {
         public static final String TABLE_NAME = "question_generators";
         public static final String COLUMN_NAME_GENERATOR_NAME = "name";
+        public static final String COLUMN_NAME_QUESTION_PACK_NAME = "question_pack_name";
     }
 
     public static class QuestionGeneratorSetEntry implements BaseColumns {

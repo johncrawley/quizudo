@@ -3,6 +3,7 @@ package com.jacsstuff.quizudo.quiz;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.jacsstuff.quizudo.results.QuizResultsActivity;
 import com.jacsstuff.quizudo.utils.Consts;
@@ -46,11 +47,16 @@ public class QuizModel {
         configureAnswerPoolManager();
         loadQuestion();
         setToolbarTitle();
-        view.setAnswerChoices(quiz.getCurrentAnswerChoices());
+        assignAnswerChoices();
         if(isAnswerSubmittedOnTouch){
             view.hideNextButton();
         }
         endActivityIfNoQuestions();
+    }
+
+    private void assignAnswerChoices(){
+        String[] answerChoices = quiz.getCurrentAnswerChoices();
+        view.setAnswerChoices(answerChoices);
     }
 
     private void configureQuizPreferences(){
@@ -154,7 +160,7 @@ public class QuizModel {
     private void loadQuestion(){
         view.setQuestion(quiz.getCurrentQuestionText());
         view.setQuestionCounter(quiz.getQuestionCounter());
-        view.setAnswerChoices(quiz.getCurrentAnswerChoices());
+        assignAnswerChoices();
         selectedItemPositions = new ArrayList<>();
 
         if(quiz.isFinalQuestion()){

@@ -3,12 +3,14 @@ package com.jacsstuff.quizudo.express.generatorsdetail;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.jacsstuff.quizudo.db.DBHelper;
 import com.jacsstuff.quizudo.db.DbContract;
+import com.jacsstuff.quizudo.db.Utils;
 import com.jacsstuff.quizudo.list.SimpleListItem;
 
 import java.util.ArrayList;
@@ -17,7 +19,11 @@ import java.util.List;
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE_FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.EQUALS;
 import static com.jacsstuff.quizudo.db.DbConsts.FROM;
+import static com.jacsstuff.quizudo.db.DbConsts.LIMIT_1;
 import static com.jacsstuff.quizudo.db.DbConsts.SELECT;
+import static com.jacsstuff.quizudo.db.DbConsts.SET;
+import static com.jacsstuff.quizudo.db.DbConsts.UPDATE;
+import static com.jacsstuff.quizudo.db.DbConsts.VALUES;
 import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
 public class QuestionGeneratorDbManager {
@@ -66,6 +72,38 @@ public class QuestionGeneratorDbManager {
         contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
        return addValuesToTable(DbContract.QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
     }
+
+
+    String getQuestionSetName(long generatorId){
+        String query = SELECT + DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME +
+                FROM + DbContract.QuestionGeneratorEntry.TABLE_NAME +
+                WHERE + DbContract.QuestionGeneratorEntry._ID + EQUALS + generatorId + LIMIT_1 + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+        String questionPackName = "";
+        try {
+            if (cursor.getCount() == 1) {
+                cursor.moveToNext();
+                questionPackName = getString(cursor, DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME);
+            }
+        }catch(CursorIndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+        cursor.close();
+        return questionPackName;
+    }
+
+    void updateQuestionPackName(long generatorId, String questionPackName){
+        String query = UPDATE + DbContract.QuestionGeneratorEntry.TABLE_NAME +
+                SET + DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME +
+                EQUALS + Utils.inQuotes(questionPackName) +
+                WHERE + DbContract.QuestionGeneratorEntry._ID + EQUALS + generatorId + ";";
+
+        executeStatment(query);
+
+
+    }
+
 
 
     void removeQuestionSet(SimpleListItem item){

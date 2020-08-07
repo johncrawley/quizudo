@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,6 +54,18 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
         listAdapterHelper.setupKeyInput( chunkEditText);
         EditText questionTemplateEditText = findViewById(R.id.questionTemplateEditText);
         listAdapterHelper.setupKeyInput( questionTemplateEditText, false);
+
+        questionTemplateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(!hasFocus){
+                    EditText editText = (EditText)v;
+                    updateQuestionTemplate(questionSetId,  editText.getText().toString());
+                }
+            }
+        });
     }
 
 
@@ -68,8 +79,6 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
         Intent intent = getIntent();
         questionSetName = intent.getStringExtra(INTENT_KEY_QUESTION_SET_NAME);
         questionSetId = intent.getLongExtra(GeneratorDetailActivity.INTENT_KEY_QUESTION_SET_ID,-1);
-        Log.i("quizz", " genQSetActivity.getIntentData() questionSetId: " + questionSetId);
-
     }
 
     @Override
@@ -109,7 +118,6 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
 
     @Override
     public void onClick(SimpleListItem item){
-        Log.i("quizz", "clicked item :" + item.getName() + " " + item.getId());
     }
 
 
@@ -131,11 +139,16 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
 
         switch(viewId){
             case R.id.questionTemplateEditText:
-                dbManager.updateQuestionTemplate(questionSetId, text);
+                updateQuestionTemplate(questionSetId, text);
                 break;
             case R.id. chunkEditText:
                addChunk(text);
         }
+    }
+
+
+    private void updateQuestionTemplate(long questionSetId, String text){
+        dbManager.updateQuestionTemplate(questionSetId, text);
     }
 
 
@@ -146,7 +159,6 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
            refreshListFromDb();
         }
     }
-
 
 
     private void addChunk(String text){
