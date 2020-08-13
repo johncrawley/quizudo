@@ -57,7 +57,6 @@ public class AnswerListActivity extends AppCompatActivity implements ListActionE
     private void setupList(){
         ListView list = findViewById(R.id.list1);
         listAdapterHelper = new ListAdapterHelper(context, list, this);
-        listAdapterHelper.dismissKeyboardOnDone(false);
         refreshListFromDb();
     }
 

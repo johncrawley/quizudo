@@ -78,9 +78,13 @@
 
     <ListView
         android:id="@+id/list1"
-        android:layout_width="384dp"
-        android:layout_height="451dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:isScrollContainer="false"
+        android:layout_marginBottom="@dimen/general_list_margin"
+        android:layout_marginEnd="@dimen/general_list_margin"
+        android:layout_marginStart="@dimen/general_list_margin"
+        android:layout_marginTop="@dimen/general_list_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

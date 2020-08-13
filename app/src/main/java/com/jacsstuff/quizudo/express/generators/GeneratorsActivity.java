@@ -43,8 +43,8 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
         dbManager = new GeneratorsDbManager(this);
         ListView list = findViewById(R.id.list1);
         listAdapterHelper = new ListAdapterHelper(context, list, this);
-        EditText editText = findViewById(R.id.questionSetNameEditText);
-        listAdapterHelper.setupKeyInput( editText);
+        EditText generatorNameEditText = findViewById(R.id.generatorNameEditText);
+        listAdapterHelper.setupKeyInput( generatorNameEditText, true, true);
         setupToolbar();
     }
 

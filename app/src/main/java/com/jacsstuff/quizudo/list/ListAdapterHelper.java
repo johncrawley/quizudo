@@ -20,7 +20,6 @@ public class ListAdapterHelper {
     private ListActionExecutor actionExecutor;
     private SimpleItemArrayAdapter arrayAdapter;
     private ListView list;
-    private boolean isKeyboardDismissedOnDone = true;
 
     public ListAdapterHelper(Context context, ListView list, ListActionExecutor actionExecutor){
         this.context = context;
@@ -32,9 +31,6 @@ public class ListAdapterHelper {
         setupList(items, layoutRes, null);
     }
 
-    public void dismissKeyboardOnDone(boolean isDismissed){
-        this.isKeyboardDismissedOnDone = isDismissed;
-    }
 
     public boolean contains(String str){
         for(int i=0; i < arrayAdapter.getCount(); i++){
@@ -120,11 +116,16 @@ public class ListAdapterHelper {
 
 
     public void setupKeyInput(final EditText editText){
-        setupKeyInput(editText, true);
+        setupKeyInput(editText, true, false);
     }
 
 
     public void setupKeyInput(final EditText editText, final boolean isFieldClearedOnTextInput) {
+        setupKeyInput(editText, isFieldClearedOnTextInput, true);
+    }
+
+
+    public void setupKeyInput(final EditText editText, final boolean isFieldClearedOnTextInput, final boolean isKeyboardDismissedOnDone) {
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

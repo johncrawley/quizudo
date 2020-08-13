@@ -77,6 +77,7 @@
     <dimen name="about_app_margin">4dp</dimen>
     <dimen name="about_app_padding">16dp</dimen>
     <dimen name="quiz_writer_fields_margin">6dp</dimen>
+    <dimen name="general_list_margin">8dp</dimen>
 
 
 </resources>

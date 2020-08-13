@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,7 +56,6 @@ public class GeneratorDetailActivity extends AppCompatActivity
         questionGenerator = new QuestionGenerator(context);
         setupViews();
         setupToolbar();
-
     }
 
 
@@ -71,8 +69,8 @@ public class GeneratorDetailActivity extends AppCompatActivity
     private void setupViews(){
         ListView list = findViewById(R.id.list1);
         listAdapterHelper = new ListAdapterHelper(context, list , this);
-        EditText nameEditText = findViewById(R.id.questionSetNameEditText);
-        listAdapterHelper.setupKeyInput( nameEditText );
+        EditText questionSetNameEditText = findViewById(R.id.generatorNameEditText);
+        listAdapterHelper.setupKeyInput( questionSetNameEditText, true, true );
         EditText questionPackNameEditText = findViewById(R.id.questionPackNameEditText);
         listAdapterHelper.setupKeyInput( questionPackNameEditText, false );
         generateButton = findViewById(R.id.generateQuestionsButton);
@@ -141,7 +139,6 @@ public class GeneratorDetailActivity extends AppCompatActivity
     public void onClick(SimpleListItem item){
         Intent intent = new Intent(context,  GeneratorQuestionSetActivity.class);
         intent.putExtra(INTENT_KEY_QUESTION_SET_NAME, item.getName());
-        Log.i("quizz", "onClick()  item name: " + item.getName() + " item id:  " + item.getId());
         intent.putExtra(INTENT_KEY_QUESTION_SET_ID, item.getId());
         startActivity(intent);
     }
@@ -161,7 +158,7 @@ public class GeneratorDetailActivity extends AppCompatActivity
             return;
         }
         text = text.trim();
-        if(viewId == R.id.questionSetNameEditText) {
+        if(viewId == R.id.generatorNameEditText) {
             createQuestionSet(text);
         }
         else if(viewId == R.id.questionPackNameEditText){

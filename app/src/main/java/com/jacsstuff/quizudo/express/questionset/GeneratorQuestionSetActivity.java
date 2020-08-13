@@ -51,9 +51,9 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
        // NB. adding a header view to a listView seems to mess up the clicked item order, so don't!
         listAdapterHelper = new ListAdapterHelper(context, list, this);
         EditText chunkEditText = findViewById(R.id.chunkEditText);
-        listAdapterHelper.setupKeyInput( chunkEditText);
+        listAdapterHelper.setupKeyInput( chunkEditText, true, false);
         EditText questionTemplateEditText = findViewById(R.id.questionTemplateEditText);
-        listAdapterHelper.setupKeyInput( questionTemplateEditText, false);
+        listAdapterHelper.setupKeyInput( questionTemplateEditText, false, true);
 
         questionTemplateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
