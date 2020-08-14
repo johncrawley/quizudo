@@ -76,8 +76,8 @@ public class GeneratorDetailActivity extends AppCompatActivity
         generateButton = findViewById(R.id.generateQuestionsButton);
         generateButton.setOnClickListener(this);
         setExistingQuestionPackName(questionPackNameEditText);
-
     }
+
 
     private void setExistingQuestionPackName(EditText editText){
         String existingQuestionPackName = dbManager.getQuestionSetName(currentGeneratorId);
@@ -94,12 +94,13 @@ public class GeneratorDetailActivity extends AppCompatActivity
         }
     }
 
+
     public void onClick(View view){
         if(view.getId() == R.id.generateQuestionsButton){
-            SimpleListItem currentGenerator = new SimpleListItem(currentGeneratorName, currentGeneratorId);
-            questionGenerator.addQuestionsTo(questionPackName, currentGenerator, questionSets);
+            questionGenerator.addQuestionsTo(questionPackName, currentGeneratorName, questionSets);
         }
     }
+
 
     private String getActivityTitle(){
         String activityName = getResources().getString(R.string.question_generator_detail_activity_title);

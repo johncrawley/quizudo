@@ -27,10 +27,6 @@ public class ListAdapterHelper {
         this.actionExecutor = actionExecutor;
     }
 
-    public void setupList(final List<SimpleListItem> items, int layoutRes){
-        setupList(items, layoutRes, null);
-    }
-
 
     public boolean contains(String str){
         for(int i=0; i < arrayAdapter.getCount(); i++){
@@ -97,7 +93,6 @@ public class ListAdapterHelper {
         }
         arrayAdapter.add(item);
     }
-
 
 
     public boolean contains(SimpleListItem item) {

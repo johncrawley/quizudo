@@ -34,7 +34,7 @@ public class QuestionGenerator {
     }
 
 
-    public void addQuestionsTo(String questionPackName, SimpleListItem generator, List<SimpleListItem> questionSets){
+    public void addQuestionsTo(String questionPackName, String generatorName, List<SimpleListItem> questionSets){
         long questionPackId = createQuestionPackIfDoesntExist(questionPackName);
         Map<String, Long> answerPoolMap = getMapOfExistingAnswerPools();
 
@@ -43,7 +43,7 @@ public class QuestionGenerator {
 
             List<ChunkEntity> chunks = questionSetDBManager.retrieveChunksFor(questionSetId);
             List<String> answers = getAnswersFrom(chunks);
-            String answerPoolName = AnswerPoolNameResolver.getName(generator.getName(), questionSet.getName());
+            String answerPoolName = AnswerPoolNameResolver.getName(generatorName, questionSet.getName());
 
             addAnswersToAnswerPool(answers, answerPoolName , answerPoolMap);
             addQuestionsBasedOn(chunks, questionSetId, questionPackId, answerPoolName);
