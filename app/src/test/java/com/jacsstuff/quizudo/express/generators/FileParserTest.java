@@ -13,6 +13,8 @@ import static org.junit.Assert.assertEquals;
 public class FileParserTest {
 
     private final String DELIMITER = ",,";
+
+
     @Test
     public void canParseFileToAGenerator(){
         FileParser fileParser = new FileParser();
