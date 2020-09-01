@@ -56,18 +56,5 @@ public class FileParserTest {
     }
 
 
-    @Test
-    public void splitTest(){
-
-        String test = "hello there";
-        String delimiter = ",,";
-
-        String[] items = test.split(delimiter);
-        assertEquals(1, items.length);
-        assertEquals(test, items[0]);
-
-
-    }
-
 
 }
