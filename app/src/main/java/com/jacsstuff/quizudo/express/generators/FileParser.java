@@ -13,6 +13,7 @@ public class FileParser {
     private GeneratorEntity generatorEntity;
     private QuestionSetEntity questionSetEntity;
     private ExpectedTag expectedTag = ExpectedTag.GENERATOR;
+    private boolean wasFileParsedSuccessfully = true;
 
 
     public FileParser(){
@@ -21,25 +22,29 @@ public class FileParser {
 
 
     public boolean parse(String line){
-
         line = line.trim();
+        boolean result = true;
         switch (expectedTag){
-            case GENERATOR: return parseGenerator(line);
-            case QUESTION_SET: return parseQuestionSet(line);
-            case QUESTION: return parseQuestion(line);
-            case NONE: return parseLine(line);
+            case GENERATOR: result = parseGenerator(line); break;
+            case QUESTION_SET: result = parseQuestionSet(line);break;
+            case QUESTION: result = parseQuestion(line); break;
+            case NONE: result = parseLine(line);
         }
-        return true;
+        wasFileParsedSuccessfully = result;
+        return result;
     }
+
 
     public GeneratorEntity getGeneratorEntity(){
         return this.generatorEntity;
     }
 
-    public void finish(){
+    public boolean finish(){
         if(questionSetEntity != null){
             generatorEntity.addQuestionSetEntity(questionSetEntity);
+            return wasFileParsedSuccessfully;
         }
+        return false;
     }
 
 
