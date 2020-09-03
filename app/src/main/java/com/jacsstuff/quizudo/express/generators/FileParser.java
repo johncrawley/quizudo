@@ -36,6 +36,9 @@ public class FileParser {
 
 
     public GeneratorEntity getGeneratorEntity(){
+        if(!wasFileParsedSuccessfully){
+            return null;
+        }
         return this.generatorEntity;
     }
 
@@ -74,6 +77,10 @@ public class FileParser {
         if(line.startsWith(QUESTION_SET_TAG)){
             return parseQuestionSet(line);
         }
+        if(line.startsWith(GENERATOR_TAG) || line.startsWith(QUESTION_TAG)){
+            wasFileParsedSuccessfully = false;
+            return false;
+        }
         parseChunk(line);
         return true;
     }
@@ -86,6 +93,9 @@ public class FileParser {
         }
         String questionSubject = items[0];
         String answer = items[1];
+        if(questionSubject.trim().isEmpty() || answer.trim().isEmpty()){
+            return;
+        }
         questionSetEntity.add(new ChunkEntity(questionSubject, answer,-1));
     }
 
