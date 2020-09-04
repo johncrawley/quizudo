@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.db.DBHelper;
 import com.jacsstuff.quizudo.db.DbContract;
@@ -23,17 +22,16 @@ import static com.jacsstuff.quizudo.db.DbConsts.LIMIT_1;
 import static com.jacsstuff.quizudo.db.DbConsts.SELECT;
 import static com.jacsstuff.quizudo.db.DbConsts.SET;
 import static com.jacsstuff.quizudo.db.DbConsts.UPDATE;
-import static com.jacsstuff.quizudo.db.DbConsts.VALUES;
 import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
-public class QuestionGeneratorDbManager {
 
+public class QuestionGeneratorDbManager {
 
     private DBHelper mDbHelper;
     private SQLiteDatabase db;
 
-    QuestionGeneratorDbManager(Context context){
 
+    public QuestionGeneratorDbManager(Context context){
         mDbHelper = DBHelper.getInstance(context);
         db = mDbHelper.getWritableDatabase();
     }
@@ -66,11 +64,20 @@ public class QuestionGeneratorDbManager {
     }
 
 
-    long addQuestionSet(long generatorId, String name){
+    public long addQuestionSet(long generatorId, String name){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
         contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
-       return addValuesToTable(DbContract.QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
+        return addQuestionSet(generatorId, name, "");
+    }
+
+
+    public long addQuestionSet(long generatorId, String name, String questionTemplate){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
+        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
+        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_QUESTION_TEMPLATE, questionTemplate);
+        return addValuesToTable(DbContract.QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
     }
 
 
@@ -93,6 +100,7 @@ public class QuestionGeneratorDbManager {
         return questionPackName;
     }
 
+
     void updateQuestionPackName(long generatorId, String questionPackName){
         String query = UPDATE + DbContract.QuestionGeneratorEntry.TABLE_NAME +
                 SET + DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME +
@@ -100,10 +108,7 @@ public class QuestionGeneratorDbManager {
                 WHERE + DbContract.QuestionGeneratorEntry._ID + EQUALS + generatorId + ";";
 
         executeStatment(query);
-
-
     }
-
 
 
     void removeQuestionSet(SimpleListItem item){
@@ -111,7 +116,6 @@ public class QuestionGeneratorDbManager {
                 + WHERE + DbContract.QuestionGeneratorSetEntry._ID
                 + EQUALS + item.getId();
         executeStatment(query);
-
 
         String removeAllRelatedChunksQuery = DELETE_FROM + DbContract.QuestionGeneratorChunkEntry.TABLE_NAME +
                 WHERE + DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID +

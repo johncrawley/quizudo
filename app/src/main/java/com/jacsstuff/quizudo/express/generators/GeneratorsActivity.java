@@ -3,8 +3,6 @@ package com.jacsstuff.quizudo.express.generators;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.express.generatorsdetail.GeneratorDetailActivity;
 import com.jacsstuff.quizudo.dialog.ConfirmDialog;
@@ -25,15 +21,6 @@ import com.jacsstuff.quizudo.list.SimpleListItem;
 import com.jacsstuff.quizudo.main.MainActivity;
 import com.jacsstuff.quizudo.utils.ToolbarBuilder;
 import com.jacsstuff.quizudo.utils.Utils;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.List;
 
 
@@ -45,6 +32,7 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
     private SimpleListItem selectedItem;
     public final static String NAME_TAG = "1";
     public final static String ID_TAG = "2";
+    private GeneratorFileReader generatorFileReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +45,7 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
         listAdapterHelper = new ListAdapterHelper(context, list, this);
         EditText generatorNameEditText = findViewById(R.id.generatorNameEditText);
         listAdapterHelper.setupKeyInput( generatorNameEditText, true, true);
+        generatorFileReader = new GeneratorFileReader(context);
         setupToolbar();
     }
 
@@ -158,53 +147,13 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
         } catch (Exception ex) {
             System.out.println("browseClick :"+ex);//android.content.ActivityNotFoundException ex
         }
-
-
-    }
-
-
-
-    private void log(String str){
-        Log.i("GeneratorsActivity", str);
     }
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_FILE_CODE) {
-                Uri fileUri = data.getData();
-
-                //OI FILE Manager
-                String filemanagerstring = fileUri.getPath();
-                File file = new File(Environment.getExternalStorageDirectory(),filemanagerstring);
-                Log.i("GeneratorsActivity", "onActivityResult() does file exist: " + filemanagerstring + " : " + file.exists());
-
-                if(fileUri.getPath() == null){
-                    return;
-                }
-                File f2 = new File(fileUri.toString());
-                log("path : " + f2.getAbsolutePath() + " f2 exists : " + f2.exists());
-                try{
-                    InputStream inputStream = getContentResolver().openInputStream(fileUri);
-                    Reader reader = new InputStreamReader(inputStream);
-                    BufferedReader buf = new BufferedReader(reader);
-                    log(buf.readLine());
-                    reader.close();
-                }catch (IOException e){
-                    log(e.getMessage());
-                }
-
-                Toast.makeText(this.getApplicationContext(), filemanagerstring, Toast.LENGTH_SHORT).show();
-                //change imageView1
-
-                /*
-                //NOW WE HAVE OUR WANTED STRING
-                if(selectedImagePath!=null)
-                    System.out.println("selectedImagePath is the right one for you!");
-                else
-                    System.out.println("filemanagerstring is the right one for you!");
-
-                 */
+               generatorFileReader.readFileAndSaveGenerator(data);
             }
         }
     }

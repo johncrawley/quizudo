@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.db.DbContract.QuestionGeneratorSetEntry;
 import com.jacsstuff.quizudo.db.DbContract.QuestionGeneratorChunkEntry;
@@ -16,7 +15,6 @@ import com.jacsstuff.quizudo.list.SimpleListItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jacsstuff.quizudo.db.DbConsts.ALL;
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE;
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE_FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.EQUALS;
@@ -29,14 +27,14 @@ import static com.jacsstuff.quizudo.db.DbConsts.UPDATE;
 import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
 
-public class GeneratorQuestionSetDBManager {
+public class QuestionSetDbManager {
 
     private DBHelper mDbHelper;
     private SQLiteDatabase db;
     private ChunkParser chunkParser;
 
 
-    public GeneratorQuestionSetDBManager(Context context){
+    public QuestionSetDbManager(Context context){
         mDbHelper = DBHelper.getInstance(context);
         db = mDbHelper.getWritableDatabase();
         chunkParser = new ChunkParser(context);
@@ -83,6 +81,11 @@ public class GeneratorQuestionSetDBManager {
 
     long addChunk(long questionSetId, String text){
         ChunkEntity chunkEntity = chunkParser.parse(text);
+       return addChunk(questionSetId, chunkEntity);
+    }
+
+
+    public long addChunk(long questionSetId, ChunkEntity chunkEntity){
         ContentValues contentValues = new ContentValues();
         contentValues.put(QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID, questionSetId);
         contentValues.put(QuestionGeneratorChunkEntry.COLUMN_NAME_ANSWER, chunkEntity.getAnswer());

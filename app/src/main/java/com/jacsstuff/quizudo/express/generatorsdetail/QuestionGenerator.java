@@ -7,7 +7,7 @@ import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 import com.jacsstuff.quizudo.db.DBWriter;
 import com.jacsstuff.quizudo.express.questionset.ChunkEntity;
-import com.jacsstuff.quizudo.express.questionset.GeneratorQuestionSetDBManager;
+import com.jacsstuff.quizudo.express.questionset.QuestionSetDbManager;
 import com.jacsstuff.quizudo.express.questionset.QuestionSetEntity;
 import com.jacsstuff.quizudo.list.SimpleListItem;
 import com.jacsstuff.quizudo.model.Question;
@@ -21,13 +21,13 @@ import java.util.Map;
 
 public class QuestionGenerator {
 
-    private GeneratorQuestionSetDBManager questionSetDBManager;
+    private QuestionSetDbManager questionSetDBManager;
     private AnswerPoolDBManager answerPoolDBManager;
     private DBWriter dbWriter;
     private QuestionTextMaker questionTextMaker;
 
     public QuestionGenerator(Context context){
-        questionSetDBManager = new GeneratorQuestionSetDBManager(context);
+        questionSetDBManager = new QuestionSetDbManager(context);
         answerPoolDBManager = new AnswerPoolDBManager(context);
         dbWriter = new DBWriter(context);
         questionTextMaker = new QuestionTextMaker(context.getString(R.string.question_generator_question_subject_placeholder));

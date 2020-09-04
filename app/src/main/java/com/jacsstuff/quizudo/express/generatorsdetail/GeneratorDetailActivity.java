@@ -175,6 +175,7 @@ public class GeneratorDetailActivity extends AppCompatActivity
         dbManager.updateQuestionPackName(currentGeneratorId, text);
     }
 
+
     private void setGenerateButtonState(String text){
         if(text.isEmpty()){
             generateButton.setEnabled(false);
@@ -184,7 +185,7 @@ public class GeneratorDetailActivity extends AppCompatActivity
     }
 
 
-    private void createQuestionSet(String questionSetName){
+    public void createQuestionSet(String questionSetName){
         questionSetName = questionSetName.trim();
         if (listAdapterHelper.contains(questionSetName)) {
             return;

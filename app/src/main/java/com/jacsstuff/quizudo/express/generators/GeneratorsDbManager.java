@@ -9,10 +9,13 @@ import android.util.Log;
 
 import com.jacsstuff.quizudo.db.DBHelper;
 import com.jacsstuff.quizudo.db.DbContract;
+import com.jacsstuff.quizudo.express.generatorsdetail.QuestionGeneratorDbManager;
+import com.jacsstuff.quizudo.express.questionset.ChunkEntity;
+import com.jacsstuff.quizudo.express.questionset.QuestionSetDbManager;
+import com.jacsstuff.quizudo.express.questionset.QuestionSetEntity;
 import com.jacsstuff.quizudo.list.SimpleListItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE_FROM;
@@ -25,11 +28,14 @@ public class GeneratorsDbManager {
 
     private DBHelper mDbHelper;
     private SQLiteDatabase db;
+    private QuestionGeneratorDbManager questionGeneratorDbManager;
+    private QuestionSetDbManager questionSetDbManager;
 
     GeneratorsDbManager(Context context){
-
         mDbHelper = DBHelper.getInstance(context);
         db = mDbHelper.getWritableDatabase();
+        questionGeneratorDbManager = new QuestionGeneratorDbManager(context);
+        questionSetDbManager = new QuestionSetDbManager(context);
     }
 
 
@@ -65,6 +71,26 @@ public class GeneratorsDbManager {
         return addValuesToTable(DbContract.QuestionGeneratorEntry.TABLE_NAME, contentValues);
     }
 
+
+    void save(GeneratorEntity generatorEntity){
+        long generatorId = addQuestionGenerator(generatorEntity.getGeneratorName());
+        for(QuestionSetEntity questionSetEntity : generatorEntity.getQuestionSetEntities()){
+           saveQuestionSetAndChunks(questionSetEntity, generatorId);
+        }
+    }
+
+
+    private void saveQuestionSetAndChunks(QuestionSetEntity questionSetEntity, long generatorId){
+        long questionSetId = questionGeneratorDbManager.addQuestionSet(generatorId, questionSetEntity.getName(), questionSetEntity.getQuestionTemplate());
+        saveChunks(questionSetEntity, questionSetId);
+    }
+
+
+    private void saveChunks(QuestionSetEntity questionSetEntity, long questionSetId){
+        for(ChunkEntity chunkEntity : questionSetEntity.getChunkEntities()){
+            questionSetDbManager.addChunk(questionSetId, chunkEntity);
+        }
+    }
 
 
     private long addValuesToTable(String tableName, ContentValues contentValues){

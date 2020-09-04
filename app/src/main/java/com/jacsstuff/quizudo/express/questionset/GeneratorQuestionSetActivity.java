@@ -30,7 +30,7 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
     private long questionSetId;
     private Context context;
     private ListAdapterHelper listAdapterHelper;
-    private GeneratorQuestionSetDBManager dbManager;
+    private QuestionSetDbManager dbManager;
     private SimpleListItem currentItem;
 
 
@@ -39,7 +39,7 @@ public class GeneratorQuestionSetActivity extends AppCompatActivity   implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generator_question_set);
         context = GeneratorQuestionSetActivity.this;
-        dbManager = new GeneratorQuestionSetDBManager(context);
+        dbManager = new QuestionSetDbManager(context);
         getIntentData();
         setupList();
         restoreQuestionTemplateText();
