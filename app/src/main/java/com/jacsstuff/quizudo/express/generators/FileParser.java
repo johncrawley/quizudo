@@ -1,7 +1,12 @@
 package com.jacsstuff.quizudo.express.generators;
 
+import android.util.Log;
+
 import com.jacsstuff.quizudo.express.questionset.ChunkEntity;
 import com.jacsstuff.quizudo.express.questionset.QuestionSetEntity;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class FileParser {
 
@@ -14,15 +19,27 @@ public class FileParser {
     private QuestionSetEntity questionSetEntity;
     private ExpectedTag expectedTag = ExpectedTag.GENERATOR;
     private boolean wasFileParsedSuccessfully = true;
-
+    private boolean finished = false;
+    private Set<String> setNames;
+    private int lineCount = 0;
 
     public FileParser(){
         generatorEntity = new GeneratorEntity();
+        setNames = new HashSet<>();
+        lineCount = 0;
     }
 
 
+
+
+
     public boolean parse(String line){
+        if(finished){
+            throw new ParserExhaustedException();
+        }
         line = line.trim();
+        lineCount++;
+        log("line: " + lineCount + "  " + line);
         boolean result = true;
         switch (expectedTag){
             case GENERATOR: result = parseGenerator(line); break;
@@ -31,6 +48,9 @@ public class FileParser {
             case NONE: result = parseLine(line);
         }
         wasFileParsedSuccessfully = result;
+        if(!result){
+            System.out.println("FileParser fail, lineCount: " + lineCount);
+        }
         return result;
     }
 
@@ -43,6 +63,7 @@ public class FileParser {
     }
 
     public boolean finish(){
+        finished = true;
         if(questionSetEntity != null){
             generatorEntity.addQuestionSetEntity(questionSetEntity);
             return wasFileParsedSuccessfully;
@@ -52,7 +73,8 @@ public class FileParser {
 
 
     private boolean parseGenerator(String line){
-        if(isLineInvalid(GENERATOR_TAG,line)) {
+        if(isLineInvalid(GENERATOR_TAG, line)) {
+            log("failing because line is invalid : " + line);
             return false;
         }
         expectedTag = ExpectedTag.QUESTION_SET;
@@ -78,6 +100,7 @@ public class FileParser {
             return parseQuestionSet(line);
         }
         if(line.startsWith(GENERATOR_TAG) || line.startsWith(QUESTION_TAG)){
+            log("failing because line starts with generator tag or question tag ("  + lineCount + ")");
             wasFileParsedSuccessfully = false;
             return false;
         }
@@ -85,6 +108,9 @@ public class FileParser {
         return true;
     }
 
+    private void log(String msg){
+        System.out.println("FileParser: " + msg);
+    }
 
     private void parseChunk(String line){
         String[] items = line.split(CHUNK_LINE_DELIMITER);
@@ -103,11 +129,16 @@ public class FileParser {
     private boolean parseQuestionSet(String line){
         saveExistingQuestionSet();
         if (isLineInvalid(QUESTION_SET_TAG, line)) {
+            log("failing because question set tag line is invalid");
             return false;
         }
         String questionSetName = extractValueFrom(line, QUESTION_SET_TAG);
         questionSetEntity = new QuestionSetEntity();
         questionSetEntity.setName(questionSetName);
+        if(setNames.contains(questionSetName)){
+            return false;
+        }
+        setNames.add(questionSetName);
         expectedTag = ExpectedTag.QUESTION;
         return true;
     }

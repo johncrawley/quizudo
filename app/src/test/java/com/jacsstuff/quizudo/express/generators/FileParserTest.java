@@ -116,7 +116,6 @@ public class FileParserTest {
         lines.add(QUESTION_TAG + "What is the capital of"); // missing set tag
         lines.add("Ireland,,Dublin");
         lines.add("Germany,,Berlin");
-        parseLines(fileParser, lines);
         assertFalseResultAndNullGenerator();
     }
 
@@ -127,7 +126,6 @@ public class FileParserTest {
         lines.add(SET_TAG + "set1");
         lines.add("Ireland,,Dublin"); // the parsing should not proceed because there is a missing question template here
         lines.add("Germany,,Berlin");
-        parseLines(fileParser, lines);
         assertFalseResultAndNullGenerator();
     }
 
@@ -139,7 +137,6 @@ public class FileParserTest {
         lines.add(QUESTION_TAG + "What is the highest mountain in"); // parsing shouldn't proceed, since there is a duplicate question template
         lines.add("Ireland,,Dublin");
         lines.add("Germany,,Berlin");
-        parseLines(fileParser, lines);
         assertFalseResultAndNullGenerator();
     }
 
@@ -152,10 +149,44 @@ public class FileParserTest {
         lines.add(QUESTION_TAG + "What is the capital of");
         lines.add("Ireland,,Dublin");
         lines.add("Germany,,Berlin");
-        parseLines(fileParser, lines);
         assertFalseResultAndNullGenerator();
     }
 
+
+    @Test
+    public void wontAllowDuplicateSetNames(){
+        lines.add(GENERATOR_TAG + "generatorName");
+        lines.add(SET_TAG + "set1");
+        lines.add(QUESTION_TAG + "What is the capital of");
+        lines.add("Ireland,,Dublin");
+        lines.add("Germany,,Berlin");
+        lines.add(SET_TAG + "set1");
+        lines.add(QUESTION_TAG + "What is the largest country in");
+        lines.add("Europe,,Russia");
+        lines.add("Africa,,Algeria");
+        lines.add("South America,,Brazil");
+        assertFalseResultAndNullGenerator();
+    }
+
+    @Test
+    public void willAllowDuplicateQuestionTemplates(){
+        System.out.println("entered willAllowDuplicateQuestionTemplates()");
+        lines.add(GENERATOR_TAG + "generatorName_1");
+        lines.add(SET_TAG + "set1");
+        lines.add(QUESTION_TAG + "What is the capital of");
+        lines.add("Ireland,,Dublin");
+        lines.add("Germany,,Berlin");
+        lines.add(SET_TAG + "set2");
+        lines.add(QUESTION_TAG + "What is the capital of");
+        lines.add("Canada,,Ottowa");
+        lines.add("Brazil,,Brasília");
+        lines.add("Australia,,Canberra");
+
+        boolean result = parseLines(fileParser, lines);
+        assertTrue(result);
+        GeneratorEntity generatorEntity = fileParser.getGeneratorEntity();
+        assertEquals(2, generatorEntity.getQuestionSetEntities().size());
+    }
 
     private void assertFalseResultAndNullGenerator(){
         boolean result = parseLines(fileParser, lines);
