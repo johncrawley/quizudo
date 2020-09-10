@@ -89,7 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     OPENING_BRACKET +
                     DbContract.QuestionGeneratorSetEntry._ID + INTEGER + PRIMARY_KEY + COMMA +
                     DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID + INTEGER + COMMA +
-                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + TEXT + COMMA +
+                    DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + TEXT +  COMMA +
                     DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_QUESTION_TEMPLATE + TEXT +
                     CLOSING_BRACKET;
 

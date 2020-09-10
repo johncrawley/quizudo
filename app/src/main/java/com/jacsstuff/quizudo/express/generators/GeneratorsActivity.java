@@ -139,10 +139,7 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
-        //intent.putExtra("browseCoa", itemToBrowse);
-        //Intent chooser = Intent.createChooser(intent, "Select a File to Upload");
         try {
-            //startActivityForResult(chooser, FILE_SELECT_CODE);
             startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), SELECT_FILE_CODE);
         } catch (Exception ex) {
             System.out.println("browseClick :"+ex);//android.content.ActivityNotFoundException ex

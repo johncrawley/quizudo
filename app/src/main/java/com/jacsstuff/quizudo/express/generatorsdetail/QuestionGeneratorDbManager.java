@@ -4,17 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jacsstuff.quizudo.db.DBHelper;
-import com.jacsstuff.quizudo.db.DbContract;
 import com.jacsstuff.quizudo.db.Utils;
 import com.jacsstuff.quizudo.list.SimpleListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jacsstuff.quizudo.db.DbContract.QuestionGeneratorSetEntry;
+import static com.jacsstuff.quizudo.db.DbContract.QuestionGeneratorEntry;
+import static com.jacsstuff.quizudo.db.DbContract.QuestionGeneratorChunkEntry;
+
+import static com.jacsstuff.quizudo.db.DbConsts.AND;
 import static com.jacsstuff.quizudo.db.DbConsts.DELETE_FROM;
 import static com.jacsstuff.quizudo.db.DbConsts.EQUALS;
 import static com.jacsstuff.quizudo.db.DbConsts.FROM;
@@ -27,19 +30,18 @@ import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
 public class QuestionGeneratorDbManager {
 
-    private DBHelper mDbHelper;
     private SQLiteDatabase db;
 
 
     public QuestionGeneratorDbManager(Context context){
-        mDbHelper = DBHelper.getInstance(context);
+        DBHelper mDbHelper = DBHelper.getInstance(context);
         db = mDbHelper.getWritableDatabase();
     }
 
 
     List<SimpleListItem> retrieveQuestionSets(long generatorId){
-        String query = SELECT + "*" + FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
-                + WHERE + DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID + EQUALS + generatorId + ";";
+        String query = SELECT + "*" + FROM + QuestionGeneratorSetEntry.TABLE_NAME
+                + WHERE + QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID + EQUALS + generatorId + ";";
         return retrieveListFromDb(query);
     }
 
@@ -56,8 +58,8 @@ public class QuestionGeneratorDbManager {
 
 
     private void addNameToList(Cursor cursor, List<SimpleListItem> list){
-        String name = getString(cursor, DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME);
-        long id = getLong(cursor, DbContract.QuestionGeneratorSetEntry._ID);
+        String name = getString(cursor, QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME);
+        long id = getLong(cursor, QuestionGeneratorSetEntry._ID);
         if(name != null && !name.isEmpty()){
             list.add(new SimpleListItem(name, id));
         }
@@ -66,32 +68,57 @@ public class QuestionGeneratorDbManager {
 
     public long addQuestionSet(long generatorId, String name){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
-        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
+        contentValues.put(QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
+        contentValues.put(QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
         return addQuestionSet(generatorId, name, "");
     }
 
 
     public long addQuestionSet(long generatorId, String name, String questionTemplate){
+        long existingQuestionSetId = getQuestionSetId(generatorId, name);
+        if(existingQuestionSetId != -1) {
+            return existingQuestionSetId;
+        }
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
-        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
-        contentValues.put(DbContract.QuestionGeneratorSetEntry.COLUMN_NAME_QUESTION_TEMPLATE, questionTemplate);
-        return addValuesToTable(DbContract.QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
+        contentValues.put(QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME, name);
+        contentValues.put(QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID, generatorId);
+        contentValues.put(QuestionGeneratorSetEntry.COLUMN_NAME_QUESTION_TEMPLATE, questionTemplate);
+        return Utils.addValuesToTable(db, QuestionGeneratorSetEntry.TABLE_NAME, contentValues);
+    }
+
+
+    private long getQuestionSetId(long generatorId, String questionSetName){
+
+        long questionSetId = -1;
+        String query = SELECT + "*" + FROM + QuestionGeneratorSetEntry.TABLE_NAME
+                + WHERE + QuestionGeneratorSetEntry.COLUMN_NAME_GENERATOR_ID + EQUALS + generatorId
+                + AND + QuestionGeneratorSetEntry.COLUMN_NAME_SET_NAME + EQUALS + Utils.inQuotes(questionSetName) + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+        try {
+            if (cursor.getCount() >= 1) {
+                cursor.moveToNext();
+                questionSetId = getLong(cursor, QuestionGeneratorSetEntry._ID);
+            }
+        }catch(CursorIndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+        cursor.close();
+        return questionSetId;
     }
 
 
     String getQuestionSetName(long generatorId){
-        String query = SELECT + DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME +
-                FROM + DbContract.QuestionGeneratorEntry.TABLE_NAME +
-                WHERE + DbContract.QuestionGeneratorEntry._ID + EQUALS + generatorId + LIMIT_1 + ";";
+        String query = SELECT + QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME +
+                FROM + QuestionGeneratorEntry.TABLE_NAME +
+                WHERE + QuestionGeneratorEntry._ID + EQUALS + generatorId + LIMIT_1 + ";";
 
         Cursor cursor = db.rawQuery(query, null);
         String questionPackName = "";
         try {
             if (cursor.getCount() == 1) {
                 cursor.moveToNext();
-                questionPackName = getString(cursor, DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME);
+                questionPackName = getString(cursor, QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME);
             }
         }catch(CursorIndexOutOfBoundsException e){
             e.printStackTrace();
@@ -102,62 +129,26 @@ public class QuestionGeneratorDbManager {
 
 
     void updateQuestionPackName(long generatorId, String questionPackName){
-        String query = UPDATE + DbContract.QuestionGeneratorEntry.TABLE_NAME +
-                SET + DbContract.QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME +
+        String query = UPDATE + QuestionGeneratorEntry.TABLE_NAME +
+                SET + QuestionGeneratorEntry.COLUMN_NAME_QUESTION_PACK_NAME +
                 EQUALS + Utils.inQuotes(questionPackName) +
-                WHERE + DbContract.QuestionGeneratorEntry._ID + EQUALS + generatorId + ";";
+                WHERE + QuestionGeneratorEntry._ID + EQUALS + generatorId + ";";
 
-        executeStatment(query);
+        Utils.executeStatement(db, query);
     }
 
 
     void removeQuestionSet(SimpleListItem item){
-        String query = DELETE_FROM + DbContract.QuestionGeneratorSetEntry.TABLE_NAME
-                + WHERE + DbContract.QuestionGeneratorSetEntry._ID
+        String query = DELETE_FROM + QuestionGeneratorSetEntry.TABLE_NAME
+                + WHERE + QuestionGeneratorSetEntry._ID
                 + EQUALS + item.getId();
-        executeStatment(query);
+        Utils.executeStatement(db, query);
 
-        String removeAllRelatedChunksQuery = DELETE_FROM + DbContract.QuestionGeneratorChunkEntry.TABLE_NAME +
-                WHERE + DbContract.QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID +
+        String removeAllRelatedChunksQuery = DELETE_FROM + QuestionGeneratorChunkEntry.TABLE_NAME +
+                WHERE + QuestionGeneratorChunkEntry.COLUMN_NAME_QUESTION_SET_ID +
                 EQUALS + item.getId();
-        executeStatment(removeAllRelatedChunksQuery);
+        Utils.executeStatement(db, removeAllRelatedChunksQuery);
     }
-
-
-    private long addValuesToTable(String tableName, ContentValues contentValues){
-        db.beginTransaction();
-        long id = -1;
-        try {
-            id = db.insertOrThrow(tableName, null, contentValues);
-            db.setTransactionSuccessful();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        db.endTransaction();
-        return id;
-    }
-
-
-    void closeConnection(){
-        mDbHelper.close();
-    }
-
-
-
-    private boolean executeStatment(String query){
-        db.beginTransaction();
-        try {
-            db.execSQL(query);
-            db.setTransactionSuccessful();
-        }catch(SQLException e){
-            e.printStackTrace();
-            db.endTransaction();
-            return false;
-        }
-        db.endTransaction();
-        return true;
-    }
-
 
 
     private String getString(Cursor cursor, String name){
