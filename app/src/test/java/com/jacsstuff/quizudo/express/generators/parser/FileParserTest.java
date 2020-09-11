@@ -1,5 +1,7 @@
-package com.jacsstuff.quizudo.express.generators;
+package com.jacsstuff.quizudo.express.generators.parser;
 
+import com.jacsstuff.quizudo.express.generators.GeneratorEntity;
+import com.jacsstuff.quizudo.express.generators.parser.FileParser;
 import com.jacsstuff.quizudo.express.questionset.ChunkEntity;
 import com.jacsstuff.quizudo.express.questionset.QuestionSetEntity;
 
@@ -231,10 +233,12 @@ public class FileParserTest {
     private boolean parseLines(FileParser parser, List<String> lines){
         for(String line: lines){
             if(!parser.parse(line)){
+
                 break;
             }
         }
-       return parser.finish();
+        ParserResult parserResult = parser.finish();
+       return parserResult.isSuccess();
     }
 
 

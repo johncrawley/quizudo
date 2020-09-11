@@ -7,12 +7,11 @@ import java.util.List;
 
 public class GeneratorEntity {
 
-
     private List<QuestionSetEntity> questionSetEntities;
     private String generatorName;
 
-    public GeneratorEntity(){
 
+    public GeneratorEntity(){
         questionSetEntities = new ArrayList<>();
     }
 
