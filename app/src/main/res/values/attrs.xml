@@ -16,7 +16,9 @@
             <enum name="right" value="1"/>
         </attr>
     </declare-styleable>
+    <!--
     <declare-styleable name="LimitedHeightScrollView">
         <attr name="maxHeight" format="integer" />
     </declare-styleable>
+    -->
 </resources>

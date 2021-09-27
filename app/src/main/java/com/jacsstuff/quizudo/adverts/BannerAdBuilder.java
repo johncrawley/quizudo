@@ -5,12 +5,12 @@ import android.util.Log;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+//import com.google.android.gms.ads.InterstitialAd;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.main.MainController;
 
 public class BannerAdBuilder {
-
+/*
     private InterstitialAd mInterstitialAd;
     private Context context;
     private MainController controller;
@@ -51,6 +51,6 @@ public class BannerAdBuilder {
 
         mInterstitialAd.loadAd(adRequest);
     }
-
+*/
 
 }

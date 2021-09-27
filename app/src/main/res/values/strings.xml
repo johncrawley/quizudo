@@ -216,7 +216,7 @@
     <string name="prefkey_download_site">download_site</string>
     <string name="author_title">"Author: "</string>
     <string name="main_title_content_description">Quizudo</string>
-    <string name="default_download_site">quizudo.byethost7.com</string>
+    <string name="default_download_site"></string>
     <string name="ads_unit_id"></string>
 
     <!-- tag IDs for saving data in list view elements -->

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/question_pack_fields_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/questionPackNameTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/questionPackNameTextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                         android:hint="@string/quiz_writer_question_pack_name_field"
                         android:lines="1" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <View
@@ -83,7 +83,7 @@
                     app:layout_constraintTop_toBottomOf="@id/questionPackNameTextInputLayout"/>
 
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/questionPackDescriptionTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider9">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/questionPackDescriptionTextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_question_pack_description_field"
                         android:lines="3" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <View
                     android:id="@+id/divider10"
@@ -118,7 +118,7 @@
                     app:layout_constraintTop_toBottomOf="@id/questionPackDescriptionTextInputLayout"/>
 
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/questionPackTopicsTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider10">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
 
                         android:id="@+id/defaultTopicsTextInput"
                         android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_question_pack_default_topics_field"
                         android:lines="1" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <View
                     android:id="@+id/divider11"
@@ -182,9 +182,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/default_answer_pools_label" />
 
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/question_items_fields_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/questionTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/questionTextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_question_text_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <View
                     android:id="@+id/divider1"
@@ -231,7 +231,7 @@
                     app:layout_constraintTop_toBottomOf="@id/questionTextLayout"/>
 
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/correctAnswerTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -242,7 +242,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider1">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/correctAnswerTextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -252,7 +252,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_correct_answer_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <View
                     android:id="@+id/divider2"
@@ -264,7 +264,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/correctAnswerTextLayout"/>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/answerPoolLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -321,7 +321,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
@@ -335,7 +335,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/answerPoolLayout"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/answerChoices1TextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -346,7 +346,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider3">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/answerChoices1TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -356,7 +356,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_answer_choices_1_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <View
@@ -369,7 +369,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/answerChoices1TextLayout"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/answerChoices2TextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -380,7 +380,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider4">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/answerChoices2TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -390,7 +390,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_answer_choices_2_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <View
                     android:id="@+id/divider5"
@@ -402,7 +402,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/answerChoices2TextLayout"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/answerChoices3TextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -413,7 +413,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider5">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/answerChoices3TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -423,7 +423,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_answer_choices_3_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <View
@@ -436,7 +436,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/answerChoices3TextLayout"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/answerChoices4TextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -447,7 +447,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider6">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/answerChoices4TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -457,7 +457,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_answer_choices_4_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <View
@@ -470,7 +470,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/answerChoices4TextLayout"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/answerChoices5TextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -481,7 +481,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider7">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/answerChoices5TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -491,7 +491,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_answer_choices_5_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <View
                     android:id="@+id/divider8"
@@ -503,7 +503,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/answerChoices5TextLayout"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/triviaTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -514,7 +514,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider8">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/triviaTextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -524,7 +524,7 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_trivia_field" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <View
                     android:id="@+id/divider12"
                     android:layout_height="1dp"
@@ -535,7 +535,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/triviaTextLayout"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/topicsTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -547,7 +547,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider12">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/topicsTextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -557,13 +557,13 @@
                         android:layout_marginEnd="@dimen/quiz_writer_fields_margin"
                         android:layout_marginStart="@dimen/quiz_writer_fields_margin"
                         android:hint="@string/quiz_writer_topics_field" />
-                </android.support.design.widget.TextInputLayout>
-            </android.support.constraint.ConstraintLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
     </ScrollView>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navigation_layout"
         android:isScrollContainer="false"
         android:layout_width="match_parent"
@@ -643,6 +643,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteY="11dp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

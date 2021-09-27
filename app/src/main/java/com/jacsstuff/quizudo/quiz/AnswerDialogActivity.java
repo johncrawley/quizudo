@@ -3,7 +3,7 @@ package com.jacsstuff.quizudo.quiz;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 
 import com.jacsstuff.quizudo.R;

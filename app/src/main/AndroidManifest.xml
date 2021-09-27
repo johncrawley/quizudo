@@ -13,7 +13,8 @@
         <activity android:name=".express.generators.GeneratorsActivity" /> <!-- android:theme="@style/AppTheme"> -->
         <activity
             android:name=".main.MainActivity"
-            android:screenOrientation="portrait">
+            android:exported="true"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -92,14 +92,13 @@
             android:layout_marginStart="@dimen/trivia_title_side_pad"
             android:textStyle="bold" />
 
-        <com.jacsstuff.quizudo.utils.LimitedHeightScrollView
+        <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/triviaScrollView"
             android:layout_below="@+id/triviaTitle"
             android:layout_centerHorizontal="true"
             android:scrollbarAlwaysDrawVerticalTrack="true"
-            attr:maxHeight="120"
             android:minHeight="@dimen/trivia_scroll_min_height"
             android:layout_marginTop="16dp">
 
@@ -115,7 +114,7 @@
                 android:layout_marginEnd="@dimen/trivia_title_side_pad"
                 android:id="@+id/trivia" />
 
-        </com.jacsstuff.quizudo.utils.LimitedHeightScrollView>
+        </ScrollView>
     </RelativeLayout>
     </LinearLayout>
     <TextView

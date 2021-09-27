@@ -1,9 +1,9 @@
 package com.jacsstuff.quizudo.main;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jacsstuff.quizudo.R;
-import com.jacsstuff.quizudo.main.AboutAppActivity;
 import com.jacsstuff.quizudo.configure.CreateQuizActivity;
 import com.jacsstuff.quizudo.options.PreferencesActivity;
 
