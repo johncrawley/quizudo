@@ -10,16 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.configure.CreateQuizActivity;
 import com.jacsstuff.quizudo.options.PreferencesActivity;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-   // private InterstitialAd mInterstitialAd;
 
     boolean areAdsEnabled = false;
     private Button newQuizButton, optionsButton;
@@ -60,21 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void setupBannerAd(){
-        AdView ad = findViewById(R.id.adView);
-        if(ad != null) {
-            ad.setVisibility(View.VISIBLE);
-            ad.loadAd(new AdRequest.Builder().build());
-        }
-    }
-
-
-   // public void showAd(){
-   //     mInterstitialAd.show();
-   // }
-    public boolean areAdsEnabled(){
-        return this.areAdsEnabled;
-    }
 
 
     private void setupToolbar(){

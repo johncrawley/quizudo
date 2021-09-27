@@ -80,15 +80,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:paddingBottom="@dimen/banner_ad_padding_bottom"
-        ads:adSize="BANNER"
-
-        ads:adUnitId="@string/ads_unit_id" />
-
 
 </LinearLayout>
