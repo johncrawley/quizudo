@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.R;
 
@@ -34,7 +33,7 @@ public class ConfirmDialog extends DialogFragment implements DialogInterface.OnC
         try {
             mCallback = (OnFragmentInteractionListener) getActivity();
         } catch (Exception e) {
-            Log.i("dialogFragment", e.getMessage());
+            e.printStackTrace();
         }
         mCallback.onFragmentInteraction(true);
         dialog.dismiss();

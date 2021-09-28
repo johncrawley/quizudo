@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -24,10 +23,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private Context context;
     private QuizModel quizController;
 
+
     protected void onResume(){
         super.onResume();
         quizController.notifyQuizResumed();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +43,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void setupListClickListener(){
-        answerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                quizController.answerItemClick(position);
-            }
-        });
-    }
-
-
-    private void setupViews(){
-        questionText =          findViewById(R.id.question_text);
-        answerList =            findViewById(R.id.listView);
-        nextQuestionButton =    findViewById(R.id.next_question_button);
-        questionCounterText =   findViewById(R.id.question_counter);
-        nextQuestionButton.setOnClickListener(this);
+        answerList.setOnItemClickListener((parent, view, position, id) -> quizController.answerItemClick(position));
     }
 
 
@@ -74,10 +61,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     @Override
     public void displayFinishButton() {
         this.nextQuestionButton.setText(getResources().getString(R.string.next_question_button_finish));
     }
+
 
     public void hideNextButton(){
         this.nextQuestionButton.setVisibility(View.INVISIBLE);
@@ -95,12 +84,23 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         this.questionText.setText(questionText);
     }
 
+
     public void setQuestionCounter(String counterValue){
         this.questionCounterText.setText(counterValue);
     }
 
+
     public Context getContext(){
         return this.context;
+    }
+
+
+    private void setupViews(){
+        questionText =          findViewById(R.id.question_text);
+        answerList =            findViewById(R.id.listView);
+        nextQuestionButton =    findViewById(R.id.next_question_button);
+        questionCounterText =   findViewById(R.id.question_counter);
+        nextQuestionButton.setOnClickListener(this);
     }
 
 

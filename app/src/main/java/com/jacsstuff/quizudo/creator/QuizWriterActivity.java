@@ -5,11 +5,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,7 +36,7 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
     private Button nextPageButton, previousPageButton, firstPageButton, lastPageButton;
     private TextView pageNumberText;
     private CheckBox usesDefaultAnswerPoolCheckbox;
-    TextView questionText, correctAnswerText, triviaText, topicsText, descriptionText, questionPackNameText, defaultTopicsText;
+    private TextView questionText, correctAnswerText, triviaText, topicsText, descriptionText, questionPackNameText, defaultTopicsText;
     private List<TextView> answerChoiceViews;
     private Map<String, Integer> spinnerMap;
     private String noneOption;
@@ -86,39 +84,10 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
         setupInputFieldViews();
         setupAnswerPoolViews();
         setupAnswerChoicesViews();
-       // setupKeyboardListeners();
-    }
-
-    TextView.OnEditorActionListener onEditorActionListener;
-
-
-    private void setupKeyboardListeners(){
-
-        onEditorActionListener = new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-               if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_NEXT){
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        List<TextView> textViews = Arrays.asList(questionPackNameText, descriptionText, defaultTopicsText, questionText, correctAnswerText, topicsText, triviaText);
-
-        for(TextView view : textViews) {
-            view.setOnEditorActionListener(onEditorActionListener);
-        }
-        for(TextView view: answerChoiceViews){
-            view.setOnEditorActionListener(onEditorActionListener);
-        }
-
     }
 
 
     private void setupLayoutViews(){
-
         View questionPackLayout = findViewById(R.id.question_pack_fields_layout);
         View questionItemsLayout = findViewById(R.id.question_items_fields_layout);
         questionPackLayout.setVisibility(View.VISIBLE);
@@ -177,7 +146,7 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
 
         answerChoiceViews = new ArrayList<>();
         for(int i : ids){
-            answerChoiceViews.add((TextView)findViewById(i));
+            answerChoiceViews.add(findViewById(i));
         }
 
     }
@@ -245,7 +214,6 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void setAnswerPoolChoices(List<String> answerPoolNames) {
-        Log.i("CreatorActivity", "Entered SetAnswerPoolChoices");
         List<String> spinnerItems = new ArrayList<>();
         spinnerItems.add(noneOption);
         spinnerItems.addAll(answerPoolNames);
@@ -257,8 +225,6 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
         }
         defaultAnswerPoolSpinner.setAdapter( spinnerAdapter);
         questionAnswerPoolSpinner.setAdapter( spinnerAdapter);
-
-
     }
 
 
@@ -374,32 +340,15 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
 
     // Need to set an index, so the map stores the string in the key, and the int in the value
     private void setSpinnerValue(Spinner spinner, String key){
-
-        printSpinnerMapKeySet();
-        if(key == null){
-            log("spinner key is null");
+        if(key == null || spinner == null || spinnerMap.get(key) == null){
             return;
         }
-        if(spinner == null){
-            return;
+        Integer number = spinnerMap.get(key);
+        if(number != null) {
+            spinner.setSelection(number);
         }
-
-        spinner.setSelection(spinnerMap.get(key));
-
     }
 
-    private void log(String msg){
-        Log.i("QuizWriter", msg);
-    }
-
-    private void printSpinnerMapKeySet(){
-        log("Spinner map: (size is " + spinnerMap.size() + ")");
-        for(String key: spinnerMap.keySet()){
-
-            log("key: " + key + "  value: " + spinnerMap.get(key));
-        }
-
-    }
 
     @Override
     public void setDefaultTopics(String topics) {
@@ -444,29 +393,23 @@ public class QuizWriterActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view){
         int id = view.getId();
 
-        switch (id){
-
-            case R.id.nextPageButton:
-                controller.loadNextPage();
-                break;
-            case R.id.previousPageButton:
-                controller.loadPreviousPage();
-                break;
-            case R.id.firstPageButton:
-                controller.loadFirstPage();
-                break;
-            case R.id.lastPageButton:
-                controller.loadLastPage();
-                break;
-
-
-            case R.id.usesDefaultAnswerPool:
-                onUseDefaultCheckBoxClick();
-
+        if(id == R.id.nextPageButton){
+            controller.loadNextPage();
         }
-
-
+        else if(id == R.id.previousPageButton){
+            controller.loadPreviousPage();
+        }
+        else if(id == R.id.firstPageButton){
+            controller.loadFirstPage();
+        }
+        else if(id == R.id.lastPageButton){
+            controller.loadLastPage();
+        }
+        else if(id == R.id.usesDefaultAnswerPool){
+            onUseDefaultCheckBoxClick();
+        }
     }
+
 
     private void onUseDefaultCheckBoxClick(){
         if(usesDefaultAnswerPoolCheckbox.isChecked()){

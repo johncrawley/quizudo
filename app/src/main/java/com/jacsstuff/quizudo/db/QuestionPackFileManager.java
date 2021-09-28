@@ -73,6 +73,7 @@ public class QuestionPackFileManager{//} implements QuestionPackManager {
         return downloadCount;
     }
 
+
     public List<QuestionPackDbEntity> getQuestionPacks(Set<Integer> ids){
         List<QuestionPackDbEntity> questionPackList = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -87,6 +88,8 @@ public class QuestionPackFileManager{//} implements QuestionPackManager {
 
         return questionPackList;
     }
+
+
     public List<Question> getQuestions(Set<Integer> ids){
         List<Question> questionsList = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -98,9 +101,9 @@ public class QuestionPackFileManager{//} implements QuestionPackManager {
             QuestionPackDbEntity qp = parser.parseFile(path);
             questionsList.addAll(qp.getQuestions());
         }
-
         return questionsList;
     }
+
 
     //@Override
     public List<Integer> getQuestionIds(Set<Integer> ids) {
@@ -121,26 +124,22 @@ public class QuestionPackFileManager{//} implements QuestionPackManager {
                 questionPacks.remove(id);
             }
         }
-
         return deletedCount;
     }
 
 
     private String createFilename(String originalFilename, String author){
-
         return author + AUTHOR_DELIMITER + originalFilename + FILENAME_EXTENSION;
     }
 
 
     private List<File> getStoredQuizFiles(Context context){
-
         String externalPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
         File externalDir = new File(externalPath);
         File internalDir = context.getFilesDir();
         List <File> files = new ArrayList<>();
         files.addAll(getFilesFromStorage(externalDir));
         files.addAll(getFilesFromStorage(internalDir));
-
         return files;
     }
 
@@ -151,7 +150,7 @@ public class QuestionPackFileManager{//} implements QuestionPackManager {
 
 
     private List<File> getFilesFromStorage(File directory){
-        File files[] = directory.listFiles();
+        File[] files = directory.listFiles();
         if (files == null) {
             return new ArrayList<>();
         }

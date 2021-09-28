@@ -26,8 +26,8 @@ import static com.jacsstuff.quizudo.db.DbConsts.*;
  */
 public class DBWriter {
 
-    private SQLiteDatabase db;
-    private DBHelper mDbHelper;
+    private final SQLiteDatabase db;
+    private final DBHelper mDbHelper;
 
     public DBWriter(Context context){
         mDbHelper = DBHelper.getInstance(context);
@@ -313,7 +313,6 @@ public class DBWriter {
         }
         return  question;
     }
-
 
 
     public void closeConnection(){

@@ -12,7 +12,7 @@ import com.jacsstuff.quizudo.db.DBWriter;
 public class QuizSingleton {
 
     private static QuizSingleton instance;
-    private Quiz quiz;
+    private final Quiz quiz;
 
     private QuizSingleton(){
         quiz = new Quiz();

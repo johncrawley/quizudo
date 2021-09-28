@@ -14,20 +14,19 @@ import java.util.List;
 
 public class QuizWriterControllerImpl implements QuizWriterController {
 
-    private QuestionPackItem questionPackItem;
-    private List<QuestionItem> questionItems;
-    private DBWriter dbWriter;
-    private QuizWriterView view;
+    private final QuestionPackItem questionPackItem;
+    private final List<QuestionItem> questionItems;
+    private final DBWriter dbWriter;
+    private final QuizWriterView view;
+    private final Validator validator;
     private int currentPage = 1; // page = 1 means the questionPack UI elements are shown
-                                // page = 2 and over means the question UI elements are shown
+                                // page = >2 means the question UI elements are shown
                                 // so page = 2 should correspond to questionItems.get(0);
     private int currentQuestion = 0;
     private int currentQuestionIndex = -1;
     private final String NONE_OPTION;
-    private Validator validator;
-
-
     private final int FIRST_PAGE = 1;
+
 
     QuizWriterControllerImpl(QuizWriterView view, Context context, String noneOption){
         dbWriter = new DBWriter(context);
@@ -62,7 +61,6 @@ public class QuizWriterControllerImpl implements QuizWriterController {
             view.displayNothingToSaveMessage();
             return;
         }
-        Log.i("QuizWriterCntrol", " questionPackDbEntityToSave : " + questionPackDbEntity.toString());
         if(dbWriter.saveQuestionPackRecord(questionPackDbEntity) != -1){
             view.displaySaveSuccessMessage(questionPackDbEntity.getNumberOfQuestions());
             return;
@@ -72,7 +70,6 @@ public class QuizWriterControllerImpl implements QuizWriterController {
 
 
     public void loadFirstPage(){
-
         copyDataFromViewToCurrentQuestionItem();
         view.showQuestionPackScreen();
         resetPageVars();
@@ -96,7 +93,6 @@ public class QuizWriterControllerImpl implements QuizWriterController {
             copyDataFromViewToCurrentQuestionItem();
         }
 
-
         if(questionItems.size() == 0){
             createQuestionItem();
         }
@@ -108,15 +104,10 @@ public class QuizWriterControllerImpl implements QuizWriterController {
 
     }
 
+
     public void loadNextPage(){
-        if(currentPage == FIRST_PAGE){
-            view.showQuestionScreen();
-            view.enableFirstButton();
-            view.enablePreviousButton();
-        }
-        else if(isLastPage()){
-            view.disableLastButton();
-        }
+        handleLoadSecondPage();
+        handleSecondLastPage();
         incrementPageVars();
 
         if(currentQuestionIndex > 0) {
@@ -133,8 +124,24 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         view.setQuestionNumber(this.currentQuestion);
     }
 
-    public void loadPreviousPage(){
 
+    private void handleLoadSecondPage(){
+        if(currentPage == FIRST_PAGE){
+            view.showQuestionScreen();
+            view.enableFirstButton();
+            view.enablePreviousButton();
+        }
+    }
+
+
+    private void handleSecondLastPage(){
+        if(isLastPage()){
+            view.disableLastButton();
+        }
+    }
+
+
+    public void loadPreviousPage(){
         if(currentPage == FIRST_PAGE){
             return;
         }
@@ -143,11 +150,7 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         view.setPageNumber(this.currentPage);
         view.enableLastButton();
         if(currentPage == FIRST_PAGE){
-            view.showQuestionPackScreen();
-            view.enableNextButton();
-            view.disablePreviousButton();
-            view.disableFirstButton();
-            view.setFirstPageTitle();
+            handleFirstPageLoad();
             return;
         }
         copyDataFromCurrentQuestionItemToView();
@@ -156,15 +159,26 @@ public class QuizWriterControllerImpl implements QuizWriterController {
     }
 
 
+    private void handleFirstPageLoad(){
+        view.showQuestionPackScreen();
+        view.enableNextButton();
+        view.disablePreviousButton();
+        view.disableFirstButton();
+        view.setFirstPageTitle();
+    }
+
+
     private boolean isOnNewQuestionIndex() {
         return questionItems.size() <= currentQuestionIndex;
     }
+
 
     private void createQuestionItem() {
         final int MAX_ANSWER_CHOICES = 6;
         QuestionItem currentQuestionItem = new QuestionItem(MAX_ANSWER_CHOICES);
         questionItems.add(currentQuestionItem);
     }
+
 
     private void copyDataFromViewToCurrentQuestionItem() {
         if(currentQuestionIndex < 0){
@@ -174,13 +188,14 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         copyDataFromViewToQuestionItem(questionItem);
     }
 
+
     private void copyDataFromViewToPreviousQuestionItem() {
         QuestionItem questionItem = questionItems.get(currentQuestionIndex-1);
         copyDataFromViewToQuestionItem(questionItem);
     }
 
-    private void setAnswerPoolSpinnerStatus(){
 
+    private void setAnswerPoolSpinnerStatus(){
         if(view.isUsingDefaultAnswerPool()){
             view.disableAnswerPoolSelection();
         }
@@ -188,8 +203,8 @@ public class QuizWriterControllerImpl implements QuizWriterController {
             view.enableAnswerPoolSelection();
         }
         view.setPageNumber(this.currentPage);
-
     }
+
 
     private void copyDataFromViewToQuestionItem(QuestionItem questionItem){
         questionItem.setAnswerChoices(view.getAnswerChoices());
@@ -261,6 +276,7 @@ public class QuizWriterControllerImpl implements QuizWriterController {
         currentQuestion = questionItems.size();
         currentQuestionIndex = questionItems.size() -1;
     }
+
 
     private boolean isLastPage(){
 

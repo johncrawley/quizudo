@@ -52,13 +52,16 @@ public class Quiz {
         assignCurrentQuestion();
     }
 
+
     public void setDbWriter(DBWriter dbWriter) {
         this.dbWriter = dbWriter;
     }
 
+
     public void setAnswerChoiceBuilder(AnswerChoiceBuilder answerChoiceBuilder){
         this.answerChoiceBuilder = answerChoiceBuilder;
     }
+
 
     public void retry() {
         isRunning = true;
@@ -75,6 +78,7 @@ public class Quiz {
             Log.i("Quiz - createQuiz()", "question ID list is null before loading from store.");
         }
     }
+
 
     private void shuffleQuestionOrder(){
         if(questionIds != null){
@@ -97,18 +101,22 @@ public class Quiz {
         this.isDialogOpen = isOpen;
     }
 
+
     public boolean wasDialogClosed(){
         return this.isDialogOpen;
     }
+
 
     public void finish(){
         singletonResultsStore.setQuizFinished(true);
         this.isRunning = false;
     }
 
+
     public boolean isRunning(){
         return this.isRunning;
     }
+
 
     public boolean hasNoQuestions(){
         return this.questionIds.isEmpty();
@@ -152,9 +160,11 @@ public class Quiz {
         return maxNumberOfQuestions;
     }
 
+
     public String getQuestionCounter(){
         return questionIndex + 1 + "/" + ( maxNumberOfQuestions);
     }
+
 
     public String getCurrentQuestionText(){
         if(currentQuestion != null) {
@@ -190,12 +200,14 @@ public class Quiz {
         return null;
     }
 
+
     public String getCurrentQuestionTrivia(){
         if(currentQuestion!= null){
             return currentQuestion.getTrivia();
         }
         return "";
     }
+
 
     public boolean isCurrentAnswerCorrect(){
         return isCurrentAnswerCorrect;

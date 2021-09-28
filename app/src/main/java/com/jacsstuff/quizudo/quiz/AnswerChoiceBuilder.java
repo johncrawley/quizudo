@@ -1,12 +1,10 @@
 package com.jacsstuff.quizudo.quiz;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,8 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class AnswerChoiceBuilder{
 
-    private Map<String, List<String>> retrievedAnswerPools;
-    private AnswerPoolDBManager db;
+    private final Map<String, List<String>> retrievedAnswerPools;
+    private final AnswerPoolDBManager db;
     private final int MAX_ANSWER_CHOICES;
 
     AnswerChoiceBuilder(Context context, int maxAnswerChoices){
@@ -67,7 +65,7 @@ public class AnswerChoiceBuilder{
             retrievedAnswerPools.put(answerPoolName, retrievedAnswerPool);
             answerPool = retrievedAnswerPool;
         }
-        return new ArrayList<>(answerPool); // because we'll be removing items from the return list, so need to make a new one.
+        return answerPool == null ? new ArrayList<>() : new ArrayList<>(answerPool); // because we'll be removing items from the return list, so need to make a new one.
     }
 
 
@@ -81,9 +79,10 @@ public class AnswerChoiceBuilder{
         return outputSet;
     }
 
+
     private List<String> getShuffledList(Set<String> set){
         List<String> list = new ArrayList<>(set);
-        Collections.shuffle(list, ThreadLocalRandom.current());
+        Collections.shuffle(list);
         return list;
     }
 }

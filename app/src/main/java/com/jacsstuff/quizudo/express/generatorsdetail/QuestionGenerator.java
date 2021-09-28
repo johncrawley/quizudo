@@ -21,10 +21,10 @@ import java.util.Map;
 
 public class QuestionGenerator {
 
-    private QuestionSetDbManager questionSetDBManager;
-    private AnswerPoolDBManager answerPoolDBManager;
-    private DBWriter dbWriter;
-    private QuestionTextMaker questionTextMaker;
+    private final QuestionSetDbManager questionSetDBManager;
+    private final AnswerPoolDBManager answerPoolDBManager;
+    private final DBWriter dbWriter;
+    private final QuestionTextMaker questionTextMaker;
 
     public QuestionGenerator(Context context){
         questionSetDBManager = new QuestionSetDbManager(context);
@@ -119,7 +119,9 @@ public class QuestionGenerator {
 
     private void addAnswersToAnswerPool(List<String> answers, String answerPoolName, Map<String, Long> answerPoolMap){
         long answerPoolId = createAnswerPoolIfDoesntExist(answerPoolName, answerPoolMap);
-        answerPoolDBManager.addAnswerPoolItems(answerPoolId, answers);
+        if(answerPoolId != -1) {
+            answerPoolDBManager.addAnswerPoolItems(answerPoolId, answers);
+        }
     }
 
 
@@ -127,7 +129,8 @@ public class QuestionGenerator {
         if(!answerPoolMap.containsKey(resolvedName)) {
             return answerPoolDBManager.addAnswerPool(resolvedName);
         }
-        return answerPoolMap.get(resolvedName);
+        Long answerPoolId = answerPoolMap.get(resolvedName);
+        return answerPoolId == null ? -1 : answerPoolId;
     }
 
 

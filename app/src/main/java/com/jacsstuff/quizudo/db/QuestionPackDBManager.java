@@ -4,9 +4,7 @@ import android.content.Context;
 
 import com.jacsstuff.quizudo.model.QuestionPackOverview;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,11 +16,9 @@ import java.util.Set;
 public class QuestionPackDBManager implements QuestionPackManager {
 
     private DBWriter dbWriter;
-    private Map<Integer, QuestionPackOverview> questionPacks;
-    private Context context;
+    private final Context context;
 
     public QuestionPackDBManager(Context context){
-        questionPacks = new HashMap<>();
         this.context = context;
     }
 

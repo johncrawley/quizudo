@@ -58,10 +58,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/dialogTheme" />
         <activity
-            android:name=".options.DialogActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/dialogTheme" />
-        <activity
             android:name=".main.AboutAppActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialogTheme" />

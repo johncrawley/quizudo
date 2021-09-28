@@ -3,8 +3,6 @@ package com.jacsstuff.quizudo.quiz;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-
 import com.jacsstuff.quizudo.results.QuizResultsActivity;
 import com.jacsstuff.quizudo.utils.Consts;
 import com.jacsstuff.quizudo.db.DBWriter;
@@ -26,9 +24,9 @@ import static com.jacsstuff.quizudo.utils.Consts.TRIVIA_INTENT_EXTRA;
  */
 public class QuizModel {
 
-    private QuizView view;
-    private Context context;
-    private Quiz quiz;
+    private final QuizView view;
+    private final Context context;
+    private final Quiz quiz;
     private boolean isAnswerSubmittedOnTouch, isResultDisplayedAfterQuestion;
     private List<Integer> selectedItemPositions;
     private boolean isAnswerSubmitted = false;
@@ -54,10 +52,12 @@ public class QuizModel {
         endActivityIfNoQuestions();
     }
 
+
     private void assignAnswerChoices(){
         String[] answerChoices = quiz.getCurrentAnswerChoices();
         view.setAnswerChoices(answerChoices);
     }
+
 
     private void configureQuizPreferences(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(QUIZ_SETTINGS_PREFERENCES, Context.MODE_PRIVATE);
@@ -65,12 +65,14 @@ public class QuizModel {
         this.isResultDisplayedAfterQuestion = sharedPreferences.getBoolean(Consts.PREVIOUS_SHOW_ANSWER_PREFERENCE, false);
     }
 
+
     private void configureDbWriter(){
         if(dbWriter == null){
             dbWriter = new DBWriter(context);
             quiz.setDbWriter(dbWriter);
         }
     }
+
 
     private void configureAnswerPoolManager(){
         final int MAX_ANSWER_CHOICES = 6;
@@ -80,19 +82,21 @@ public class QuizModel {
         quiz.setAnswerChoiceBuilder(answerChoiceBuilder);
     }
 
+
     private void endActivityIfNoQuestions(){
         if(quiz.hasNoQuestions()){
             view.finish();
         }
     }
 
+
     public void setAnswer(int position){
         selectedItemPositions.clear();
         selectedItemPositions.add(position);
     }
 
-    private boolean submitAnswer() {
 
+    private boolean submitAnswer() {
         if (!selectedItemPositions.isEmpty()) {
             quiz.submitAnswers(selectedItemPositions);
             return true;
@@ -127,6 +131,7 @@ public class QuizModel {
         return str.toString();
     }
 
+
     private void removeLastComma(StringBuilder str){
         if(str.length() > 1) {
             str.deleteCharAt(str.length() - 2); //removing the last comma.
@@ -146,6 +151,7 @@ public class QuizModel {
             setToolbarTitle();
         }
     }
+
 
     private void setToolbarTitle(){
         int currentQuestion = quiz.getCurrentQuestionNumber();
@@ -179,6 +185,7 @@ public class QuizModel {
             loadNextQuestion();
         }
     }
+
 
     private void displayResult(){
         displayResultDialog(quiz.isCurrentAnswerCorrect(),  quiz.getCurrentQuestionTrivia(), getCurrentCorrectAnswers());
@@ -226,6 +233,7 @@ public class QuizModel {
         context.startActivity(intent);
     }
 
+
     private String getEmptyIfNull(String str){
         return str == null ? "" : str;
     }
@@ -247,11 +255,6 @@ public class QuizModel {
             return;
         }
         loadNextQuestion();
-    }
-
-
-    public void resultClick(){
-            loadNextQuestion();
     }
 
 
