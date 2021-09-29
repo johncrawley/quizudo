@@ -30,7 +30,7 @@ import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
 public class QuestionGeneratorDbManager {
 
-    private SQLiteDatabase db;
+    private final SQLiteDatabase db;
 
 
     public QuestionGeneratorDbManager(Context context){

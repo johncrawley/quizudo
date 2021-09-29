@@ -22,7 +22,7 @@ import java.util.List;
  */
 class DefaultQuestionLoader {
 
-    private Context context;
+    private final Context context;
 
     DefaultQuestionLoader(Context context){
         this.context = context;

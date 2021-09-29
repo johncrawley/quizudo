@@ -75,15 +75,12 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()){
-            case R.id.home_menu_item:
-                Utils.bringBackActivity(this, MainActivity.class);
-                break;
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            case R.id.import_generator:
-                openFileLoader();
+        int itemId = item.getItemId();
+        if(itemId == R.id.home_menu_item){
+            Utils.bringBackActivity(this, MainActivity.class);
+        }
+        else if(itemId == R.id.import_generator){
+            openFileLoader();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -147,6 +144,7 @@ public class GeneratorsActivity extends AppCompatActivity implements ListActionE
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_FILE_CODE) {
                generatorFileReader.readFileAndSaveGenerator(data);

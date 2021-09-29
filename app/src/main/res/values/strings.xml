@@ -107,6 +107,8 @@
     <string name="results_message_less_than_eighty">Good result, well done!</string>
     <string name="results_message_less_than_ninty">Great result, you really know your stuff!</string>
     <string name="results_message_less_than_perfect">Congratulations, what an excellent result!</string>
+    <string name="toast_message_generator_imported_success">Generator Imported</string>
+    <string name="toast_message_generator_imported_fail">There was a problem with the file, import failed</string>
 
     <string name="results_message_none_correct">Too bad, you didn\'t get any questions right this time around. Better luck next time.</string>
     <string name="results_message_perfect">Congratulations, a perfect score!! You beat the quiz!!</string>

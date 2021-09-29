@@ -1,7 +1,6 @@
 package com.jacsstuff.quizudo.creator;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.jacsstuff.quizudo.answerPool.AnswerPoolDBManager;
 import com.jacsstuff.quizudo.db.DBWriter;

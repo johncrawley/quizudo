@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -45,14 +44,6 @@ public class CreateQuizActivity extends AppCompatActivity {
         // N.B Questions are loaded in the onResume() method
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle state){
-        super.onSaveInstanceState(state);
-    }
-    @Override
-    protected void onRestoreInstanceState(Bundle state){
-        super.onRestoreInstanceState(state);
-    }
 
 
 
@@ -65,7 +56,7 @@ public class CreateQuizActivity extends AppCompatActivity {
     }
     protected void onResume(){
         super.onResume();
-        loadQuestions("onResume()");
+        loadQuestions();
     }
 
     private void setupViews(){
@@ -91,25 +82,24 @@ public class CreateQuizActivity extends AppCompatActivity {
         loadingDialog.dismiss();
         setupViews();
         isDbInitFinished = true;
-
     }
 
-    private void loadQuestions(String callerId) {
+    private void loadQuestions() {
         if (isDbInitFinished) {
             isDbInitFinished = false;
             loadingDialog.show();
             questionPackManager = new QuestionPackDBManager(context);
             DBInitialiser initialiser = new DBInitialiser(this, context, questionPackManager);
-            initialiser.execute(callerId);
+            initialiser.execute("onResume()");
         }
     }
 
 
     private static class DBInitialiser extends AsyncTask<String, String, Integer>{
 
-        private WeakReference<CreateQuizActivity> createQuizActivityWeakReference;
-        private WeakReference<QuestionPackManager> questionPackManagerWeakReference;
-        private WeakReference<Context> contextWeakReference;
+        private final WeakReference<CreateQuizActivity> createQuizActivityWeakReference;
+        private final WeakReference<QuestionPackManager> questionPackManagerWeakReference;
+        private final WeakReference<Context> contextWeakReference;
 
         DBInitialiser(CreateQuizActivity createQuizActivity, Context context, QuestionPackManager questionPackManager){
             createQuizActivityWeakReference = new WeakReference<>(createQuizActivity);
@@ -118,7 +108,6 @@ public class CreateQuizActivity extends AppCompatActivity {
         }
 
         public Integer doInBackground(String... params){
-            Log.i("CreateQuizActivity", "DBInitializer - entered doInBackground()");
             DefaultQuestionLoader defaultQuestionLoader = new DefaultQuestionLoader(contextWeakReference.get());
             defaultQuestionLoader.loadQuestions();
             questionPackManagerWeakReference.get().init();
@@ -133,22 +122,19 @@ public class CreateQuizActivity extends AppCompatActivity {
 
     private static class QuizDbLoader extends AsyncTask<String, String, Integer> {
 
-
-        private QuestionsSingleton questionsSingleton = QuestionsSingleton.getInstance();
-        private WeakReference<QuestionPackManager> questionPackManagerWeakReference;
-        private WeakReference<QuestionPackList> questionPackListWeakReference;
-        private WeakReference<CreateQuizActivity> createQuizActivityWeakReference;
+        private final QuestionsSingleton questionsSingleton = QuestionsSingleton.getInstance();
+        private final WeakReference<QuestionPackManager> questionPackManagerWeakReference;
+        private final WeakReference<QuestionPackList> questionPackListWeakReference;
+        private final WeakReference<CreateQuizActivity> createQuizActivityWeakReference;
 
 
         QuizDbLoader(CreateQuizActivity createQuizActivity, QuestionPackManager questionPackManager, QuestionPackList questionPackList){
             createQuizActivityWeakReference = new WeakReference<>(createQuizActivity);
             questionPackManagerWeakReference = new WeakReference<>(questionPackManager);
             questionPackListWeakReference = new WeakReference<>(questionPackList);
-
         }
 
         public Integer doInBackground(String... params){
-
             questionsSingleton.reset();
             Set<Integer> selectedIds = questionPackListWeakReference.get().getSelectedIds();
             List<Integer> questionIds = questionPackManagerWeakReference.get().getQuestionIds(selectedIds);

@@ -121,25 +121,22 @@ public class ListAdapterHelper {
 
 
     public void setupKeyInput(final EditText editText, final boolean isFieldClearedOnTextInput, final boolean isKeyboardDismissedOnDone) {
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
-                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if(imm == null){
-                        return false;
-                    }
-                    if(isKeyboardDismissedOnDone) {
-                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                    }
-                    actionExecutor.onTextEntered(v.getId(), v.getText().toString());
-                    if(isFieldClearedOnTextInput){
-                          editText.getText().clear();
-                    }
-                    return true;
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm == null){
+                    return false;
                 }
-                return false;
+                if(isKeyboardDismissedOnDone) {
+                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                }
+                actionExecutor.onTextEntered(v.getId(), v.getText().toString());
+                if(isFieldClearedOnTextInput){
+                      editText.getText().clear();
+                }
+                return true;
             }
+            return false;
         });
     }
 

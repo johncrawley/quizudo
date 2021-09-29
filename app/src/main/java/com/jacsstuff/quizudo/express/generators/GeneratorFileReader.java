@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.jacsstuff.quizudo.R;
 import com.jacsstuff.quizudo.express.generators.parser.FileParser;
 import com.jacsstuff.quizudo.express.generators.parser.ParserResult;
 
@@ -16,9 +17,8 @@ import java.io.Reader;
 
 public class GeneratorFileReader {
 
-    private Context context;
-    private FileParser fileParser;
-    private GeneratorsDbManager generatorsDbManager;
+    private final Context context;
+    private final GeneratorsDbManager generatorsDbManager;
 
     public GeneratorFileReader(Context context){
         this.context = context;
@@ -27,13 +27,13 @@ public class GeneratorFileReader {
 
 
     public void readFileAndSaveGenerator(Intent data){
-        fileParser = new FileParser();
+        FileParser fileParser = new FileParser();
         Uri fileUri = data.getData();
         if(fileUri == null || fileUri.getPath() == null){
             return;
         }
 
-        String importToastMessage = "Couldn't import generator, please check the format!";
+        String importToastMessage;
         try{
             InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
             if(inputStream == null){
@@ -50,14 +50,14 @@ public class GeneratorFileReader {
             ParserResult parserResult = fileParser.finish();
             if(parserResult.isSuccess()){
                 generatorsDbManager.save(fileParser.getGeneratorEntity());
-                importToastMessage = "generator imported!";
+                importToastMessage = context.getString(R.string.toast_message_generator_imported_success);
             }
             else{
                 importToastMessage = parserResult.getMessage() + " (line "  + parserResult.getLine() + ")";
             }
             reader.close();
         }catch (IOException e){
-            importToastMessage = "There was a problem loading the file, import failed.";
+            importToastMessage = context.getString(R.string.toast_message_generator_imported_fail);
         }
 
         Toast.makeText(context.getApplicationContext(), importToastMessage, Toast.LENGTH_LONG).show();

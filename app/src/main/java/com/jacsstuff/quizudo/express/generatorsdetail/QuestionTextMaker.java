@@ -1,9 +1,5 @@
 package com.jacsstuff.quizudo.express.generatorsdetail;
 
-import android.content.Context;
-
-import com.jacsstuff.quizudo.R;
-
 public class QuestionTextMaker {
 
     private final String PLACEHOLDER;
@@ -39,6 +35,7 @@ public class QuestionTextMaker {
     private boolean isNullOrEmpty(String str){
         return str == null || str.trim().isEmpty();
     }
+
 
     private String addQuestionMarkIfRequired(String str){
         if(str.isEmpty()){

@@ -28,10 +28,10 @@ import static com.jacsstuff.quizudo.db.DbConsts.WHERE;
 
 public class GeneratorsDbManager {
 
-    private DBHelper mDbHelper;
-    private SQLiteDatabase db;
-    private QuestionGeneratorDbManager questionGeneratorDbManager;
-    private QuestionSetDbManager questionSetDbManager;
+    private final DBHelper mDbHelper;
+    private final SQLiteDatabase db;
+    private final QuestionGeneratorDbManager questionGeneratorDbManager;
+    private final QuestionSetDbManager questionSetDbManager;
 
     GeneratorsDbManager(Context context){
         mDbHelper = DBHelper.getInstance(context);
