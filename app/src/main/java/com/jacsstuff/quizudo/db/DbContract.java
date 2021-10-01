@@ -26,6 +26,7 @@ public final class DbContract {
          static final String COLUMN_NAME_SOUND = "sound";
     }
 
+
      static class QuestionPackEntry implements BaseColumns {
          static final String TABLE_NAME = "question_packs";
          static final String COLUMN_NAME_UNIQUE_NAME = "unique_name";

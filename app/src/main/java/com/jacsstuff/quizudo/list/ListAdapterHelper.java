@@ -1,7 +1,6 @@
 package com.jacsstuff.quizudo.list;
 
 import android.content.Context;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -9,17 +8,16 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.jacsstuff.quizudo.R;
 import java.util.List;
 
 public class ListAdapterHelper {
 
-    private Context context;
-    private ListActionExecutor actionExecutor;
+    private final Context context;
+    private final ListActionExecutor actionExecutor;
     private SimpleItemArrayAdapter arrayAdapter;
-    private ListView list;
+    private final ListView list;
 
     public ListAdapterHelper(Context context, ListView list, ListActionExecutor actionExecutor){
         this.context = context;
@@ -47,26 +45,20 @@ public class ListAdapterHelper {
         }
         arrayAdapter = new SimpleItemArrayAdapter(context, layoutRes, items);
 
-        AdapterView.OnItemLongClickListener longClickListener = new AdapterView.OnItemLongClickListener() {
-
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if(position >= items.size()){
-                    return false;
-                }
-                SimpleListItem item = items.get(position);
-                actionExecutor.onLongClick(item);
-                return true;
+        AdapterView.OnItemLongClickListener longClickListener = (parent, view, position, id) -> {
+            if(position >= items.size()){
+                return false;
             }
+            SimpleListItem item = items.get(position);
+            actionExecutor.onLongClick(item);
+            return true;
         };
 
-        AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position >= items.size()){
-                    return;
-                }
-                actionExecutor.onClick(items.get(position));
+        AdapterView.OnItemClickListener clickListener = (parent, view, position, id) -> {
+            if(position >= items.size()){
+                return;
             }
+            actionExecutor.onClick(items.get(position));
         };
 
 

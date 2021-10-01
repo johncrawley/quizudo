@@ -14,8 +14,8 @@ import java.util.List;
 
 public class SimpleItemArrayAdapter extends ArrayAdapter<SimpleListItem> {
 
-    private Context context;
-    private List<SimpleListItem> items;
+    private final Context context;
+    private final List<SimpleListItem> items;
 
     public SimpleItemArrayAdapter(Context context, int viewResourceId, List<SimpleListItem> items){
         super(context, viewResourceId, items);
