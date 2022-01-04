@@ -31,8 +31,8 @@
     <string name="quiz_writer_answer_choices_field">Answer Choices (1 per line)</string>
     <string name="quiz_writer_trivia_field">Trivia</string>
     <string name="quiz_writer_topics_field">Topics</string>
-    <string name="quiz_writer_answer_pool_label">Answer Pool</string>
-    <string name="quiz_writer_default_answer_pool_field">Default Answer Pool</string>
+    <string name="quiz_writer_answer_pool_label">Answer Set</string>
+    <string name="quiz_writer_default_answer_pool_field">Default Answer Set</string>
     <string name="quiz_writer_use_default_ap_label">Use Default</string>
     <string name="quiz_writer_page_number">1</string>
     <string name="quiz_writer_question_pack_name_field">Question Pack Name</string>
@@ -144,17 +144,17 @@
     <string name="loading_dialogue">Loading&#8230;</string>
     <!-- Answer Pool -->
     <string name="remove_author_dialog_text">Remove author %1$s from the quicklist?</string>
-    <string name="remove_answer_dialog_text">Remove answer %1$s from the answer pool?</string>
-    <string name="remove_answer_pool_dialog_text">Delete answer pool %1$s?</string>
+    <string name="remove_answer_dialog_text">Remove entry %1$s from the answer set?</string>
+    <string name="remove_answer_pool_dialog_text">Delete answer set %1$s?</string>
 
-    <string name="answer_pool_deleted_pool_toast">Answer Pool Removed</string>
+    <string name="answer_pool_deleted_pool_toast">Answer Set Removed</string>
     <string name="answer_pool_deleted_item_toast">Item Removed</string>
     <string name="remove_author_yes_button">Yes</string>
     <string name="remove_author_no_button">No</string>
     <string name="loading_dialogue_checking_server">Contacting Server&#8230;</string>
     <string name="server_connection_error">Unable to connect to the server.</string>
     <string name="resume_quiz_button_label">Resume Quiz</string>
-    <string name="answer_pool_input_hint">Create a new Answer Pool</string>
+    <string name="answer_pool_input_hint">Create a new Answer Set</string>
 
     <!-- Download Questions -->
     <string name="answer_item_input_hint">Add a new Answer</string>
@@ -178,7 +178,7 @@
 
 
     <!-- Preferences -->
-    <string name="answer_pools_activity_title">Answer Pools</string>
+    <string name="answer_pools_activity_title">Answer Sets</string>
     <string name="question_generator_activity_title">Question Generator</string>
     <string name="download_questions_activity_title">Download Question Packs</string>
     <string name="create_question_pack_preference_title">Create Question Packs</string>
@@ -192,7 +192,7 @@
 
     <!-- Main Activity -->
 
-    <string name="answer_pools_preferences_title">Answer Pools</string>
+    <string name="answer_pools_preferences_title">Answer Sets</string>
     <string name="answer_pools_preference_summary">Create lists of answers that can be used in questions</string>
     <string name="new_quiz_button_text">NEW QUIZ</string>
 
