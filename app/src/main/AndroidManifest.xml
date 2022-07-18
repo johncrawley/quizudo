@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jacsstuff.quizudo">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/quizudo_icon"
@@ -24,63 +25,48 @@
         <activity
             android:name=".quiz.QuizActivity"
             android:label="@string/title_quiz_activity"
-            android:parentActivityName=".configure.ConfigureQuizActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".configure.ConfigureQuizActivity" />
         <activity
             android:name=".results.QuizResultsActivity"
             android:label="@string/title_quiz_results_activity"
-            android:parentActivityName=".configure.ConfigureQuizActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".configure.ConfigureQuizActivity" />
         <activity
             android:name=".configure.CreateQuizActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:label="@string/title_create_quiz_activity"
-            android:parentActivityName=".main.MainActivity"
-            android:screenOrientation="portrait" />
-
+            android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".configure.ConfigureQuizActivity"
             android:label="@string/title_configure_quiz_activity"
-            android:parentActivityName=".configure.CreateQuizActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".configure.CreateQuizActivity" />
         <!--
       windowSoftInputMode: so buttons don't get pushed up by the soft keyboard.
-            android:windowSoftInputMode="stateUnchanged|adjustResize"
-        -->
+            android:windowSoftInputMode="stateUnchanged|adjustResize"  -->
         <activity
             android:name=".options.RemoveQuestionPacksActivity"
             android:label="@string/title_remove_question_packs_activity"
-            android:parentActivityName=".options.PreferencesActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".options.PreferencesActivity" />
         <activity android:name=".options.PreferencesActivity" />
         <activity
             android:name=".quiz.AnswerDialogActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/dialogTheme" />
         <activity
             android:name=".main.AboutAppActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/dialogTheme" />
         <activity
             android:name=".creator.QuizWriterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:parentActivityName=".options.PreferencesActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".options.PreferencesActivity" />
         <activity
             android:name=".answerPool.AnswerPoolActivity"
-            android:parentActivityName=".options.PreferencesActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".options.PreferencesActivity" />
         <activity
             android:name=".answerPool.AnswerListActivity"
-            android:parentActivityName=".answerPool.AnswerPoolActivity"
-            android:screenOrientation="portrait" />
-
+            android:parentActivityName=".answerPool.AnswerPoolActivity"/>
 
         <activity
             android:name=".download.DownloadQuestionsActivity"
             android:parentActivityName=".options.PreferencesActivity" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
